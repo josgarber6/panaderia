@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<style>
+  .banner {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url("{% static 'background-panaderia.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+</style>
+
+<div class="banner">
+  <div class="text-center text-white">
+      <h1 class="display-1">¡Bienvenido a la Panader&#237;a S&#225;nchez!</h1>
+      <h3>Siente el sabor de la tradici&#243;n</h3>
+      <div class="mx-auto" style="max-width: 50%;">
+          <!-- Línea divisoria -->
+          <hr class="border border-white">
+      </div>
+  </div>
+{% endblock %}
