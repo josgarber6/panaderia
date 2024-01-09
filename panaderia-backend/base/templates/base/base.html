@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     {% load static %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #edb45e;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'LogoPanaderia3.png' %}" alt="US" class="img-fluid col-md-3" style="width: 70px;">
+            </a>
+            <ul class="navbar-nav me-auto">
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <div class="d-flex align-items-center">
+                        <p class="nav-link m-0 me-3" style="color: black;">
+                            <strong>{{ user.email }}</strong>
+                        </p>
+                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/auth/logout">Cerrar Sesion</a>
+                    </div>
+                {% endif %}
+                {% if not user.is_authenticated %}
+                    <div class="d-flex align-items-center">
+                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/auth/login">Iniciar Sesi&#243;n</a>
+                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/auth/signup">Registrarse</a>
+                    </div>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
     <main>
         {% block content %}{% endblock %}
     </main>
