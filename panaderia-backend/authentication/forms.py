@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django import forms
 
@@ -120,3 +121,44 @@ class CustomerLoginForm(AuthenticationForm):
     model = User
     fields = ('username', 'password')
 
+class CustomPasswordChangeForm(PasswordChangeForm):
+
+  old_password = forms.CharField(
+    max_length=254,
+    min_length=5,
+    label="Contraseña Actual",
+    widget=forms.PasswordInput(
+      attrs={
+        "placeholder": "Introduzca su contraseña actual",
+        "class": "form-control"
+      }
+    )
+  )
+
+  new_password1 = forms.CharField(
+    max_length=254,
+    min_length=5,
+    label="Nueva Contraseña",
+    widget=forms.PasswordInput(
+      attrs={
+        "placeholder": "Introduzca su nueva contraseña",
+        "class": "form-control"
+      }
+    )
+  )
+
+  new_password2 = forms.CharField(
+    max_length=254,
+    min_length=5,
+    label="Confirmar Nueva Contraseña",
+    widget=forms.PasswordInput(
+      attrs={
+        "placeholder": "Introduzca de nuevo su nueva contraseña",
+        "class": "form-control"
+      }
+    )
+  )
+
+  class Meta:
+    model = User
+    fields = ('old_password', 'new_password1', 'new_password2')
