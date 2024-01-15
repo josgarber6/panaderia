@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import authenticate, login, logout
-from .forms import CustomerCreationForm, CustomerLoginForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from .forms import CustomerCreationForm, CustomerLoginForm, CustomPasswordChangeForm
+from django.contrib import messages
 
 def signup_view(request):
   if request.method == 'POST':
@@ -39,11 +39,15 @@ def logout_view(request):
 
 def change_password_view(request):
   if request.method == 'POST':
-      form = PasswordChangeForm(data=request.POST)
+      form = CustomPasswordChangeForm(user=request.user, data=request.POST)
       if form.is_valid():
           # change password
-          form.save()
+          user = form.save()
+          update_session_auth_hash(request, user)
+          messages.success(request, 'Tu contraseña ha sido actualizada!')
           return redirect('/')
+      else:
+          messages.error(request, 'Por favor corrija el error.')
   else:
-      form = PasswordChangeForm(user=request.user)
+      form = CustomPasswordChangeForm(user=request.user)
   return render(request, 'authentication/change_password.html', {'form': form})
