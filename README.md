@@ -1,2 +1,2 @@
-# Backend Panadería
-Backend de la panadería a la que tenemos que realizar una aplicación web
+# Proyecto Panadería
+Backend y frontend de la panadería a la que tenemos que realizar una aplicación web
