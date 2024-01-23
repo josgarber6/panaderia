@@ -1,13 +1,15 @@
-{% extends 'base/base.html' %}
+{% extends 'two_factor/_base_focus.html' %}
+{% load i18n %}
 
 {% block title %} Registro {% endblock %}
 {% block content %}
-<div class="container mt-4">
-  <h2>Registrarse</h2>
-  <form action="/auth/signup/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-secondary me-3">Aceptar</button>
-  </form>
-</div>
+
+  <div class="container mt-4">
+    <h2>Registrarse</h2>
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-secondary me-3">Aceptar</button>
+    </form>
+  </div>
 {% endblock %}

@@ -17,10 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from base import views
+from two_factor.urls import urlpatterns as tf_urls
+from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
-    path('auth/', include('authentication.urls')),
+    path('account/', include('authentication.urls')),
+    path('', include(tf_urls)),
+    path('', include(tf_twilio_urls)),
     path('', views.home, name='home')
 ]
