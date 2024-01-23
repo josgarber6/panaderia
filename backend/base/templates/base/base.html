@@ -69,17 +69,17 @@
                                     <button class="dropbtn">{{ user.username }}</button>
                                 {% endif %}
                                 <div class="dropdown-content">
-                                    <a href="/auth/change-password">Cambiar contraseña</a>
+                                    <a href="/account/change-password">Cambiar contraseña</a>
                                 </div>
                             </div>
                         </p>
-                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/auth/logout">Cerrar Sesion</a>
+                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/account/logout">Cerrar Sesion</a>
                     </div>
                 {% endif %}
                 {% if not user.is_authenticated %}
                     <div class="d-flex align-items-center">
-                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/auth/login">Iniciar Sesi&#243;n</a>
-                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/auth/signup">Registrarse</a>
+                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/account/login">Iniciar Sesi&#243;n</a>
+                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/account/signup">Registrarse</a>
                     </div>
                 {% endif %}
             </ul>

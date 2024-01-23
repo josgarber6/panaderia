@@ -40,7 +40,16 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'authentication',
     'base',
+    'two_factor',
     'bootstrap5',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor.plugins.phonenumber',
+    'django_otp.plugins.otp_email',
+    'two_factor.plugins.email',
+    'otp_yubikey',
+    'bootstrapform',
 ]
 
 INTERNAL_IPS = [
@@ -55,7 +64,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+    'two_factor.middleware.threadlocals.ThreadLocals',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -97,7 +110,34 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_REDIRECT_URL = '/'
+# Two Factor Authentication Configuration
+
+LOGIN_URL = 'two_factor:login'
+TWO_FACTOR_PATCH_ADMIN = False
+TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
+TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
+
+LOGIN_REDIRECT_URL = 'two_factor:profile'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'two_factor:login'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'two_factor': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
 
 
 # Password validation
@@ -122,9 +162,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
