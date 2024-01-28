@@ -18,6 +18,8 @@ import AdminProductsView from '@/views/AdminProductsView.vue'
 import AdminCategoriesView from '@/views/AdminCategoriesView.vue'
 import AdminStatsView from '@/views/AdminStatsView.vue'
 
+import ListProduct from '../components/Product/ListProduct.vue'
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
