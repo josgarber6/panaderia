@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'two_factor.plugins.email',
     'otp_yubikey',
     'bootstrapform',
+    'rest_framework',
+    'product',
 ]
 
 INTERNAL_IPS = [
