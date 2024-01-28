@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-k3=+f+z5y9+(kah6#wxj5+#h9n(v%#b^hg_#o#dvu9&sf7##72
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:5173',
+)
 
 
 # Application definition
@@ -52,6 +57,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'rest_framework',
     'product',
+    'corsheaders',
 ]
 
 INTERNAL_IPS = [
@@ -71,6 +77,7 @@ MIDDLEWARE = [
     'django_otp.middleware.OTPMiddleware',
     'two_factor.middleware.threadlocals.ThreadLocals',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
