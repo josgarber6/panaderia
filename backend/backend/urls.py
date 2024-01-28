@@ -26,5 +26,6 @@ urlpatterns = [
     path('account/', include('authentication.urls')),
     path('', include(tf_urls)),
     path('', include(tf_twilio_urls)),
-    path('', views.home, name='home')
+    path('', views.home, name='home'),
+    path('api/v1.0/', include('product.urls')),
 ]
