@@ -1,5 +1,5 @@
 # django-two-factor-auth translation.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2024
 # This file is distributed under the same license as the django-two-factor-auth package.
 # 
 # Translators:
@@ -61,7 +61,6 @@ msgstr "Ne plus demander sur cet appareil pendant %(days)i jours"
 #. Translators: twilio_locale should be a locale supported by
 #. Twilio, see http://bit.ly/187I5cr
 #: gateways/twilio/gateway.py:84 gateways/twilio/views.py:50
-msgctxt "twilio_locale"
 msgid "en"
 msgstr "fr"
 

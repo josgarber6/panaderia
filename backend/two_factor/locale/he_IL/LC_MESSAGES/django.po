@@ -1,5 +1,5 @@
 # django-two-factor-auth translation.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2024
 # This file is distributed under the same license as the django-two-factor-auth package.
 # 
 # Translators:
@@ -54,7 +54,6 @@ msgstr "טוקן האימות שלך הוא %s"
 #. Translators: twilio_locale should be a locale supported by
 #. Twilio, see http://bit.ly/187I5cr
 #: gateways/twilio/gateway.py:64 gateways/twilio/views.py:74
-msgctxt "twilio_locale"
 msgid "en"
 msgstr "en"
 

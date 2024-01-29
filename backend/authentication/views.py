@@ -25,11 +25,6 @@ class SignupCompleteView(TemplateView):
         context['login_url'] = resolve_url(settings.LOGIN_URL)
         return context
     
-def signup_complete_view(request, *args, **kwargs):
-    context = {}
-    context['login_url'] = resolve_url(settings.LOGIN_URL)
-    return render(request, 'authentication/signup_complete.html', context)
-    
 def logout_view(request):
   logout(request)
   return redirect('/')
