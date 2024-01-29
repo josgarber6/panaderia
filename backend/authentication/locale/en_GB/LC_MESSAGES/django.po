@@ -1,5 +1,5 @@
 # django-two-factor-auth example translation.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2024
 # This file is distributed under the same license as the django-two-factor-auth package.
 # 
 # Translators:
