@@ -1,6 +1,6 @@
 <script>
 
-  // import { RouterLink } from 'vue-router';
+  import { RouterLink } from 'vue-router';
 
   export default {
     data() {
@@ -29,9 +29,11 @@
 <template>
   <div class="container-fluid m-0 p-0">
     <div id="bg-color" class="p-3" style="display: flex; flex-direction: row; justify-content: center;">
-      <RouterLink to="/">
-        <img :src="imageUrl" alt="US" class="img-fluid col-md-3" id="logo">
-      </RouterLink>
+      <div style="display: flex; flex-direction: column; justify-content: center;">
+        <RouterLink to="/">
+          <img :src="imageUrl" alt="US" class="img-fluid col-md-3" id="logo">
+        </RouterLink>
+      </div>
       <template v-if="userIsAuthenticated">
         <p class="nav-link m-0 me-3" style="color: black;">
           <div class="dropdown">
@@ -61,6 +63,7 @@
 <style>
   #bg-color {
     background-color: #edb45e;
+    height: 100px;
   }
 
   #logo {
