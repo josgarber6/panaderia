@@ -16,7 +16,6 @@ export default {
     return {
       imageUrl: 'http://localhost:5173/src/assets/background-panaderia.jpg',
       products: [],
-      stock: true
     };
   },
   methods: {
@@ -29,18 +28,9 @@ export default {
           console.log(error)
         })
     },
-
-    stockStatus() {
-      if (this.products.stock > 0) {
-        this.stock = true
-      } else {
-        this.stock = false
-      }
-    }
   },
   created() {
     this.fetchProducts()
-
   },
 };
 </script>
@@ -69,25 +59,34 @@ export default {
       <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 30vh">
         <template v-for="product in products" :key="product.id">
           <template v-if="product.highlighted">
-            <div class="card-container" style="margin: 10px;">
+            <div class="card-container" style="margin: 10px">
               <div class="card">
                 <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
                 <div class="card-body">
-                  <h5 class="card-title">{{ product.name }}</h5>
+                  <h5 class="card-title">{{ product.name }} {{ product.category.name }}</h5>
+                  <h5 class="card-title"></h5>
                   <p class="card-text">{{ product.description }}</p>
                   <div class="d-flex justify-content-between">
                     <h6 class="mb-0">{{ product.price }} €</h6>
-                    <template v-if=stock>
-                      <div class="d-flex align-items-center gap-1">
-                        <div class="check">&#10003;</div>
-                        <h6 class="text-success mb-0">Disponible</h6>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div class="d-flex align-items-center gap-1">
-                        <i class="fas fa-times-circle text-danger"></i>
-                        <h6 class="text-danger mb-0">Agotado</h6>
-                      </div>
+                    <template v-if="product.category.name == 'Pico'">
+                      <template v-if="product.stock > 1">
+                        <p>Quedan {{ product.stock }} en stock</p>
+                      </template>
+                      <template v-else>
+                        <p>Queda {{ product.stock }} en stock</p>
+                      </template>
+                      <template v-if="product.stock > 0">
+                        <div class="d-flex align-items-center gap-1">
+                          <div class="check">&#10003;</div>
+                          <h6 class="text-success mb-0">Disponible</h6>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="d-flex align-items-center gap-1">
+                          <div class="unavailable">&#10007;</div>
+                          <h6 class="text-danger mb-0">Agotado</h6>
+                        </div>
+                      </template>
                     </template>
                   </div>
                   <form class="add-to-cart-form mt-3" action="{% url 'cart:cart_add' product.id %}" method="post">
@@ -112,9 +111,7 @@ export default {
         <div style="display: flex; flex-direction: column; align-items: center; text-align: center; color: aliceblue; font-size: 2vh; font-weight: 500;">
           <h3>¡Descubre m&#225;s productos en nuestra tienda!</h3>
           <h3>¡No te quedes sin probarlos!</h3>
-          <!-- <div style="display: flex; flex-direction: column; justify-content: center;"> -->
-            <a href="/products" class="btn btn-secondary" id="button">Ver m&#225;s</a>
-          <!-- </div> -->
+          <a href="/products" class="btn btn-secondary" id="button">Ver m&#225;s</a>
         </div>
       </div>
     </div>
@@ -187,6 +184,17 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+.unavailable {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
 
 </style>
