@@ -41,6 +41,11 @@
           <img :src="imageUrl" alt="US" class="img-fluid col-md-3" id="logo">
         </RouterLink>
       </div>
+      <div style="display: flex; flex-direction: row; justify-content: left;">
+        <h5 style="display: flex; flex-direction: column; justify-content: center;">
+          <RouterLink to="/products" style="color: white;">Productos</RouterLink>
+        </h5>
+      </div>
       <template v-if="userIsAuthenticated">
         <div id="account-setup">
           <div id="column-display">
