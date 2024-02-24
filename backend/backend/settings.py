@@ -138,7 +138,7 @@ TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_facto
 TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
 TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 
-LOGIN_REDIRECT_URL = 'two_factor:profile'
+LOGIN_REDIRECT_URL = 'http://localhost:5173/'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 LOGIN_URL = 'two_factor:login'
 
