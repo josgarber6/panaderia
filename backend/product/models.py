@@ -13,6 +13,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.FloatField()
     image = models.ImageField(null=True, upload_to='products/')
+    highlighted = models.BooleanField(default=False)
     category = models.ForeignKey(Category,
                                  on_delete= models.SET_NULL,
                                  null=True,
