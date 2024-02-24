@@ -1,27 +1,34 @@
 <script>
 
+  import axios from 'axios';
   import { RouterLink } from 'vue-router';
 
   export default {
     data() {
         return {
-            user: {
-
-            }, // Agrega los datos del usuario aquí si están disponibles
-            imageUrl: 'http://localhost:5173/src/assets/LogoPanaderia.png'
+            user: null,
+            imageUrl: 'http://localhost:5173/src/assets/LogoPanaderia.png',
+            sessionId: '',
+            userIsAuthenticated: false,
         };
     },
-    computed: {
-        userIsAuthenticated() {
-            // Ajusta esta lógica según cómo determines si el usuario está autenticado
-            return this.user && this.user.is_authenticated;
-        },
-    },
-    methods: {
-        logout() {
-            // Agrega la lógica para cerrar sesión aquí
-        },
-    },
+    // created() {
+    //   this.getUserInfo()
+    // },
+    // methods: {
+    //   getUserInfo() {
+    //     axios.get('http://localhost:8000/account/get-username-from-session/')
+    //     .then(response => {
+    //       this.userIsAuthenticated = true;
+    //       this.user = response.data;
+    //       console.log(this.user.username);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error retrieving user info:', error);
+    //       this.userIsAuthenticated = false;
+    //     });
+    //   },
+    // },
 };
 
 </script>
@@ -43,7 +50,7 @@
             </div>
           </div>
         </p>
-        <button class="btn btn-secondary me-3" style="background-color: #6b4d1f;" @click="logout">Cerrar Sesión</button>
+        <button class="btn btn-secondary" id="logout" href="http://localhost:8000/account/logout">Cerrar Sesión</button>
       </template>
       <template v-else>
       <div id="account-setup">
@@ -60,13 +67,14 @@
 </template>
 
 
-<style>
+<style scoped>
   #bg-color {
     background-color: #edb45e;
     height: 100px;
   }
 
   #logo {
+    min-width: 120px;
     max-width: 120px;
   }
 
@@ -93,6 +101,14 @@
   #signup {
     margin-left: 10px;
     display: inline-flex;
+    background-color: #6b4d1f;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  #logout {
+    display: inline-flex;
+    flex-direction: column;
     background-color: #6b4d1f;
     width: fit-content;
     height: fit-content;

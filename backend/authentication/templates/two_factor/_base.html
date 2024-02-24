@@ -48,6 +48,14 @@
           width: fit-content;
           height: fit-content;
         }
+
+        #logout {
+          display: inline-flex;
+          flex-direction: column;
+          background-color: #6b4d1f;
+          width: fit-content;
+          height: fit-content;
+        }
     </style>
 </head>
 <body>
@@ -60,14 +68,22 @@
       </div>
       {% if user.is_authenticated %}
         <p class="nav-link m-0 me-3" style="color: black;">
+          <div id="account-setup">
           <div class="dropdown">
-            <button class="dropbtn">{{ user.email }}</button>
+            {% if user.email %}
+                <button class="dropbtn">{{ user.email }}</button>
+            {% else %}
+                <button class="dropbtn">{{ user.username }}</button>
+            {% endif %}
             <div class="dropdown-content">
-              <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
+                <a href="/account/change-password">Cambiar contraseña</a>
             </div>
           </div>
+        </div>
         </p>
-        <button class="btn btn-secondary me-3" style="background-color: #6b4d1f;" @click="logout">Cerrar Sesión</button>
+        <div id="column-display">
+          <a class="btn btn-secondary me-3" id="logout" href="/account/logout">Cerrar Sesión</a>
+        </div>
       {% endif %}
       {% if not user.is_authenticated %}
         <div id="account-setup">
