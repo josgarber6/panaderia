@@ -22,7 +22,6 @@
         .then(response => {
           this.userIsAuthenticated = true;
           this.user = response.data;
-          console.log(this.user.username);
         })
         .catch(error => {
           console.error('Error retrieving user info:', error);

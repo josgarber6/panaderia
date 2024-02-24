@@ -14,3 +14,11 @@ export default defineConfig({
     }
   }
 })
+
+module.exports = {
+  // Otras configuraciones...
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/media/'  // Ruta donde se encuentran los archivos estáticos
+    : '/'
+}
+
