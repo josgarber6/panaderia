@@ -1,41 +1,48 @@
-<script setup>
+<script>
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import axios from 'axios';
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-// export const homeView = {
-//   data() {
-//     return {
-//       imageUrl: 'http://localhost:5173/src/assets/background-panaderia.jpg',
-//       products: []
-//     };
-//   },
-//   methods: {
-//     async fetchProducts() {
-//       axios.get('http://localhost:8000/api/v1.0/products/')
-//         .then(response => {
-//           this.products.push(response.data)
-//         })
-//         .catch(error => {
-//           console.log(error)
-//         })
-//     }
-//   }
-// };
+export default {
 
+  components: {
+    Navbar,
+    Footer
+  },
 
-const imageUrl = '../assets/background-panaderia.jpg'
+  data() {
+    return {
+      imageUrl: 'http://localhost:5173/src/assets/background-panaderia.jpg',
+      products: [],
+      stock: true
+    };
+  },
+  methods: {
+    fetchProducts() {
+      axios.get('http://localhost:8000/api/v1.0/products/')
+        .then(response => {
+          this.products = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
 
-const products = []
+    stockStatus() {
+      if (this.products.stock > 0) {
+        this.stock = true
+      } else {
+        this.stock = false
+      }
+    }
+  },
+  created() {
+    this.fetchProducts()
 
-const fetchProducts = axios.get('http://localhost:8000/api/v1.0/products/')
-  .then(response => {
-    products.push(response.data)
-  })
-  .catch(error => {
-    console.log(error)
-  })
-
+  },
+};
 </script>
 
 <template>
@@ -60,15 +67,46 @@ const fetchProducts = axios.get('http://localhost:8000/api/v1.0/products/')
     <!-- Productos destacados -->
     <div class="container-fluid m-0 p-0">
       <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 30vh">
-        <template v-for=" product in products" :key="product.id">
-          <div class="container" style="width: 18rem; margin: 10px;">
-            <img :src="product.image" alt="..."/>
-            <div class="container">
-              <h5>{{ product.name }}</h5>
-              <p>{{ product.description }}</p>
+        <template v-for="product in products" :key="product.id">
+          <template v-if="product.highlighted">
+            <div class="card-container" style="margin: 10px;">
+              <div class="card">
+                <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">{{ product.description }}</p>
+                  <div class="d-flex justify-content-between">
+                    <h6 class="mb-0">{{ product.price }} €</h6>
+                    <template v-if=stock>
+                      <div class="d-flex align-items-center gap-1">
+                        <div class="check">&#10003;</div>
+                        <h6 class="text-success mb-0">Disponible</h6>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="d-flex align-items-center gap-1">
+                        <i class="fas fa-times-circle text-danger"></i>
+                        <h6 class="text-danger mb-0">Agotado</h6>
+                      </div>
+                    </template>
+                  </div>
+                  <form class="add-to-cart-form mt-3" action="{% url 'cart:cart_add' product.id %}" method="post">
+                    <div class="d-flex justify-content-between">
+                      <div class="input-group mt-2">
+                        <label class="input-group-text"
+                                for="quantity_{{ product.id }}">Cantidad</label>
+                        <input type="number" class="form-control" id="quantity_{{ product.id }}"
+                                name="quantity" min="1" value="1">
+                      </div>
+                      <button type="submit" class="btn btn-success mt-2">Añadir</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </div>
+          </template>
         </template>
+
       </div>
       <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 10vh;">
         <div style="display: flex; flex-direction: column; align-items: center; text-align: center; color: aliceblue; font-size: 2vh; font-weight: 500;">
@@ -116,5 +154,39 @@ const fetchProducts = axios.get('http://localhost:8000/api/v1.0/products/')
   margin-top: 5px;
   margin-bottom: 10px;
 }
+
+.card-container {
+  width: 18rem;
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  background-color: aliceblue;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.check{
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: green;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 </style>
