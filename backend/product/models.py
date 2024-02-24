@@ -14,6 +14,7 @@ class Product(models.Model):
     price = models.FloatField()
     image = models.ImageField(null=True, upload_to='products/')
     highlighted = models.BooleanField(default=False)
+    stock = models.IntegerField(default=0)
     category = models.ForeignKey(Category,
                                  on_delete= models.SET_NULL,
                                  null=True,

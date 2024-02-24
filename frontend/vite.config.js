@@ -12,13 +12,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
-})
-
-module.exports = {
-  // Otras configuraciones...
+  },
   publicPath: process.env.NODE_ENV === 'production'
     ? '/media/'  // Ruta donde se encuentran los archivos estáticos
     : '/'
-}
-
+})
