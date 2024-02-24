@@ -1,4 +1,5 @@
 <template>
+  <Navbar/>
   <div class="container">
     <div class="row">
       <div class="col text-left">
@@ -26,39 +27,43 @@
     </div>
     <!-- Your component's HTML code goes here -->
   </div>
+  <Footer style="position: absolute; bottom: 0;"/>
 </template>
 
 <script>
 import axios from 'axios';
+import Navbar from '../Navbar.vue';
+import Footer from '../Footer.vue';
 
 export default {
-  name: 'ListProduct',
-  // Your component's JavaScript code goes here
-  data() {
-    return {
-      fields: [
-        { key: 'name', label: 'Nombre' },
-        { key: 'description', label: 'Descripción' },
-        { key: 'price', label: 'Precio' },
-        { key: 'img', label: 'Imagen'}
-      ],
-      products: []
-    }
-  },
-  methods: {
-    getProducts() {
-      axios.get('http://localhost:8000/api/v1.0/products/')
-        .then(response => {
-          this.products = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  },
-  created() {
-    this.getProducts();
-  },
+    name: 'ListProduct',
+    // Your component's JavaScript code goes here
+    data() {
+        return {
+            fields: [
+                { key: 'name', label: 'Nombre' },
+                { key: 'description', label: 'Descripción' },
+                { key: 'price', label: 'Precio' },
+                { key: 'img', label: 'Imagen' }
+            ],
+            products: []
+        };
+    },
+    methods: {
+        getProducts() {
+            axios.get('http://localhost:8000/api/v1.0/products/')
+                .then(response => {
+                this.products = response.data;
+            })
+                .catch(error => {
+                console.log(error);
+            });
+        }
+    },
+    created() {
+        this.getProducts();
+    },
+    components: { Navbar, Footer }
 }
 </script>
 

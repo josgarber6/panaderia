@@ -25,13 +25,17 @@ SECRET_KEY = 'django-insecure-k3=+f+z5y9+(kah6#wxj5+#h9n(v%#b^hg_#o#dvu9&sf7##72
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["http://localhost:5173", "localhost", "127.0.0.1"]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:5173',
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 )
-
 
 # Application definition
 
@@ -65,6 +69,7 @@ INTERNAL_IPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -77,7 +82,6 @@ MIDDLEWARE = [
     'django_otp.middleware.OTPMiddleware',
     'two_factor.middleware.threadlocals.ThreadLocals',
     'django.middleware.locale.LocaleMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -128,7 +132,7 @@ TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor
 TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 
 LOGIN_REDIRECT_URL = 'two_factor:profile'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 LOGIN_URL = 'two_factor:login'
 
 LOGGING = {
