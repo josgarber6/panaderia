@@ -34,19 +34,18 @@ def logout_view(request):
   return redirect('http://localhost:5173/')
 
 
-# def get_username_from_session(request):
-#     redirect('http://localhost:8000/account/get-username-from-session/')
-#     session_id = request.COOKIES['sessionid']
-#     try:
-#         session = Session.objects.get(session_key=session_id)
-#         user_id = session.get_decoded().get('_auth_user_id')
-#         user = User.objects.get(pk=user_id)
-#         return JsonResponse({'username': user.username,
-#                              'email': user.email,
-#                              'first_name': user.first_name, 
-#                              'last_name': user.last_name})
-#     except (Session.DoesNotExist, KeyError, User.DoesNotExist):
-#         return JsonResponse({'error': 'Session not found or user does not exist'}, status=400)
+def get_username_from_session(request):
+    session_id = request.COOKIES['sessionid']
+    try:
+        session = Session.objects.get(session_key=session_id)
+        user_id = session.get_decoded().get('_auth_user_id')
+        user = User.objects.get(pk=user_id)
+        return JsonResponse({'username': user.username,
+                             'email': user.email,
+                             'first_name': user.first_name, 
+                             'last_name': user.last_name})
+    except (Session.DoesNotExist, KeyError, User.DoesNotExist):
+        return JsonResponse({'error': 'Session not found or user does not exist'}, status=400)
 
 
 @otp_required
