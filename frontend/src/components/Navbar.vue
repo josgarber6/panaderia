@@ -1,5 +1,6 @@
 <script>
 
+  import axios from 'axios';
   import { RouterLink } from 'vue-router';
   import logo from '@/assets/LogoPanaderia.png';
   import cart from '@/assets/cart.png';
