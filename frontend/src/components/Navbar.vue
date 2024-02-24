@@ -12,23 +12,24 @@
             userIsAuthenticated: false,
         };
     },
-    // created() {
-    //   this.getUserInfo()
-    // },
-    // methods: {
-    //   getUserInfo() {
-    //     axios.get('http://localhost:8000/account/get-username-from-session/')
-    //     .then(response => {
-    //       this.userIsAuthenticated = true;
-    //       this.user = response.data;
-    //       console.log(this.user.username);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error retrieving user info:', error);
-    //       this.userIsAuthenticated = false;
-    //     });
-    //   },
-    // },
+    created() {
+      this.getUserInfo()
+    },
+    methods: {
+      getUserInfo() {
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:8000/account/get-username-from-session/')
+        .then(response => {
+          this.userIsAuthenticated = true;
+          this.user = response.data;
+          console.log(this.user.username);
+        })
+        .catch(error => {
+          console.error('Error retrieving user info:', error);
+          this.userIsAuthenticated = false;
+        });
+      },
+    },
 };
 
 </script>
@@ -42,15 +43,19 @@
         </RouterLink>
       </div>
       <template v-if="userIsAuthenticated">
-        <p class="nav-link m-0 me-3" style="color: black;">
-          <div class="dropdown">
-            <button class="dropbtn">{{ user.email ? user.email : user.username }}</button>
-            <div class="dropdown-content">
-              <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
+        <div id="account-setup">
+          <div id="column-display">
+            <div class="dropdown">
+              <button class="dropbtn">{{ user.email ? user.email : user.username }}</button>
+              <div class="dropdown-content">
+                <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
+              </div>
             </div>
           </div>
-        </p>
-        <button class="btn btn-secondary" id="logout" href="http://localhost:8000/account/logout">Cerrar Sesión</button>
+        </div>
+        <div id="column-display" style="margin-left: 10px;">
+          <a class="btn btn-secondary" id="logout" href="http://localhost:8000/account/logout">Cerrar Sesión</a>
+        </div>
       </template>
       <template v-else>
       <div id="account-setup">
@@ -114,44 +119,46 @@
     height: fit-content;
   }
 
-  .dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-  }
-  
   .dropdown {
     position: relative;
     display: inline-block;
   }
   
+  .dropbtn {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background: #6b4d1f;
+    color: white;
+    border-radius: 1em;
+    border: none;
+    outline: 1px solid black;
+    outline-offset: 3px;
+  }
+
   .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #f5f5f5; /* Color de fondo más claro */
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 0.5em;
+    border: 2px solid black;
+    padding: 0.5em 0;
     z-index: 1;
   }
-  
+
   .dropdown-content a {
     color: black;
-    padding: 12px 16px;
+    padding: 0.5em 1em;
     text-decoration: none;
     display: block;
   }
-  
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
+
+  .dropdown-content a:hover {
+    background-color: #ddd; /* Cambio de color al pasar el mouse */
+  }
+
   .dropdown:hover .dropdown-content {
     display: block;
-  }
-  
-  .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
   }
 </style>
 
