@@ -94,7 +94,6 @@ MIDDLEWARE = [
     'django_otp.middleware.OTPMiddleware',
     'two_factor.middleware.threadlocals.ThreadLocals',
     'django.middleware.locale.LocaleMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
