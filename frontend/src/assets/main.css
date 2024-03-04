@@ -20,6 +20,18 @@ a,
   }
 }
 
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#footer-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
 /* @media (min-width: 1024px) {
   body {
     display: flex;

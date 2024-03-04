@@ -23,9 +23,6 @@ export default {
     cart() {
       return this.$store.state.cart;
     },
-    totalPrice() {
-      return this.$store.getters.totalPrice;
-    },
   },
 
   methods: {
@@ -82,7 +79,6 @@ export default {
                 <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
                 <div class="card-body">
                   <h5 class="card-title">{{ product.name }} {{ product.category.name }}</h5>
-                  <h5 class="card-title"></h5>
                   <p class="card-text">{{ product.description }}</p>
                   <div class="d-flex justify-content-between">
                     <h6 class="mb-0">{{ product.price }} €</h6>
@@ -107,20 +103,20 @@ export default {
                       </template>
                     </template>
                 </div>
-                  <div class="d-flex justify-content-between">
-                    <div class="input-group mt-2">
-                      <label class="input-group-text"
-                              for="quantity">Cantidad</label>
-                      <input type="number" class="form-control" id="quantity"
-                              name="quantity" min="1" value="1">
-                      <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
-                    </div>
+                <div class="d-flex justify-content-between">
+                  <div class="input-group mt-2">
+                    <label class="input-group-text"
+                            for="quantity">Cantidad</label>
+                    <input type="number" class="form-control" id="quantity"
+                            name="quantity" min="1" value="1">
+                    <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
                   </div>
                 </div>
               </div>
             </div>
-          </template>
+          </div>
         </template>
+      </template>
 
       </div>
       <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 10vh;">
