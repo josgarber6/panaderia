@@ -1,35 +1,44 @@
 <script>
 import axios from 'axios';
-import Navbar from '../Navbar.vue';
-import Footer from '../Footer.vue';
 
 export default {
-    name: 'ListProduct',
-    data() {
-        return {
-          products: [],
-        };
+  name: 'ListProduct',
+  data() {
+      return {
+        products: [],
+      };
+  },
+  computed: {
+    cart() {
+      return this.$store.state.cart;
     },
-    methods: {
-      getProducts() {
-          axios.get('http://localhost:8000/api/v1.0/products/')
-              .then(response => {
-              this.products = response.data;
-          })
-              .catch(error => {
-              console.log(error);
-          });
-      },
+  },
+  methods: {
+    getProducts() {
+        axios.get('http://localhost:8000/api/v1.0/products/')
+            .then(response => {
+            this.products = response.data;
+        })
+            .catch(error => {
+            console.log(error);
+        });
     },
-    created() {
-        this.getProducts();
+    addToCart(product) {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      this.$store.dispatch('addToCart', { product, quantity });
     },
-    components: { Navbar, Footer }
+    removeFromCart(itemId) {
+      this.$store.dispatch('removeFromCart', itemId);
+    },
+  },
+  created() {
+    this.getProducts();
+    this.$store.dispatch('loadCart')
+  },
 }
 </script>
 
 <template>
-  <Navbar/>
   <div class="container mt-4">
     <div class="row">
       <h3>Cat&#225;logo de productos</h3>
@@ -66,24 +75,21 @@ export default {
                   </template>
                 </template>
               </div>
-              <form class="add-to-cart-form mt-3" action="{% url 'cart:cart_add' product.id %}" method="post">
-                <div class="d-flex justify-content-between">
-                  <div class="input-group mt-2">
-                    <label class="input-group-text"
-                            for="quantity_{{ product.id }}">Cantidad</label>
-                    <input type="number" class="form-control" id="quantity_{{ product.id }}"
-                            name="quantity" min="1" value="1">
-                  </div>
-                  <button type="submit" class="btn btn-success mt-2">Añadir</button>
+              <div class="d-flex justify-content-between">
+                <div class="input-group mt-2">
+                  <label class="input-group-text"
+                          for="quantity">Cantidad</label>
+                  <input type="number" class="form-control" id="quantity"
+                          name="quantity" min="1" value="1">
+                  <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </template>
     </div>
   </div>
-  <Footer style="position: absolute; bottom: 0;"/>
 </template>
 
 
