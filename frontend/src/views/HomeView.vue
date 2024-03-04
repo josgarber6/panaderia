@@ -18,6 +18,16 @@ export default {
       products: [],
     };
   },
+
+  computed: {
+    cart() {
+      return this.$store.state.cart;
+    },
+    totalPrice() {
+      return this.$store.getters.totalPrice;
+    },
+  },
+
   methods: {
     fetchProducts() {
       axios.get('http://localhost:8000/api/v1.0/products/')
@@ -28,9 +38,17 @@ export default {
           console.log(error)
         })
     },
+    addToCart(product) {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      this.$store.dispatch('addToCart', { product, quantity });
+    },
+    removeFromCart(itemId) {
+      this.$store.dispatch('removeFromCart', itemId);
+    },
   },
   created() {
     this.fetchProducts()
+    this.$store.dispatch('loadCart')
   },
 };
 </script>
@@ -88,18 +106,16 @@ export default {
                         </div>
                       </template>
                     </template>
-                  </div>
-                  <form class="add-to-cart-form mt-3" action="{% url 'cart:cart_add' product.id %}" method="post">
-                    <div class="d-flex justify-content-between">
-                      <div class="input-group mt-2">
-                        <label class="input-group-text"
-                                for="quantity_{{ product.id }}">Cantidad</label>
-                        <input type="number" class="form-control" id="quantity_{{ product.id }}"
-                                name="quantity" min="1" value="1">
-                      </div>
-                      <button type="submit" class="btn btn-success mt-2">Añadir</button>
+                </div>
+                  <div class="d-flex justify-content-between">
+                    <div class="input-group mt-2">
+                      <label class="input-group-text"
+                              for="quantity">Cantidad</label>
+                      <input type="number" class="form-control" id="quantity"
+                              name="quantity" min="1" value="1">
+                      <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
