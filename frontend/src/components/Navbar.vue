@@ -7,9 +7,6 @@
   import hamburguer from '@/assets/hamburger_icon.png';
 
   export default {
-    components: {
-      Cart,
-    },
     data() {
         return {
             user: null,

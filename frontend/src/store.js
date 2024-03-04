@@ -78,6 +78,16 @@ export default createStore({
     SET_ALERT_MESSAGE(state, value) {
       state.alertMessage = value;
     },
+    INCREASE_QUANTITY: (state, itemId) => {
+      const productInCart = state.cart.find(item => item.id === itemId);
+      productInCart.quantity++;
+    },
+    DECREASE_QUANTITY: (state, itemId) => {
+      const productInCart = state.cart.find(item => item.id === itemId);
+      if (productInCart.quantity > 1) {
+        productInCart.quantity--;
+      }
+    },
   },
   actions: {
     loadCart: ({ commit }) => {

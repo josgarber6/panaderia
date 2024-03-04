@@ -1,7 +1,5 @@
 <script>
 import axios from 'axios';
-import Navbar from '../Navbar.vue';
-import Footer from '../Footer.vue';
 
 export default {
   name: 'ListProduct',
