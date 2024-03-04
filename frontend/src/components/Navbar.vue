@@ -2,12 +2,8 @@
 
   import axios from 'axios';
   import { RouterLink } from 'vue-router';
-  import Cart from './Cart/Cart.vue';
 
   export default {
-    components: {
-      Cart,
-    },
     data() {
         return {
             user: null,
