@@ -7,6 +7,9 @@
   import hamburguer from '@/assets/hamburger_icon.png';
 
   export default {
+    components: {
+      Cart,
+    },
     data() {
         return {
             user: null,
@@ -33,6 +36,9 @@
       getUserInfo() {
         const store = this.$store;
         store.dispatch('getUserInfo');
+      },
+      handleResize() {
+        this.windowWidth = window.innerWidth;
       },
       handleResize() {
         this.windowWidth = window.innerWidth;
