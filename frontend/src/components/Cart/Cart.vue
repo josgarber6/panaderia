@@ -56,9 +56,6 @@ export default {
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="alert alert-danger" role="alert" v-if="cart.length === 0">
-          No hay productos en la cesta
-        </div>
         <div class="table-responsive">
           <table class="table table-striped table-bordered" style="margin-bottom: 10px;">
             <thead id="cabecera">
