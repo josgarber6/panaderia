@@ -5,7 +5,7 @@ export default createStore({
     cart: [],
   },
   getters: {
-    totalPrice: state => state.cart.reduce((total, item) => total + item.price, 0),
+    totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
     totalItems: state => state.cart.reduce((total, item) => total + item.quantity, 0),
   },
   mutations: {
@@ -13,7 +13,7 @@ export default createStore({
       state.cart = cart;
     },
     ADD_TO_CART: (state, { product, quantity }) => {
-      const productInCart = state.cart.find(item => item.product.id === product.id);
+      const productInCart = state.cart.find(item => item.product === product);
       if (productInCart) {
         if (quantity > 0) {
           productInCart.quantity += quantity;
@@ -29,9 +29,11 @@ export default createStore({
       }
     },
     REMOVE_FROM_CART: (state, itemId) => {
-      state.cart = state.cart.filter(item => item.id !== itemId);
+      const productInCart = state.cart.find(item => item.id === itemId);
+      state.cart = state.cart.filter(item => item !== productInCart);
     },
     INCREASE_QUANTITY: (state, itemId) => {
+      console.log(itemId);
       const productInCart = state.cart.find(item => item.id === itemId);
       productInCart.quantity++;
     },
