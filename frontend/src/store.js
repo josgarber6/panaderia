@@ -79,6 +79,7 @@ export default createStore({
       state.alertMessage = value;
     },
     INCREASE_QUANTITY: (state, itemId) => {
+      console.log(itemId);
       const productInCart = state.cart.find(item => item.id === itemId);
       productInCart.quantity++;
     },
