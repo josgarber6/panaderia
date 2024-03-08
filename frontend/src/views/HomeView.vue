@@ -16,6 +16,7 @@ export default {
     return {
       imageUrl: 'http://localhost:5173/src/assets/background-panaderia.jpg',
       products: [],
+      star: 'http://localhost:5173/src/assets/star.png'
     };
   },
 
@@ -27,7 +28,7 @@ export default {
 
   methods: {
     fetchProducts() {
-      axios.get('http://localhost:8000/api/v1.0/products/')
+      axios.get(`${import.meta.env.VITE_APP_BASE_URL}products/`)
         .then(response => {
           this.products = response.data
         })
@@ -76,7 +77,11 @@ export default {
           <template v-if="product.highlighted">
             <div class="card-container" style="margin: 10px">
               <div class="card">
-                <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
+                <div class="product-image" style="position: relative;">
+                  <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
+                  <img :src="star" alt="Estrella" class="star-image" style="position: absolute; top: 0; left: 0;"/>
+                </div>
+                <!-- <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/> -->
                 <div class="card-body">
                   <h5 class="card-title">{{ product.name }} {{ product.category.name }}</h5>
                   <p class="card-text">{{ product.description }}</p>
@@ -207,6 +212,11 @@ export default {
     align-items: center;
     justify-content: center;
   }
+
+.star-image {
+  width: 70px; /* Ajusta según sea necesario */
+  height: 70px; /* Ajusta según sea necesario */
+}
 
 
 </style>
