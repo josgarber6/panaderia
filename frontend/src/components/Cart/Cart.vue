@@ -42,6 +42,7 @@ export default {
   },
   created() {
     this.$store.dispatch('loadCart');
+    this.$store.dispatch('loadCategories');
   },
 };
 </script>
@@ -67,7 +68,7 @@ export default {
             <tbody>
               <tr v-for="item in cart" :key="item.id">
                 <td><img :src="item.product.image" alt="Imagen" style="width: 100px; height: 100px;"></td>
-                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.name }} {{ $store.getters.getCategoryName(item.product.category) }}</td>
                 <td><button @click="decreaseQuantity(item.id)" id="increasedecrease">-</button> {{ item.quantity }} <button @click="increaseQuantity(item.id)" id="increasedecrease">+</button></td>
                 <td><button @click="removeFromCart(item.id)" class="btn btn-danger btn-sm">Eliminar</button></td>
                 <td style="text-align: center;">{{ item.product.price }} €</td>

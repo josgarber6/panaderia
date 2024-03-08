@@ -1,12 +1,18 @@
 import { createStore } from 'vuex';
+import axios from 'axios';
 
 export default createStore({
   state: {
     cart: [],
+    categories: [],
   },
   getters: {
     totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
     totalItems: state => state.cart.reduce((total, item) => total + item.quantity, 0),
+    getCategoryName: (state) => (id) => {
+      const category = state.categories.find(item => item.id === id);
+      return category ? category.name : '';
+    },
   },
   mutations: {
     SET_CART: (state, cart) => {
@@ -43,6 +49,9 @@ export default createStore({
         productInCart.quantity--;
       }
     },
+    SET_CATEGORIES(state, categories) {
+      state.categories = categories;
+    },
   },
   actions: {
     loadCart: ({ commit }) => {
@@ -68,6 +77,15 @@ export default createStore({
     decreaseQuantity: ({ commit, dispatch }, itemId) => {
       commit('DECREASE_QUANTITY', itemId);
       dispatch('saveCart');
+    },
+    loadCategories({ commit }) {
+      axios.get(`${import.meta.env.VITE_APP_BASE_URL}categories/`)
+        .then(response => {
+          commit('SET_CATEGORIES', response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
   },
 });
