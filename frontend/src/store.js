@@ -89,6 +89,9 @@ export default createStore({
         productInCart.quantity--;
       }
     },
+    SET_CATEGORIES(state, categories) {
+      state.categories = categories;
+    },
   },
   actions: {
     loadCart: ({ commit }) => {
