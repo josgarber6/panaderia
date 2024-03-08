@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     getProducts() {
-        axios.get('http://localhost:8000/api/v1.0/products/')
+        axios.get(`${import.meta.env.VITE_APP_BASE_URL}products/`)
             .then(response => {
             this.products = response.data;
         })
