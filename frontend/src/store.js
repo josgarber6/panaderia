@@ -39,7 +39,6 @@ export default createStore({
       state.cart = state.cart.filter(item => item !== productInCart);
     },
     INCREASE_QUANTITY: (state, itemId) => {
-      console.log(itemId);
       const productInCart = state.cart.find(item => item.id === itemId);
       productInCart.quantity++;
     },
