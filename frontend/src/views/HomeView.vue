@@ -114,7 +114,7 @@ export default {
                             for="quantity">Cantidad</label>
                     <input type="number" class="form-control" id="quantity"
                             name="quantity" min="1" value="1">
-                    <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
+                    <button @click="addToCart(product)" id="add-to-cart" class="btn btn-success">Añadir</button>
                   </div>
                 </div>
               </div>
