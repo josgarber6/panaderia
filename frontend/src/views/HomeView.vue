@@ -81,7 +81,6 @@ export default {
                   <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
                   <img :src="star" alt="Estrella" class="star-image" style="position: absolute; top: 0; left: 0;"/>
                 </div>
-                <!-- <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/> -->
                 <div class="card-body">
                   <h5 class="card-title">{{ product.name }} {{ product.category.name }}</h5>
                   <p class="card-text">{{ product.description }}</p>

@@ -103,7 +103,7 @@ describe("HomeView", () => {
       totalItems: () => 0,
     };
 
-    const product = { name: "Producto 1", description: "Prueba", price: 100, image: "", highlighted: true, category: 2 };
+    const product = { name: "Producto 1", description: "Prueba", price: 100, image: "", highlighted: true, category: "Category 1" };
     const quantity = 3;
 
     vi.spyOn(axios, "get").mockImplementationOnce(() => Promise.resolve({ data: product }));
