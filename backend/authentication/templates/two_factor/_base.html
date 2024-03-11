@@ -11,42 +11,97 @@
     <script defer src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    {% block extra_media %}{% endblock %}
-    
-    <title>{% block title %}{% endblock %}</title>
+    <style>
+        #bg-color {
+          background-color: #edb45e;
+          height: 100px;
+        }
+
+        #logo {
+          max-width: 120px;
+        }
+
+        #account-setup {
+          display: flex;
+          flex-direction: row;
+          margin-left: auto;
+        }
+
+        #column-display {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        #login {
+          display: inline-flex;
+          flex-direction: column;
+          background-color: #6b4d1f;
+          width: fit-content;
+          height: fit-content;
+        }
+        
+        #signup {
+          margin-left: 10px;
+          display: inline-flex;
+          background-color: #6b4d1f;
+          width: fit-content;
+          height: fit-content;
+        }
+
+        #logout {
+          display: inline-flex;
+          flex-direction: column;
+          background-color: #6b4d1f;
+          width: fit-content;
+          height: fit-content;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg" style="background-color: #edb45e;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">
-                <img src="{% static 'LogoPanaderia.png' %}" alt="US" class="img-fluid col-md-3" style="width: 70px;">
-            </a>
-            <ul class="navbar-nav me-auto">
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                {% if user.is_authenticated %}
-                    <div class="d-flex align-items-center">
-                        <p class="nav-link m-0 me-3" style="color: black;">
-                            <strong>{{ user.email }}</strong>
-                        </p>
-                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/account/logout">Cerrar Sesion</a>
-                    </div>
-                {% endif %}
-                {% if not user.is_authenticated %}
-                    <div class="d-flex align-items-center">
-                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/account/login">Iniciar Sesi&#243;n</a>
-                        <a class="btn btn-secondary me-3" style="background-color: #6b4d1f;" href="/account/signup">Registrarse</a>
-                    </div>
-                {% endif %}
-            </ul>
+  <div class="container-fluid m-0 p-0">
+    <div id="bg-color" class="p-3" style="display: flex; flex-direction: row; justify-content: center;">
+      <div style="display: flex; flex-direction: column; justify-content: center;">
+        <a class="navbar-brand" href="http://localhost:5173/">
+          <img src="{% static 'LogoPanaderia.png' %}" alt="US" class="img-fluid col-md-3" id="logo">
+        </a>
+      </div>
+      {% if user.is_authenticated %}
+        <p class="nav-link m-0 me-3" style="color: black;">
+          <div id="account-setup">
+          <div class="dropdown">
+            {% if user.email %}
+                <button class="dropbtn">{{ user.email }}</button>
+            {% else %}
+                <button class="dropbtn">{{ user.username }}</button>
+            {% endif %}
+            <div class="dropdown-content">
+                <a href="/account/change-password">Cambiar contraseña</a>
+            </div>
+          </div>
         </div>
-    </nav>
-    <main>
-        {% block content_wrapper %}
-        <div class="container">
-            {% block content %}{% endblock %}
+        </p>
+        <div id="column-display">
+          <a class="btn btn-secondary me-3" id="logout" href="/account/logout">Cerrar Sesión</a>
         </div>
-        {% endblock %}
-    </main>
+      {% endif %}
+      {% if not user.is_authenticated %}
+        <div id="account-setup">
+          <div id="column-display">
+            <a class="btn btn-secondary" id="login" href="http://localhost:8000/account/login">Iniciar Sesión</a>
+          </div>
+          <div id="column-display">
+            <a class="btn btn-secondary" id="signup" href="http://localhost:8000/account/signup">Registrarse</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <main>
+    {% block content_wrapper %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    {% endblock %}
+  </main>
 </body>
-</html>

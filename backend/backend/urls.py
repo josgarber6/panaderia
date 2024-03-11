@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from base import views
 from two_factor.urls import urlpatterns as tf_urls
 from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
@@ -26,5 +28,6 @@ urlpatterns = [
     path('account/', include('authentication.urls')),
     path('', include(tf_urls)),
     path('', include(tf_twilio_urls)),
-    path('', views.home, name='home')
-]
+    path('', views.home, name='home'),
+    path('api/v1.0/', include('product.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

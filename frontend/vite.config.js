@@ -12,5 +12,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  test: {
+    testOptions: {
+      files: ['**/*.spec.js']
+    },
+    environment: "happy-dom"
+  },
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/media/'  // Ruta donde se encuentran los archivos estáticos
+    : '/'
 })
