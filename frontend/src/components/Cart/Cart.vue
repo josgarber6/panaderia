@@ -1,12 +1,15 @@
 <script>
 import Navbar from '../Navbar.vue'
 import Footer from '../Footer.vue'
+import PaymentOptions from '../Order/PaymentOptions.vue'
+import { mapState } from 'vuex'
 
 export default {
 
   components: {
     Navbar,
     Footer,
+    PaymentOptions,
   },
 
   data() {
@@ -19,6 +22,7 @@ export default {
                 { key: 'price', label: 'Precio Unitario' },
                 { key: 'total', label: 'Precio' },
       ],
+      showPaymentOptions: false,
     }
   },
   methods: {
@@ -31,6 +35,16 @@ export default {
     removeFromCart(itemId) {
       this.$store.dispatch('removeFromCart', itemId);
     },
+    handleConfirm(data) {
+      data.items = this.$store.state.cart;
+      this.$store.dispatch('placeOrder', data);
+      this.$store.dispatch('setPaymentOptions', false);
+      this.showPaymentOptions = false;
+    },
+    cancel() {
+      this.$store.dispatch('setPaymentOptions', false);
+      this.showPaymentOptions = false;
+    },
   },
   computed: {
     cart() {
@@ -39,6 +53,7 @@ export default {
     totalPrice() {
       return this.$store.getters.totalPrice;
     },
+    ...mapState(['setShowPaymentOptions']),
   },
   created() {
     this.$store.dispatch('loadCart');
@@ -69,7 +84,7 @@ export default {
               <tr v-for="item in cart" :key="item.id">
                 <td><img :src="item.product.image" alt="Imagen" style="width: 100px; height: 100px;"></td>
                 <td>{{ item.product.name }} {{ $store.getters.getCategoryName(item.product.category) }}</td>
-                <td><button @click="decreaseQuantity(item.id)" id="increasedecrease">-</button> {{ item.quantity }} <button @click="increaseQuantity(item.id)" id="increasedecrease">+</button></td>
+                <td><button @click="decreaseQuantity(item.product.id)" id="increasedecrease">-</button> {{ item.quantity }} <button @click="increaseQuantity(item.product.id)" id="increasedecrease">+</button></td>
                 <td><button @click="removeFromCart(item.id)" class="btn btn-danger btn-sm">Eliminar</button></td>
                 <td style="text-align: center;">{{ item.product.price }} €</td>
                 <td style="text-align: center;">{{ item.quantity * item.product.price }} €</td>
@@ -84,7 +99,8 @@ export default {
             <p style="text-align: end;">
               <RouterLink class="btn btn-primary" to="/products" style="margin-right: 10px;">Continuar comprando</RouterLink>
               <template v-if="cart.length > 0">
-              <RouterLink class="btn btn-success" to="/order/create">Realizar pedido</RouterLink>
+                <button class="btn btn-success" @click="showPaymentOptions = true">Realizar Pedido</button>
+                <PaymentOptions v-if="showPaymentOptions" @confirm="handleConfirm" @cancel="cancel" />
               </template>
             </p>
           </div>
