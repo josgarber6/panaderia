@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-k3=+f+z5y9+(kah6#wxj5+#h9n(v%#b^hg_#o#dvu9&sf7##72
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://localhost:5173", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 CORS_ALLOW_HEADERS = (
@@ -43,6 +43,8 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_NAME = "csrftoken"
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
 
 # Application definition
 
@@ -69,6 +71,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'product',
     'corsheaders',
+    'order',
 ]
 
 INTERNAL_IPS = [
