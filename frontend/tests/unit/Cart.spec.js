@@ -107,7 +107,7 @@ describe('Cart', () => {
 
     const mutations = {
       INCREASE_QUANTITY: (state, itemId) => {
-        const productInCart = state.cart.find(item => item.id === itemId);
+        const productInCart = state.cart.find(item => item.product.id === itemId);
         productInCart.quantity++;
       },
     };
@@ -150,7 +150,7 @@ describe('Cart', () => {
   it('disminuye la cantidad de un producto', async () => {
     const mutations = {
       DECREASE_QUANTITY: (state, itemId) => {
-        const productInCart = state.cart.find(item => item.id === itemId);
+        const productInCart = state.cart.find(item => item.product.id === itemId);
         if (productInCart.quantity > 1) {
           productInCart.quantity--;
         }
@@ -193,6 +193,27 @@ describe('Cart', () => {
   });
 
   it('elimina un producto', () => {
+    const mutations = {
+      REMOVE_FROM_CART: (state, itemId) => {
+        const productInCart = state.cart.find(item => item.product.id === itemId);
+        state.cart = state.cart.filter(item => item !== productInCart);
+      },
+    };
+
+    const actions = {
+      removeFromCart: vi.fn().mockImplementation(({ commit }, itemId) => {
+        commit('REMOVE_FROM_CART', itemId);
+      }),
+      loadCart: vi.fn(),
+      loadCategories: vi.fn(),
+    };
+    const store = new Vuex.Store({
+      state,
+      actions,
+      mutations,
+      getters,
+    });
+    
     const wrapper = shallowMount(Cart, {
       global: {
         plugins: [store],
@@ -203,9 +224,11 @@ describe('Cart', () => {
       },
     });
 
+    const itemId = state.cart[0].product.id;
     const button = wrapper.find('[class="btn btn-danger btn-sm"]');
     button.trigger('click');
     expect(actions.removeFromCart).toHaveBeenCalled();
+    expect(store.state.cart.find(item => item.product.id === itemId)).toBeFalsy();
   });
 
 
