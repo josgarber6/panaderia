@@ -23,6 +23,7 @@ export default {
                 { key: 'total', label: 'Precio' },
       ],
       showPaymentOptions: false,
+      errorMessage: '',
     }
   },
   methods: {
@@ -40,6 +41,17 @@ export default {
       this.$store.dispatch('placeOrder', data);
       this.$store.dispatch('setPaymentOptions', false);
       this.showPaymentOptions = false;
+    },
+    getUserInfo() {
+      const store = this.$store;
+      store.dispatch('getUserInfo');
+    },
+    handleOrder() {
+      if (!this.$store.state.authenticated) {
+        this.errorMessage = 'Debe iniciar sesión para realizar el pedido.'
+        return;
+      }
+      this.showPaymentOptions = true;
     },
     cancel() {
       this.$store.dispatch('setPaymentOptions', false);
@@ -99,7 +111,10 @@ export default {
             <p style="text-align: end;">
               <RouterLink class="btn btn-primary" to="/products" style="margin-right: 10px;">Continuar comprando</RouterLink>
               <template v-if="cart.length > 0">
-                <button class="btn btn-success" @click="showPaymentOptions = true">Realizar Pedido</button>
+                <button class="btn btn-success" @click="handleOrder">Realizar Pedido</button>
+                <template v-if="errorMessage">
+                  <p style="color: red;">{{ errorMessage }}</p>
+                </template>
                 <PaymentOptions v-if="showPaymentOptions" @confirm="handleConfirm" @cancel="cancel" />
               </template>
             </p>
