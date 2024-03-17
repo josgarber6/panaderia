@@ -61,6 +61,17 @@ export default {
       this.$store.dispatch('setPaymentOptions', false);
       this.showPaymentOptions = false;
     },
+    getUserInfo() {
+      const store = this.$store;
+      store.dispatch('getUserInfo');
+    },
+    handleOrder() {
+      if (!this.$store.state.authenticated) {
+        this.errorMessage = 'Debe iniciar sesión para realizar el pedido.'
+        return;
+      }
+      this.showPaymentOptions = true;
+    },
     cancel() {
       this.$store.dispatch('setPaymentOptions', false);
       this.showPaymentOptions = false;
