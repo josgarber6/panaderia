@@ -10,7 +10,6 @@
             imageUrl: 'http://localhost:5173/src/assets/LogoPanaderia.png',
             cart: 'http://localhost:5173/src/assets/cart.png',
             sessionId: '',
-            userIsAuthenticated: false,
             windowWidth: 0,
             hamburguer: 'http://localhost:5173/src/assets/hamburger_icon.png',
         };
@@ -25,16 +24,8 @@
     },
     methods: {
       getUserInfo() {
-        axios.defaults.withCredentials = true;
-        axios.get('http://localhost:8000/account/get-username-from-session/')
-        .then(response => {
-          this.userIsAuthenticated = true;
-          this.user = response.data;
-        })
-        .catch(error => {
-          console.error('Error retrieving user info:', error);
-          this.userIsAuthenticated = false;
-        });
+        const store = this.$store;
+        store.dispatch('getUserInfo');
       },
       handleResize() {
         this.windowWidth = window.innerWidth;
@@ -59,11 +50,11 @@
           </h5>
         </div>
         
-        <template v-if="userIsAuthenticated">
+        <template v-if="this.$store.state.authenticated">
           <div id="account-setup">
             <div id="column-display">
               <div class="dropdown">
-                <button class="dropbtn">{{ user.email ? user.email : user.username }}</button>
+                <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                 <div class="dropdown-content">
                   <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
                 </div>
@@ -127,11 +118,11 @@
             <h5>
               <RouterLink to="/products" style="color: white;">Productos</RouterLink>
             </h5>
-          <template v-if="userIsAuthenticated">
+          <template v-if="this.$store.state.authenticated">
             <div id="account-setup">
               <div id="column-display" style="margin-top: 5px;">
                 <div class="dropdown">
-                  <button class="dropbtn">{{ user.email ? user.email : user.username }}</button>
+                  <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                   <div class="dropdown-content">
                     <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
                   </div>

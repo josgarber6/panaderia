@@ -6,6 +6,8 @@ export default createStore({
     cart: [],
     categories: [],
     showPaymentOptions: false,
+    user: null,
+    authenticated: false,
   },
   getters: {
     totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
@@ -54,6 +56,12 @@ export default createStore({
     },
     SET_PAYMENT_OPTIONS(state, value) {
       state.showPaymentOptions = value;
+    },
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    SET_AUTHENTICATED(state, value) {
+      state.authenticated = value;
     },
   },
   actions: {
@@ -115,6 +123,18 @@ export default createStore({
       catch (error) {
         console.log(error);
       }
+    },
+    getUserInfo({ commit }) {
+      axios.defaults.withCredentials = true;
+      axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/get-username-from-session/`)
+        .then(response => {
+          commit('SET_USER', response.data);
+          commit('SET_AUTHENTICATED', true);
+        })
+        .catch(error => {
+          console.log(error);
+          commit('SET_AUTHENTICATED', false);
+        });
     }
   },
 });
