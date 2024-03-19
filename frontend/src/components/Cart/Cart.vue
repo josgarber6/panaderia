@@ -70,6 +70,10 @@ export default {
         this.errorMessage = 'Debe iniciar sesión para realizar el pedido.'
         return;
       }
+      if (!this.$store.state.user.isTwoFactorEnabled) {
+        this.errorMessage = 'Debe activar la autenticación de dos factores para realizar el pedido.'
+        return;
+      }
       this.showPaymentOptions = true;
     },
     cancel() {

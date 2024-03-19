@@ -19,6 +19,10 @@ import AdminCategoriesView from '@/views/AdminCategoriesView.vue'
 import AdminStatsView from '@/views/AdminStatsView.vue'
 
 import Cart from '../components/Cart/Cart.vue'
+import PaymentCompleted from '../components/Payment/PaymentCompleted.vue'
+import PaymentCancelled from '../components/Payment/PaymentCancelled.vue'
+import OrderCompleted from '@/components/Order/OrderCompleted.vue'
+import MyOrdersView from '@/views/MyOrdersView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
