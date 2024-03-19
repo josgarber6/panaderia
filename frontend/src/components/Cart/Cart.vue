@@ -38,7 +38,13 @@ export default {
     },
     handleConfirm(data) {
       data.items = this.$store.state.cart;
-      this.$store.dispatch('placeOrder', data);
+      this.$store.dispatch('placeOrder', data).then(response => {
+        if (response.status === 201 && response.data.session_url) {
+          fetch(response.data.session_url).then(window.location.href = response.data.session_url);
+        } else {
+          fetch(response.data).then(window.location.href = '/order/completed');
+        }
+      });
       this.$store.dispatch('setPaymentOptions', false);
       this.showPaymentOptions = false;
     },
@@ -49,6 +55,10 @@ export default {
     handleOrder() {
       if (!this.$store.state.authenticated) {
         this.errorMessage = 'Debe iniciar sesión para realizar el pedido.'
+        return;
+      }
+      if (!this.$store.state.user.isTwoFactorEnabled) {
+        this.errorMessage = 'Debe activar la autenticación de dos factores para realizar el pedido.'
         return;
       }
       this.showPaymentOptions = true;

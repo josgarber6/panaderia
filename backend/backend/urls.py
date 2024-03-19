@@ -30,4 +30,5 @@ urlpatterns = [
     path('', include(tf_twilio_urls)),
     path('api/v1.0/', include('product.urls')),
     path('api/v1.0/', include('order.urls')),
+    path('payment/', include('payment.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
