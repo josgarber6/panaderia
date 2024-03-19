@@ -8,6 +8,7 @@ export default createStore({
     showPaymentOptions: false,
     user: null,
     authenticated: false,
+    orderId: null,
   },
   getters: {
     totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
@@ -63,6 +64,9 @@ export default createStore({
     SET_AUTHENTICATED(state, value) {
       state.authenticated = value;
     },
+    SET_ORDER_ID(state, value) {
+      state.orderId = value;
+    },
   },
   actions: {
     loadCart: ({ commit }) => {
@@ -105,6 +109,19 @@ export default createStore({
     setPaymentOptions({ commit }, value) {
       commit('SET_PAYMENT_OPTIONS', value);
     },
+    orderCompleted({ commit }, orderId) {
+      return new Promise((resolve) => {
+        commit('SET_ORDER_ID', orderId);
+        sessionStorage.setItem('orderId', orderId);
+        resolve();
+      });
+    },
+    loadOrderId: ({ commit }) => {
+      const orderId = sessionStorage.getItem('orderId');
+      if (orderId) {
+        commit('SET_ORDER_ID', orderId);
+      }
+    },
     placeOrder: async ({ dispatch }, orderData) => {
 
       const csrf_token = document.cookie.split('=')[1];
@@ -117,6 +134,7 @@ export default createStore({
 
         if (response.status === 201) {
           dispatch('clearCart');
+          dispatch('orderCompleted', response.data.orderId);
           return response;
         }
       }

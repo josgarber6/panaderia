@@ -3,6 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import ProductsView from '../views/ProductsView.vue'
 
 import Cart from '../components/Cart/Cart.vue'
+import PaymentCompleted from '../components/Payment/PaymentCompleted.vue'
+import PaymentCancelled from '../components/Payment/PaymentCancelled.vue'
+import OrderCompleted from '@/components/Order/OrderCompleted.vue'
+import MyOrdersView from '@/views/MyOrdersView.vue'
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +34,27 @@ const router = createRouter({
       path: '/cart',
       name: 'Cart',
       component: Cart
+    },
+    {
+      path: '/payment/completed',
+      name: 'PaymentCompleted',
+      component: PaymentCompleted
+
+    },
+    {
+      path: '/payment/cancelled',
+      name: 'PaymentCancelled',
+      component: PaymentCancelled
+    },
+    {
+      path: '/order/completed',
+      name: 'OrderCompleted',
+      component: OrderCompleted
+    },
+    {
+      path: '/order/my_orders',
+      name: 'MyOrders',
+      component: MyOrdersView
     }
   ]
 })

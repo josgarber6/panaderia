@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'product',
     'corsheaders',
     'order',
+    'payment',
 ]
 
 INTERNAL_IPS = [
@@ -146,6 +147,7 @@ TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 
 LOGIN_REDIRECT_URL = 'http://localhost:5173/'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
+TWO_FACTOR_SETUP_URL = 'two_factor:setup'
 LOGIN_URL = 'two_factor:login'
 
 LOGGING = {
@@ -214,7 +216,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
-STRIPE_API_VERSION = "2022-08-01"
+STRIPE_API_VERSION = "2023-10-16"
 
 # Email settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
