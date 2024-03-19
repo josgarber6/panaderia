@@ -1,0 +1,11 @@
+{% extends "two_factor/_base_focus.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h1>{% block title %}{% trans "Registration Complete" %}{% endblock %}</h1>
+  <p>{% blocktrans trimmed %}Congratulations, you've successfully registered an
+    account.{% endblocktrans %}</p>
+  <p>Para continuar, por favor activa el doble factor de autenticación</p>
+  <p><a href="{{ two_factor_setup_url }}"
+        class="btn btn-block btn-secondary">Inicia sesión para activarlo</a></p>
+{% endblock %}
