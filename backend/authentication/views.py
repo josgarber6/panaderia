@@ -26,7 +26,7 @@ class SignupCompleteView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['login_url'] = resolve_url(settings.LOGIN_URL)
+        context['two_factor_setup_url'] = resolve_url(settings.TWO_FACTOR_SETUP_URL)
         return context
     
 def logout_view(request):
