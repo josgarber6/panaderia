@@ -48,7 +48,7 @@ export default {
       <template v-for="product in products" :key="product.id">
         <div class="card-container" style="margin: 10px;">
           <div class="card">
-            <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
+            <img :src="product.image" alt="Imagen no disponible" class="card-img-top" style="width: 18rem; height: 16rem;"/>
             <div class="card-body">
               <h5 class="card-title">{{ product.name }} {{ product.category.name }} </h5>
               <p class="card-text">{{ product.description }}</p>
