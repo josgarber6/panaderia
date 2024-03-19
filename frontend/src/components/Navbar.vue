@@ -57,6 +57,8 @@
                 <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                 <div class="dropdown-content">
                   <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
+                  <a href="http://localhost:8000/account/two_factor/setup">Activar doble factor</a>
+                  <a href="http://localhost:5173/order/my_orders">Mis pedidos</a>
                 </div>
               </div>
             </div>
@@ -115,9 +117,9 @@
           </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <h5>
-              <RouterLink to="/products" style="color: white;">Productos</RouterLink>
-            </h5>
+          <h5>
+            <RouterLink to="/products" style="color: white;">Productos</RouterLink>
+          </h5>
           <template v-if="this.$store.state.authenticated">
             <div id="account-setup">
               <div id="column-display" style="margin-top: 5px;">
@@ -125,6 +127,8 @@
                   <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                   <div class="dropdown-content">
                     <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
+                    <a href="http://localhost:8000/account/two_factor/setup">Activar doble factor</a>
+                    <a href="http://localhost:5173/order/my_orders">Mis pedidos</a>
                   </div>
                 </div>
               </div>
