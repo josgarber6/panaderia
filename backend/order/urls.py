@@ -3,7 +3,7 @@ from .viewsets import OrderViewSet
 
 app_name = "order"
 
-router = routers.SimpleRouter()
-router.register('orders', OrderViewSet)
+router = routers.DefaultRouter()
+router.register(r'orders', OrderViewSet, basename="order")
 
 urlpatterns = router.urls
