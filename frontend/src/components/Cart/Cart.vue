@@ -94,7 +94,7 @@ export default {
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-x: scroll; scrollbar-width: none;">
           <table class="table table-striped table-bordered" style="margin-bottom: 10px;">
             <thead id="cabecera">
               <tr>
