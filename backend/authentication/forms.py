@@ -110,7 +110,7 @@ class CustomerCreationForm(UserCreationForm):
     user.set_password(self.cleaned_data["password1"])
     if commit:
       user.save()
-      customer = Customer.objects.create(user=user, address=self.cleaned_data["address"])
+      customer = Customer.objects.create(user=user, address=self.cleaned_data["address"], postal_code=self.cleaned_data["postal_code"])
       customer.save()
     return customer
 

@@ -38,7 +38,7 @@ export default {
         })
     },
     addToCart(product) {
-      const quantity = parseInt(document.getElementById('quantity').value);
+      const quantity = parseInt(document.getElementById(`quantity-${product.id}`).value);
       this.$store.dispatch('addToCart', { product, quantity });
     },
     removeFromCart(itemId) {
@@ -121,7 +121,7 @@ export default {
                     <div class="input-group mt-2">
                       <label class="input-group-text"
                               for="quantity">Cantidad</label>
-                      <input type="number" class="form-control" id="quantity"
+                      <input type="number" class="form-control" :id="`quantity-${product.id}`"
                               name="quantity" min="1" value="1">
                       <button @click="addToCart(product)" id="add-to-cart" class="btn btn-success">Añadir</button>
                     </div>
@@ -171,7 +171,7 @@ export default {
                     <div class="input-group mt-2">
                       <label class="input-group-text"
                               for="quantity">Cantidad</label>
-                      <input type="number" class="form-control" id="quantity"
+                      <input type="number" class="form-control" :id="`quantity-${product.id}`"
                               name="quantity" min="1" value="1">
                       <button @click="addToCart(product)" id="add-to-cart" class="btn btn-success">Añadir</button>
                     </div>
