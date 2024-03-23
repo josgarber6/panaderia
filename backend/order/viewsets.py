@@ -87,6 +87,8 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
                     quantity=item["quantity"],
                     order=order
                 )
+
+            order.send_confirmation_email()
             
             return Response({"order": OrderSerializer(order).data, "orderId": order.id}, status=status.HTTP_201_CREATED)
     def list(self, request, *args, **kwargs):
