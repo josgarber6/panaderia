@@ -25,7 +25,16 @@ export default {
     },
     addToCart(product) {
       const quantity = parseInt(document.getElementById(`quantity-${product.id}`).value);
-      this.$store.dispatch('addToCart', { product, quantity });
+      if (this.$store.getters.getCategoryName(product.category) === 'Pico') {
+        if (product.stock < quantity) {
+          alert('No hay suficiente stock');
+          return;
+        } else {
+          this.$store.dispatch('addToCart', { product, quantity });
+        }
+      } else {
+        this.$store.dispatch('addToCart', { product, quantity });
+      }
     },
     removeFromCart(itemId) {
       this.$store.dispatch('removeFromCart', itemId);
@@ -53,29 +62,27 @@ export default {
             <div class="card-body">
               <h5 class="card-title">{{ product.name }} {{ $store.getters.getCategoryName(product.category) }} </h5>
               <p class="card-text">{{ product.description }}</p>
-              <div class="d-flex justify-content-between">
-                <h6 class="mb-0">{{ product.price }} €</h6>
-                <template v-if="product.category.name == 'Pico'">
-                  <template v-if="product.stock > 1">
-                    <p>Quedan {{ product.stock }} en stock</p>
-                  </template>
-                  <template v-else>
-                    <p>Queda {{ product.stock }} en stock</p>
-                  </template>
-                  <template v-if="product.stock > 0">
-                    <div class="d-flex align-items-center gap-1">
-                      <div class="check">&#10003;</div>
-                      <h6 class="text-success mb-0">Disponible</h6>
-                    </div>
-                  </template>
-                  <template v-else>
-                    <div class="d-flex align-items-center gap-1">
-                      <div class="unavailable">&#10007;</div>
-                      <h6 class="text-danger mb-0">Agotado</h6>
-                    </div>
-                  </template>
+              <h6 class="mb-0">{{ product.price }} €</h6>
+              <template v-if="$store.getters.getCategoryName(product.category) == 'Pico'">
+                <template v-if="product.stock > 1">
+                  <p>Quedan {{ product.stock }} en stock</p>
                 </template>
-              </div>
+                <template v-else>
+                  <p>Queda {{ product.stock }} en stock</p>
+                </template>
+                <template v-if="product.stock > 0">
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="check">&#10003;</div>
+                    <h6 class="text-success mb-0">Disponible</h6>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="d-flex align-items-center gap-1">
+                    <div class="unavailable">&#10007;</div>
+                    <h6 class="text-danger mb-0">Agotado</h6>
+                  </div>
+                </template>
+              </template>
               <div class="d-flex justify-content-between">
                 <div class="input-group mt-2">
                   <label class="input-group-text"
