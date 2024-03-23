@@ -24,7 +24,7 @@ export default {
         });
     },
     addToCart(product) {
-      const quantity = parseInt(document.getElementById('quantity').value);
+      const quantity = parseInt(document.getElementById(`quantity-${product.id}`).value);
       this.$store.dispatch('addToCart', { product, quantity });
     },
     removeFromCart(itemId) {
@@ -34,6 +34,7 @@ export default {
   created() {
     this.getProducts();
     this.$store.dispatch('loadCart')
+    this.$store.dispatch('loadCategories');
   },
 }
 </script>
@@ -50,7 +51,7 @@ export default {
           <div class="card">
             <img :src="product.image" alt="Imagen no disponible" class="card-img-top" style="width: 18rem; height: 16rem;"/>
             <div class="card-body">
-              <h5 class="card-title">{{ product.name }} {{ product.category.name }} </h5>
+              <h5 class="card-title">{{ product.name }} {{ $store.getters.getCategoryName(product.category) }} </h5>
               <p class="card-text">{{ product.description }}</p>
               <div class="d-flex justify-content-between">
                 <h6 class="mb-0">{{ product.price }} €</h6>
@@ -79,7 +80,7 @@ export default {
                 <div class="input-group mt-2">
                   <label class="input-group-text"
                           for="quantity">Cantidad</label>
-                  <input type="number" class="form-control" id="quantity"
+                  <input type="number" class="form-control" :id="`quantity-${product.id}`"
                           name="quantity" min="1" value="1">
                   <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
                 </div>

@@ -33,8 +33,8 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
             customer=Customer.objects.get(user=request.user)
         )
 
-        if order.payment_method == "tarjeta":
-            order.status = "pendiente"
+        if order.payment_method == "Tarjeta":
+            order.shipping_status = "Pendiente"
             order.save()
 
             for item in data["items"]:
@@ -47,7 +47,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
                 )
         
             success_url = config("FRONTEND_BASE_URL") + "payment/completed"
-            cancel_url = config("FRONTEND_BASE_URL") + "payment/canceled"
+            cancel_url = config("FRONTEND_BASE_URL") + "payment/cancelled"
 
             session_data = {
                 "mode": "payment",
@@ -76,7 +76,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
             return Response({"session_url": session.url, "orderId": order.id}, status=status.HTTP_201_CREATED)
         
         else:
-            order.status = "enviado"
+            order.shipping_status = "Enviado"
             order.save()
 
             for item in data["items"]:

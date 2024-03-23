@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from rest_framework import routers
+from .viewsets import CustomerViewSet
 
 urlpatterns = [
   path('signup/', views.signup_view, name='signup'),
@@ -9,3 +11,6 @@ urlpatterns = [
   path('get-username-from-session/', views.get_username_from_session, name='get-username-from-session'),
 ]
 
+router = routers.SimpleRouter()
+router.register('customers', CustomerViewSet)
+urlpatterns += router.urls

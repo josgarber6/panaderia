@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from decouple import config
 from product.models import Product
@@ -48,16 +48,7 @@ class Order(models.Model):
         ]
 
     def get_total_cost(self):
-        return self.get_order_cost() + self.get_shipping_cost()
-
-    def get_order_cost(self):
         return sum(item.get_cost() for item in self.items.all())
-
-    def get_shipping_cost(self):
-        if self.get_order_cost() < 50 and self.shipping_method == "estandar":
-            return 5
-        else:
-            return 0
 
     def send_confirmation_email(self):
         subject = "Panadería Sánchez - Confirmación de pedido"

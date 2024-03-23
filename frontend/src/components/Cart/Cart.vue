@@ -109,11 +109,11 @@ export default {
                 <td><button @click="decreaseQuantity(item.product.id)" id="increasedecrease">-</button> {{ item.quantity }} <button @click="increaseQuantity(item.product.id)" id="increasedecrease">+</button></td>
                 <td><button @click="removeFromCart(item.product.id)" class="btn btn-danger btn-sm">Eliminar</button></td>
                 <td style="text-align: center;">{{ item.product.price }} €</td>
-                <td style="text-align: center;">{{ item.quantity * item.product.price }} €</td>
+                <td style="text-align: center;">{{ (item.quantity * item.product.price).toFixed(2) }} €</td>
               </tr>
               <tr class="table-secondary">
                 <td colspan="5" style="text-align: end;">Total</td>
-                <td class="num" style="text-align: center;">{{ totalPrice }} €</td>
+                <td class="num" style="text-align: center;">{{ totalPrice.toFixed(2) }} €</td>
               </tr>
             </tbody>
           </table>
