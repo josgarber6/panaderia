@@ -39,7 +39,16 @@ export default {
     },
     addToCart(product) {
       const quantity = parseInt(document.getElementById(`quantity-${product.id}`).value);
-      this.$store.dispatch('addToCart', { product, quantity });
+      if (this.$store.getters.getCategoryName(product.category) === 'Pico') {
+        if (product.stock < quantity) {
+          alert('No hay suficiente stock');
+          return;
+        } else {
+          this.$store.dispatch('addToCart', { product, quantity });
+        }
+      } else {
+        this.$store.dispatch('addToCart', { product, quantity });
+      }
     },
     removeFromCart(itemId) {
       this.$store.dispatch('removeFromCart', itemId);

@@ -88,7 +88,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
                     order=order
                 )
             
-            return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
+            return Response({"order": OrderSerializer(order).data, "orderId": order.id}, status=status.HTTP_201_CREATED)
     def list(self, request, *args, **kwargs):
         if request.user.is_staff:
             orders = Order.objects.all()
