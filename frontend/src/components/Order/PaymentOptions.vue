@@ -2,8 +2,8 @@
 export default {
   data() {
     return {
-      payment_method: 'tarjeta',
-      shipping_method: 'estandar',
+      payment_method: 'Tarjeta',
+      shipping_method: 'Entrega estándar',
     };
   },
   methods: {
@@ -26,15 +26,15 @@ export default {
       <div style="display: flex; justify-content: center; flex-direction: row;">
           <label for="payment" style="margin-right: 10px;">Tipo de Pago:</label>
           <select id="payment" v-model="payment_method">
-            <option value="tarjeta">Tarjeta de Crédito</option>
-            <option value="efectivo">Pago en Efectivo</option>
+            <option value="Tarjeta">Tarjeta de Crédito</option>
+            <option value="Contra-reembolso">Pago en Efectivo</option>
           </select>
       </div>
       <div style="display: flex; justify-content: center; flex-direction: row;">
         <label for="shipping" style="margin-right: 10px;">Tipo de Entrega:</label>
         <select id="shipping" v-model="shipping_method">
-          <option value="estandar">Entrega Estándar</option>
-          <option value="urgente">Entrega Urgente</option>
+          <option value="Entrega estándar">Entrega estándar</option>
+          <option value="Recogida en tienda">Recogida en tienda</option>
         </select>
       </div>
       <div style="display: flex; justify-content: center; flex-direction: row;">
