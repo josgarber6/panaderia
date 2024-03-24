@@ -38,8 +38,8 @@ export default {
         </select>
       </div>
       <div style="display: flex; justify-content: center; flex-direction: row;">
-        <button class="btn btn-success" @click="confirmOrder">Confirmar Pedido</button>
-        <button class="btn btn-danger" @click="cancel">Cancelar</button>
+        <button class="btn btn-success" id="confirm-order" @click="confirmOrder">Confirmar Pedido</button>
+        <button class="btn btn-danger" id="cancel-order" @click="cancel">Cancelar</button>
       </div>
     </div>
   </div>
