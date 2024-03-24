@@ -89,7 +89,7 @@ export default {
                           for="quantity">Cantidad</label>
                   <input type="number" class="form-control" :id="`quantity-${product.id}`"
                           name="quantity" min="1" value="1">
-                  <button @click="addToCart(product)" class="btn btn-success">Añadir</button>
+                  <button @click="addToCart(product)" class="btn btn-success" :id="`add-to-cart-${product.id}`">Añadir</button>
                 </div>
               </div>
             </div>

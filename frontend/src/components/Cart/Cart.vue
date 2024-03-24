@@ -54,11 +54,11 @@ export default {
     },
     handleOrder() {
       if (!this.$store.state.authenticated) {
-        this.errorMessage = 'Debe iniciar sesión para realizar el pedido.'
+        this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para realizar un pedido.'
         return;
       }
       if (!this.$store.state.user.isTwoFactorEnabled) {
-        this.errorMessage = 'Debe activar la autenticación de dos factores para realizar el pedido.'
+        this.errorMessage = 'Debe activar el doble factor de autenticación para realizar un pedido.'
         return;
       }
       this.showPaymentOptions = true;
@@ -123,7 +123,7 @@ export default {
               <template v-if="cart.length > 0">
                 <button class="btn btn-success" @click="handleOrder">Realizar Pedido</button>
                 <template v-if="errorMessage">
-                  <p style="color: red;">{{ errorMessage }}</p>
+                  <p style="color: red;" id="error-message">{{ errorMessage }}</p>
                 </template>
                 <PaymentOptions v-if="showPaymentOptions" @confirm="handleConfirm" @cancel="cancel" />
               </template>
