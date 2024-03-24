@@ -24,7 +24,7 @@ class ProductSeleniumTestCase(StaticLiveServerTestCase):
         user.save()
 
         options = webdriver.ChromeOptions()
-        # options.headless = True
+        options.add_argument("--headless")
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
         super().setUp()
