@@ -67,11 +67,11 @@ export default {
     },
     handleOrder() {
       if (!this.$store.state.authenticated) {
-        this.errorMessage = 'Debe iniciar sesión para realizar el pedido.'
+        this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para realizar un pedido.'
         return;
       }
       if (!this.$store.state.user.isTwoFactorEnabled) {
-        this.errorMessage = 'Debe activar la autenticación de dos factores para realizar el pedido.'
+        this.errorMessage = 'Debe activar el doble factor de autenticación para realizar un pedido.'
         return;
       }
       this.showPaymentOptions = true;
