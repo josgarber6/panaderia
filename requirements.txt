@@ -1,0 +1,15 @@
+Django==4.2.7
+psycopg2==2.9.9
+django-bootstrap-v5==1.0.11
+django-two-factor-auth==1.15.5
+django-two-factor-auth[phonenumbers]==8.13.27
+django-otp-yubikey==1.0.1
+twilio==8.11.0
+django-bootstrap-form
+djangorestframework==3.14.0
+Pillow==10.2.0
+django-cors-hearders==4.3.1
+coverage==7.4.3
+python-decouple==3.8
+stripe==8.7.0
+python-dotenv==1.0.1
