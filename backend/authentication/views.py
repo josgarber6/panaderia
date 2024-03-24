@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, resolve_url
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import logout
-from .forms import CustomerCreationForm, CustomerLoginForm
-from django.views.generic import FormView, TemplateView
+from .forms import CustomerCreationForm
+from django.views.generic import TemplateView
 from django_otp.decorators import otp_required
 from django.conf import settings
 # Session cookies
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from .models import Customer
 from django.http import JsonResponse
 
 def signup_view(request):
@@ -26,7 +27,7 @@ class SignupCompleteView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['login_url'] = resolve_url(settings.LOGIN_URL)
+        context['two_factor_setup_url'] = resolve_url(settings.TWO_FACTOR_SETUP_URL)
         return context
     
 def logout_view(request):
@@ -40,10 +41,12 @@ def get_username_from_session(request):
         session = Session.objects.get(session_key=session_id)
         user_id = session.get_decoded().get('_auth_user_id')
         user = User.objects.get(pk=user_id)
+        customer = Customer.objects.get(user=user)
         return JsonResponse({'username': user.username,
                              'email': user.email,
                              'first_name': user.first_name, 
-                             'last_name': user.last_name})
+                             'last_name': user.last_name,
+                             'isTwoFactorEnabled': customer.is_two_factor_enabled()})
     except (Session.DoesNotExist, KeyError, User.DoesNotExist):
         return JsonResponse({'error': 'Session not found or user does not exist'}, status=400)
 

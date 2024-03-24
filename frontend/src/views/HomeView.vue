@@ -16,7 +16,8 @@ export default {
     return {
       imageUrl: 'http://localhost:5173/src/assets/background-panaderia.jpg',
       products: [],
-      star: 'http://localhost:5173/src/assets/star.png'
+      star: 'http://localhost:5173/src/assets/star.png',
+      windowWidth: 0,
     };
   },
 
@@ -37,16 +38,31 @@ export default {
         })
     },
     addToCart(product) {
-      const quantity = parseInt(document.getElementById('quantity').value);
-      this.$store.dispatch('addToCart', { product, quantity });
+      const quantity = parseInt(document.getElementById(`quantity-${product.id}`).value);
+      if (this.$store.getters.getCategoryName(product.category) === 'Pico') {
+        if (product.stock < quantity) {
+          alert('No hay suficiente stock');
+          return;
+        } else {
+          this.$store.dispatch('addToCart', { product, quantity });
+        }
+      } else {
+        this.$store.dispatch('addToCart', { product, quantity });
+      }
     },
     removeFromCart(itemId) {
       this.$store.dispatch('removeFromCart', itemId);
+    },
+    handleResize() {
+      this.windowWidth = window.innerWidth;
     },
   },
   created() {
     this.fetchProducts()
     this.$store.dispatch('loadCart')
+    this.$store.dispatch('loadCategories');
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
   },
 };
 </script>
@@ -72,21 +88,24 @@ export default {
     </div>
     <!-- Productos destacados -->
     <div class="container-fluid m-0 p-0">
-      <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 30vh">
-        <template v-for="product in products" :key="product.id">
-          <template v-if="product.highlighted">
-            <div class="card-container" style="margin: 10px">
-              <div class="card">
-                <div class="product-image" style="position: relative;">
-                  <img :src="product.image" alt="Imagen no disponible" class="card-img-top"/>
-                  <img :src="star" alt="Estrella" class="star-image" style="position: absolute; top: 0; left: 0;"/>
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">{{ product.name }} {{ product.category.name }}</h5>
-                  <p class="card-text">{{ product.description }}</p>
-                  <div class="d-flex justify-content-between">
+      <template v-if="windowWidth >= 1500">
+        <div style="display: flex; flex-direction: column; text-align: center; background-color: chocolate;">
+          <h2 style="color: aliceblue; font-weight: 500; margin-top: 20px">PRODUCTOS DESTACADOS</h2>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 30vh; overflow-x: scroll; scrollbar-width: none;">
+          <template v-for="product in products" :key="product.id">
+            <template v-if="product.highlighted">
+              <div class="card-container" style="margin: 10px">
+                <div class="card">
+                  <div class="product-image" style="position: relative;">
+                    <img :src="product.image" alt="Imagen no disponible" class="card-img-top" style="width: 18rem; height: 16rem;"/>
+                    <img :src="star" alt="Estrella" class="star-image" style="position: absolute; top: 0; left: 0;"/>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.name }} {{ $store.getters.getCategoryName(product.category) }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
                     <h6 class="mb-0">{{ product.price }} €</h6>
-                    <template v-if="product.category.name == 'Pico'">
+                    <template v-if="$store.getters.getCategoryName(product.category) == 'Pico'">
                       <template v-if="product.stock > 1">
                         <p>Quedan {{ product.stock }} en stock</p>
                       </template>
@@ -106,23 +125,73 @@ export default {
                         </div>
                       </template>
                     </template>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <div class="input-group mt-2">
-                    <label class="input-group-text"
-                            for="quantity">Cantidad</label>
-                    <input type="number" class="form-control" id="quantity"
-                            name="quantity" min="1" value="1">
-                    <button @click="addToCart(product)" id="add-to-cart" class="btn btn-success">Añadir</button>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div class="input-group mt-2">
+                      <label class="input-group-text"
+                              for="quantity">Cantidad</label>
+                      <input type="number" class="form-control" :id="`quantity-${product.id}`"
+                              name="quantity" min="1" value="1">
+                      <button @click="addToCart(product)" :id="`add-to-cart-${product.id}`" class="btn btn-success">Añadir</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </template>
+            </template>
+          </template>
+        </div>
+      </template>
+      <template v-else>
+        <div style="display: flex; flex-direction: row; justify-content: flex-start; background-color: chocolate; min-height: 30vh; overflow-x: scroll; scrollbar-width: none;">
+          <template v-for="product in products" :key="product.id">
+            <template v-if="product.highlighted">
+              <div class="card-container" style="margin: 10px">
+                <div class="card">
+                  <div class="product-image" style="position: relative;">
+                    <img :src="product.image" alt="Imagen no disponible" class="card-img-top" style="width: 18rem; height: 16rem;"/>
+                    <img :src="star" alt="Estrella" class="star-image" style="position: absolute; top: 0; left: 0;"/>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.name }} {{ $store.getters.getCategoryName(product.category) }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <h6 class="mb-0">{{ product.price }} €</h6>
+                    <template v-if="$store.getters.getCategoryName(product.category) == 'Pico'">
+                      <template v-if="product.stock > 1">
+                        <p>Quedan {{ product.stock }} en stock</p>
+                      </template>
+                      <template v-else>
+                        <p>Queda {{ product.stock }} en stock</p>
+                      </template>
+                      <template v-if="product.stock > 0">
+                        <div class="d-flex align-items-center gap-1">
+                          <div class="check">&#10003;</div>
+                          <h6 class="text-success mb-0">Disponible</h6>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="d-flex align-items-center gap-1">
+                          <div class="unavailable">&#10007;</div>
+                          <h6 class="text-danger mb-0">Agotado</h6>
+                        </div>
+                      </template>
+                    </template>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div class="input-group mt-2">
+                      <label class="input-group-text"
+                              for="quantity">Cantidad</label>
+                      <input type="number" class="form-control" :id="`quantity-${product.id}`"
+                              name="quantity" min="1" value="1">
+                      <button @click="addToCart(product)" id="add-to-cart" class="btn btn-success">Añadir</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </template>
+        </div>
       </template>
 
-      </div>
       <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 10vh;">
         <div style="display: flex; flex-direction: column; align-items: center; text-align: center; color: aliceblue; font-size: 2vh; font-weight: 500;">
           <h3>¡Descubre m&#225;s productos en nuestra tienda!</h3>

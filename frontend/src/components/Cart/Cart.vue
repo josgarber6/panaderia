@@ -1,12 +1,15 @@
 <script>
 import Navbar from '../Navbar.vue'
 import Footer from '../Footer.vue'
+import PaymentOptions from '../Order/PaymentOptions.vue'
+import { mapState } from 'vuex'
 
 export default {
 
   components: {
     Navbar,
     Footer,
+    PaymentOptions,
   },
 
   data() {
@@ -19,6 +22,8 @@ export default {
                 { key: 'price', label: 'Precio Unitario' },
                 { key: 'total', label: 'Precio' },
       ],
+      showPaymentOptions: false,
+      errorMessage: '',
     }
   },
   methods: {
@@ -31,6 +36,37 @@ export default {
     removeFromCart(itemId) {
       this.$store.dispatch('removeFromCart', itemId);
     },
+    handleConfirm(data) {
+      data.items = this.$store.state.cart;
+      this.$store.dispatch('placeOrder', data).then(response => {
+        if (response.status === 201 && response.data.session_url) {
+          fetch(response.data.session_url).then(window.location.href = response.data.session_url);
+        } else {
+          fetch(response.data).then(window.location.href = '/order/completed');
+        }
+      });
+      this.$store.dispatch('setPaymentOptions', false);
+      this.showPaymentOptions = false;
+    },
+    getUserInfo() {
+      const store = this.$store;
+      store.dispatch('getUserInfo');
+    },
+    handleOrder() {
+      if (!this.$store.state.authenticated) {
+        this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para realizar un pedido.'
+        return;
+      }
+      if (!this.$store.state.user.isTwoFactorEnabled) {
+        this.errorMessage = 'Debe activar el doble factor de autenticación para realizar un pedido.'
+        return;
+      }
+      this.showPaymentOptions = true;
+    },
+    cancel() {
+      this.$store.dispatch('setPaymentOptions', false);
+      this.showPaymentOptions = false;
+    },
   },
   computed: {
     cart() {
@@ -39,6 +75,7 @@ export default {
     totalPrice() {
       return this.$store.getters.totalPrice;
     },
+    ...mapState(['setShowPaymentOptions']),
   },
   created() {
     this.$store.dispatch('loadCart');
@@ -57,7 +94,7 @@ export default {
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-x: scroll; scrollbar-width: none;">
           <table class="table table-striped table-bordered" style="margin-bottom: 10px;">
             <thead id="cabecera">
               <tr>
@@ -69,14 +106,14 @@ export default {
               <tr v-for="item in cart" :key="item.id">
                 <td><img :src="item.product.image" alt="Imagen" style="width: 100px; height: 100px;"></td>
                 <td>{{ item.product.name }} {{ $store.getters.getCategoryName(item.product.category) }}</td>
-                <td><button @click="decreaseQuantity(item.id)" id="increasedecrease">-</button> {{ item.quantity }} <button @click="increaseQuantity(item.id)" id="increasedecrease">+</button></td>
-                <td><button @click="removeFromCart(item.id)" class="btn btn-danger btn-sm">Eliminar</button></td>
+                <td><button @click="decreaseQuantity(item.product.id)" id="increasedecrease">-</button> {{ item.quantity }} <button @click="increaseQuantity(item.product.id)" id="increasedecrease">+</button></td>
+                <td><button @click="removeFromCart(item.product.id)" class="btn btn-danger btn-sm">Eliminar</button></td>
                 <td style="text-align: center;">{{ item.product.price }} €</td>
-                <td style="text-align: center;">{{ item.quantity * item.product.price }} €</td>
+                <td style="text-align: center;">{{ (item.quantity * item.product.price).toFixed(2) }} €</td>
               </tr>
               <tr class="table-secondary">
                 <td colspan="5" style="text-align: end;">Total</td>
-                <td class="num" style="text-align: center;">{{ totalPrice }} €</td>
+                <td class="num" style="text-align: center;">{{ totalPrice.toFixed(2) }} €</td>
               </tr>
             </tbody>
           </table>
@@ -84,7 +121,11 @@ export default {
             <p style="text-align: end;">
               <RouterLink class="btn btn-primary" to="/products" style="margin-right: 10px;">Continuar comprando</RouterLink>
               <template v-if="cart.length > 0">
-              <RouterLink class="btn btn-success" to="/order/create">Realizar pedido</RouterLink>
+                <button class="btn btn-success" @click="handleOrder">Realizar Pedido</button>
+                <template v-if="errorMessage">
+                  <p style="color: red;" id="error-message">{{ errorMessage }}</p>
+                </template>
+                <PaymentOptions v-if="showPaymentOptions" @confirm="handleConfirm" @cancel="cancel" />
               </template>
             </p>
           </div>
