@@ -4,6 +4,7 @@ import Footer from '../components/Footer.vue'
 import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+import star from '@/assets/star.png';
 
 export default {
 
@@ -14,9 +15,8 @@ export default {
 
   data() {
     return {
-      imageUrl: 'http://localhost:5173/src/assets/background-panaderia.jpg',
       products: [],
-      star: 'http://localhost:5173/src/assets/star.png',
+      star,
       windowWidth: 0,
     };
   },
@@ -213,7 +213,7 @@ export default {
 }
 
 #home {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('../assets/background-panaderia.jpg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('@/assets/background-panaderia.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   /* background-attachment: fixed; */
@@ -282,8 +282,8 @@ export default {
   }
 
 .star-image {
-  width: 70px; /* Ajusta según sea necesario */
-  height: 70px; /* Ajusta según sea necesario */
+  width: 70px;
+  height: 70px;
 }
 
 

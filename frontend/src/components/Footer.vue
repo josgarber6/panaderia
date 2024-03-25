@@ -1,15 +1,5 @@
 <script>
 
-  import { RouterLink } from 'vue-router';
-
-  export default {
-    data() {
-        return {
-            imageUrl: 'http://localhost:5173/src/assets/LogoPanaderia.png',
-        };
-    },
-};
-
 </script>
 
 <template>
