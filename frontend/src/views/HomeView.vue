@@ -18,6 +18,7 @@ export default {
       products: [],
       star,
       windowWidth: 0,
+      message: '',
     };
   },
 
@@ -70,6 +71,7 @@ export default {
 <template>
   <main>
     <Navbar id="fix"/>
+    <p v-if="message" style="color: green;">{{ message }}</p>
     <div id="home">
       <div class="container-fluid m-0 p-0">
         <div style="display: flex; flex-direction: column; text-align: center;" class="d-none d-lg-block">

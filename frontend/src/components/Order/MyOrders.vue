@@ -9,21 +9,37 @@ export default {
       customer: null,
       products: {},
       loading: false,
+      errorMessage: '',
     };
   },
   methods: {
     async getOrders() {
       this.loading = true;
-      const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders/my_orders`)
-      this.orders = response.data;
-
-      for (const order of this.orders) {
-        for (const item of order.items) {
-          const product = await this.getProductInfo(item.product);
-          this.products[item.product] = product;
+      try {
+        if (!this.$store.state.authenticated) {
+          this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para ver sus pedidos.'
+          return;
         }
+        const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders/my_orders`)
+        this.orders = response.data;
+
+        for (const order of this.orders) {
+          for (const item of order.items) {
+            const product = await this.getProductInfo(item.product);
+            this.products[item.product] = product;
+          }
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para ver sus pedidos.'
+        } else if (error.response.status === 403) {
+          this.errorMessage = 'Debe activar el doble factor de autenticación para ver sus pedidos.'
+        } else {
+          this.errorMessage = 'Ocurrió un error al cargar los pedidos.'
+        }
+      } finally {
+        this.loading = false;
       }
-      this.loading = false;
     },
     getCustomerInfo(customerId) {
       axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/customers/${customerId}`).then((response) => {
@@ -53,7 +69,10 @@ export default {
 <template>
   <div class="container">
     <h1 class="text-center">Mis pedidos</h1>
-    <div v-if="loading" class="container text-center" style="padding-top: 20px;">
+    <div v-if="errorMessage" class="container text-center" style="padding-top: 20px;">
+      <h4 style="color: red;" id="error-message">{{ errorMessage }}</h4>
+    </div>
+    <div v-else-if="loading" class="container text-center" style="padding-top: 20px;">
       <h4>Cargando pedidos...</h4>
       <div class="spinner-border" role="status"></div>
     </div>
