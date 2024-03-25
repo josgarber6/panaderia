@@ -139,16 +139,16 @@ AUTHENTICATION_BACKENDS = [
 
 # Two Factor Authentication Configuration
 
-LOGIN_URL = 'two_factor:login'
 TWO_FACTOR_PATCH_ADMIN = False
 TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
 TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
 TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 
-LOGIN_REDIRECT_URL = config('FRONTEND_BASE_URL')
-LOGOUT_REDIRECT_URL = config('FRONTEND_BASE_URL')
+LOGIN_REDIRECT_URL = FRONTEND_BASE_URL
+LOGOUT_REDIRECT_URL = FRONTEND_BASE_URL
 TWO_FACTOR_SETUP_URL = 'two_factor:setup'
 LOGIN_URL = 'two_factor:login'
+OTP_LOGIN_URL = 'two_factor:setup'
 
 LOGGING = {
     'version': 1,

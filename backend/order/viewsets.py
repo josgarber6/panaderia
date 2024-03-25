@@ -101,6 +101,8 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
     @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
     def my_orders(self, request, *args, **kwargs):
         customer = Customer.objects.get(user=request.user)
+        if not customer.is_two_factor_enabled():
+            return Response({"detail": "Debe activar el doble factor de autenticación para ver sus pedidos."}, status=status.HTTP_403_FORBIDDEN)
         orders = Order.objects.filter(customer=customer)
         return Response(OrderSerializer(orders, many=True).data, status=status.HTTP_200_OK)
 

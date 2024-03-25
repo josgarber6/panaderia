@@ -114,75 +114,46 @@ class CustomerCreationForm(UserCreationForm):
       customer.save()
     return customer
 
-class CustomerLoginForm(AuthenticationForm):
-
-  username = forms.CharField(
-    max_length=127,
-    min_length=4,
-    required=True,
-    label="Usuario",
-    widget=forms.TextInput(
-      attrs={
-        "placeholder": "Usuario",
-        "class": "form-control"
-      }
-    )
-  )
-
-  password = forms.CharField(
-    max_length=254,
-    min_length=5,
-    label="Contraseña",
-    widget=forms.PasswordInput(
-      attrs={
-        "placeholder": "Contraseña",
-        "class": "form-control"
-      }
-    )
-  )
-
-  class Meta:
-    model = User
-    fields = ('username', 'password')
-
-class CustomPasswordChangeForm(forms.Form):
+class PasswordChangeForm(forms.Form):
 
   old_password = forms.CharField(
     max_length=254,
-    min_length=5,
-    label="Contraseña Actual",
+    min_length=4,
+    required=True,
+    label="Contraseña Antigua",
     widget=forms.PasswordInput(
       attrs={
-        "placeholder": "Introduzca su contraseña actual",
-        "class": "form-control"
+        "placeholder": "Contraseña Antigua",
+        "class": "form-control",
+        "id": "password-input"
       }
     )
   )
 
-  new_password1 = forms.CharField(
+  new_password = forms.CharField(
     max_length=254,
     min_length=5,
     label="Nueva Contraseña",
     widget=forms.PasswordInput(
       attrs={
-        "placeholder": "Introduzca su nueva contraseña",
-        "class": "form-control"
+        "placeholder": "Nueva Contraseña",
+        "class": "form-control",
+        "id": "password-input"
       }
     )
   )
 
-  new_password2 = forms.CharField(
-    max_length=254,
-    min_length=5,
-    label="Confirmar Nueva Contraseña",
+  confirm_new_password = forms.CharField(
+    label="Confirmación Nueva Contraseña",
     widget=forms.PasswordInput(
       attrs={
-        "placeholder": "Introduzca de nuevo su nueva contraseña",
-        "class": "form-control"
+        "placeholder": "Confirmación Nueva Contraseña",
+        "class": "form-control",
+        "id": "password-input"
       }
     )
   )
 
   class Meta:
     model = User
-    fields = ('old_password', 'new_password1', 'new_password2')
+    fields = ('old_password', 'new_password', 'confirm_new_password')
