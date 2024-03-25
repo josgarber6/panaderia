@@ -125,11 +125,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "panaderiadb",
-        "USER": "panaderiauser",
-        "PASSWORD": "panaderiauserpass",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT"),
     }
 }
 
@@ -145,8 +145,8 @@ TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_facto
 TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
 TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 
-LOGIN_REDIRECT_URL = 'http://localhost:5173/'
-LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
+LOGIN_REDIRECT_URL = config('FRONTEND_BASE_URL')
+LOGOUT_REDIRECT_URL = config('FRONTEND_BASE_URL')
 TWO_FACTOR_SETUP_URL = 'two_factor:setup'
 LOGIN_URL = 'two_factor:login'
 

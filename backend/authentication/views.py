@@ -20,7 +20,7 @@ def signup_view(request):
         return redirect('signup_complete')
     else:
         form = CustomerCreationForm()
-    return render(request, 'authentication/signup.html', {'form': form})
+    return render(request, 'authentication/signup.html', {'form': form, 'home_url': settings.FRONTEND_BASE_URL})
 
 class SignupCompleteView(TemplateView):
     template_name = 'authentication/signup_complete.html'
@@ -28,11 +28,12 @@ class SignupCompleteView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['two_factor_setup_url'] = resolve_url(settings.TWO_FACTOR_SETUP_URL)
+        context['home_url'] = settings.FRONTEND_BASE_URL
         return context
     
 def logout_view(request):
   logout(request)
-  return redirect('http://localhost:5173/')
+  return redirect(settings.LOGOUT_REDIRECT_URL)
 
 
 def get_username_from_session(request):
@@ -58,7 +59,7 @@ def change_password_view(request):
       if form.is_valid():
           # change password
           form.save()
-          return redirect('http://localhost:5173/')
+          return redirect(settings.LOGIN_REDIRECT_URL)
   else:
       form = PasswordChangeForm(user=request.user)
   return render(request, 'authentication/change_password.html', {'form': form})
