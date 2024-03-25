@@ -1,17 +1,20 @@
 <script>
 
-  import axios from 'axios';
   import { RouterLink } from 'vue-router';
+  import logo from '@/assets/LogoPanaderia.png';
+  import cart from '@/assets/cart.png';
+  import hamburguer from '@/assets/hamburger_icon.png';
 
   export default {
     data() {
         return {
             user: null,
-            imageUrl: 'http://localhost:5173/src/assets/LogoPanaderia.png',
-            cart: 'http://localhost:5173/src/assets/cart.png',
+            logo,
+            cart,
             sessionId: '',
             windowWidth: 0,
-            hamburguer: 'http://localhost:5173/src/assets/hamburger_icon.png',
+            hamburguer,
+            base_url: import.meta.env.VITE_APP_BASE_URL_SHORT,
         };
     },
     created() {
@@ -41,7 +44,7 @@
       <div id="bg-color" class="p-3" style="display: flex; flex-direction: row; justify-content: center;">
         <div style="display: flex; flex-direction: column; justify-content: center;">
           <RouterLink to="/">
-            <img :src="imageUrl" alt="US" class="img-fluid col-md-3" id="logo">
+            <img :src="logo" alt="US" class="img-fluid col-md-3" id="logo">
           </RouterLink>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: left;">
@@ -56,15 +59,15 @@
               <div class="dropdown">
                 <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                 <div class="dropdown-content">
-                  <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
-                  <a href="http://localhost:8000/account/two_factor/setup">Activar doble factor</a>
-                  <a href="http://localhost:5173/order/my_orders">Mis pedidos</a>
+                  <a :href="base_url + 'account/change-password'">Cambiar contraseña</a>
+                  <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
+                  <RouterLink to="/order/my_orders">Mis pedidos</RouterLink>
                 </div>
               </div>
             </div>
           </div>
           <div id="column-display" style="margin-left: 10px;">
-            <a class="btn btn-secondary" id="logout" href="http://localhost:8000/account/logout">Cerrar Sesión</a>
+            <a class="btn btn-secondary" id="logout" :href="base_url + 'account/logout'">Cerrar Sesión</a>
           </div>
           <div id="column-display" style="margin-left: 10px;">
             <router-link to="/cart">
@@ -78,10 +81,10 @@
         <template v-else>
           <div id="account-setup">
             <div id="column-display">
-              <a class="btn btn-secondary" id="login" href="http://localhost:8000/account/login">Iniciar Sesión</a>
+              <a class="btn btn-secondary" id="login" :href="base_url + 'account/login'">Iniciar Sesión</a>
             </div>
             <div id="column-display">
-              <a class="btn btn-secondary" id="signup" href="http://localhost:8000/account/signup">Registrarse</a>
+              <a class="btn btn-secondary" id="signup" :href="base_url + 'account/signup'">Registrarse</a>
             </div>
             <div id="column-display" style="margin-left: 10px;">
               <router-link to="/cart">
@@ -104,7 +107,7 @@
       <nav class="navbar navbar-expand-lg navbar-custom">
         <div style="display: flex; flex-direction: column; justify-content: center;">
           <RouterLink to="/">
-            <img :src="imageUrl" alt="US" class="img-fluid col-md-3" id="logo">
+            <img :src="logo" alt="US" class="img-fluid col-md-3" id="logo">
           </RouterLink>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: center; margin-left: auto;">
@@ -126,41 +129,41 @@
                 <div class="dropdown">
                   <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                   <div class="dropdown-content">
-                    <a href="http://localhost:8000/account/change-password">Cambiar contraseña</a>
-                    <a href="http://localhost:8000/account/two_factor/setup">Activar doble factor</a>
-                    <a href="http://localhost:5173/order/my_orders">Mis pedidos</a>
+                    <a :href="base_url + 'account/change-password'">Cambiar contraseña</a>
+                    <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
+                    <RouterLink to="/order/my_orders">Mis pedidos</RouterLink>
                   </div>
                 </div>
               </div>
               <div id="column-display" style="margin-left: 10px;">
-                <a class="btn btn-secondary" id="logout" href="http://localhost:8000/account/logout">Cerrar Sesión</a>
+                <a class="btn btn-secondary" id="logout" :href="base_url + 'account/logout'">Cerrar Sesión</a>
               </div>
             </div>
             <div id="column-display" style="margin-top: 5px;">
-              <router-link to="/cart">
+              <RouterLink to="/cart">
                 <img :src="cart" alt="Cart" width="40" height="40"/>
                 <span class="badge" style="color: aliceblue; background-color: #6b4d1f;">
                   {{ this.$store.getters.totalItems }}
                 </span>
-              </router-link>
+              </RouterLink>
             </div>
           </template>
           <template v-else>
             <div id="account-setup">
               <div id="column-display">
-                <a class="btn btn-secondary" id="login" href="http://localhost:8000/account/login">Iniciar Sesión</a>
+                <a class="btn btn-secondary" id="login" :href="base_url + 'account/login'">Iniciar Sesión</a>
               </div>
               <div id="column-display">
-                <a class="btn btn-secondary" id="signup" href="http://localhost:8000/account/signup">Registrarse</a>
+                <a class="btn btn-secondary" id="signup" :href="base_url + 'account/signup'">Registrarse</a>
               </div>
             </div>
               <div id="column-display">
-                <router-link to="/cart">
+                <RouterLink to="/cart">
                   <img :src="cart" alt="Cart" width="40" height="40"/>
                   <span class="badge" style="color: aliceblue; background-color: #6b4d1f;">
                     {{ this.$store.getters.totalItems }}
                   </span>
-                </router-link>
+                </RouterLink>
               </div>
           </template>
         </div>
