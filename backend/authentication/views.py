@@ -5,6 +5,7 @@ from .forms import CustomerCreationForm
 from django.views.generic import TemplateView
 from django_otp.decorators import otp_required
 from django.conf import settings
+from django.contrib import messages
 # Session cookies
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
