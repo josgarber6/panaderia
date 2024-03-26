@@ -114,34 +114,46 @@ class CustomerCreationForm(UserCreationForm):
       customer.save()
     return customer
 
-class CustomerLoginForm(AuthenticationForm):
+class PasswordChangeForm(forms.Form):
 
-  username = forms.CharField(
-    max_length=127,
+  old_password = forms.CharField(
+    max_length=254,
     min_length=4,
     required=True,
-    label="Usuario",
-    widget=forms.TextInput(
+    label="Contraseña Antigua",
+    widget=forms.PasswordInput(
       attrs={
-        "placeholder": "Usuario",
-        "class": "form-control"
+        "placeholder": "Contraseña Antigua",
+        "class": "form-control",
+        "id": "password-input"
       }
     )
   )
 
-  password = forms.CharField(
+  new_password = forms.CharField(
     max_length=254,
     min_length=5,
-    label="Contraseña",
+    label="Nueva Contraseña",
     widget=forms.PasswordInput(
       attrs={
-        "placeholder": "Contraseña",
-        "class": "form-control"
+        "placeholder": "Nueva Contraseña",
+        "class": "form-control",
+        "id": "password-input"
+      }
+    )
+  )
+
+  confirm_new_password = forms.CharField(
+    label="Confirmación Nueva Contraseña",
+    widget=forms.PasswordInput(
+      attrs={
+        "placeholder": "Confirmación Nueva Contraseña",
+        "class": "form-control",
+        "id": "password-input"
       }
     )
   )
 
   class Meta:
     model = User
-    fields = ('username', 'password')
-
+    fields = ('old_password', 'new_password', 'confirm_new_password')
