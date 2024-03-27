@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db import models
 
 # Create your models here.
@@ -26,3 +25,16 @@ class Product(models.Model):
     
     class Meta:
         ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        '''
+        Comprueba si la imagen del producto ha cambiado y elimina la anterior del sistema de archivos.
+        '''
+        if self.stock < 0 and self.category.name != "Pico":
+            self.stock = 2**31 - 1
+        try:
+            this = Product.objects.get(id=self.id)
+            if this.image != self.image:
+                this.image.delete(save=False)
+        except: pass
+        super(Product, self).save(*args, **kwargs)
