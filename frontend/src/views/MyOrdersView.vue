@@ -4,6 +4,12 @@ import Footer from '@/components/Footer.vue';
 import MyOrders from '@/components/Order/MyOrders.vue';
 
 export default {
+  data() {
+    return {
+      // Declaramos orders para poder pasarla como prop a MyOrders
+      orders: [],
+    };
+  },
   components: {
     Navbar,
     Footer,
@@ -14,7 +20,12 @@ export default {
 
 <template>
   <Navbar />
-  <MyOrders style="margin-bottom: 120px;"/>
-  <Footer id="footer-bottom"/>
-
+  <MyOrders :orders="orders"/>
+  <!-- Gracias a orders en el return podemos ajustar el footer -->
+  <template v-if="orders.length === 0">
+    <Footer id="footer-bottom"/>
+  </template>
+  <template v-else>
+    <Footer/>
+  </template>
 </template>

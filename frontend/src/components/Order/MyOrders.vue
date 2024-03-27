@@ -5,7 +5,6 @@ import moment from 'moment';
 export default {
   data() {
     return {
-      orders: [],
       customer: null,
       products: {},
       loading: false,

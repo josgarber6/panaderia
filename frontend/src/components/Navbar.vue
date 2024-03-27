@@ -47,12 +47,29 @@
             <img :src="logo" alt="US" class="img-fluid col-md-3" id="logo">
           </RouterLink>
         </div>
-        <div style="display: flex; flex-direction: row; justify-content: left;">
-          <h5 style="display: flex; flex-direction: column; justify-content: center;">
-            <RouterLink to="/products" style="color: white;">Productos</RouterLink>
-          </h5>
-        </div>
-        
+        <template v-if="this.$store.state.isAdmin">
+          <div style="display: flex; flex-direction: row; justify-content: left;">
+            <div id="column-display">
+              <div id="account-setup">
+                <div class="dropdown">
+                  <button class="dropbtn" style="color: white;">Administración</button>
+                  <div class="dropdown-content">
+                    <RouterLink to="/admin/products">Productos</RouterLink>
+                    <RouterLink to="/admin/categories">Categorías</RouterLink>
+                    <RouterLink to="/admin/orders">Pedidos</RouterLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div style="display: flex; flex-direction: row; justify-content: left;">
+            <h5 style="display: flex; flex-direction: column; justify-content: center;">
+              <RouterLink to="/products" style="color: white;">Productos</RouterLink>
+            </h5>
+          </div>
+        </template>
         <template v-if="this.$store.state.authenticated">
           <div id="account-setup">
             <div id="column-display">
@@ -120,9 +137,27 @@
           </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <h5>
-            <RouterLink to="/products" style="color: white;">Productos</RouterLink>
-          </h5>
+          <template v-if="this.$store.state.isAdmin">
+            <div style="display: flex; flex-direction: row; justify-content: left; margin-bottom: 5px;">
+              <div id="column-display">
+                <div id="account-setup">
+                  <div class="dropdown">
+                    <button class="dropbtn" style="color: white;">Administración</button>
+                    <div class="dropdown-content">
+                      <RouterLink to="/admin/products">Productos</RouterLink>
+                      <RouterLink to="/admin/categories">Categorías</RouterLink>
+                      <RouterLink to="/admin/orders">Pedidos</RouterLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <h5>
+              <RouterLink to="/products" style="color: white;">Productos</RouterLink>
+            </h5>
+          </template>
           <template v-if="this.$store.state.authenticated">
             <div id="account-setup">
               <div id="column-display" style="margin-top: 5px;">

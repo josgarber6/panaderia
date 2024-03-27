@@ -38,19 +38,33 @@ def logout_view(request):
 
 
 def get_username_from_session(request):
-    session_id = request.COOKIES['sessionid']
     try:
+        session_id = request.COOKIES['sessionid']
         session = Session.objects.get(session_key=session_id)
         user_id = session.get_decoded().get('_auth_user_id')
         user = User.objects.get(pk=user_id)
-        customer = Customer.objects.get(user=user)
-        return JsonResponse({'username': user.username,
+        if user.is_superuser or user.is_staff:
+            checkadmin = Customer.objects.filter(user=user).count() == 0
+            if(Customer.objects.filter(user=user).count() == 0):
+                # Create customer if it doesn't exist
+                admin_customer = Customer.objects.create(user=user)
+                admin_customer.save()
+            admin_customer = Customer.objects.get(user=user)
+            return JsonResponse({'username': user.username,
+                                 'email': user.email,
+                                 'first_name': user.first_name, 
+                                 'last_name': user.last_name,
+                                 'isTwoFactorEnabled': admin_customer.is_two_factor_enabled(),
+                                 'isAdmin': True})
+        else:
+            customer = Customer.objects.get(user=user)
+            return JsonResponse({'username': user.username,
                              'email': user.email,
                              'first_name': user.first_name, 
                              'last_name': user.last_name,
                              'isTwoFactorEnabled': customer.is_two_factor_enabled()})
-    except (Session.DoesNotExist, KeyError, User.DoesNotExist):
-        return JsonResponse({'error': 'Session not found or user does not exist'}, status=400)
+    except (Session.DoesNotExist, KeyError, Customer.DoesNotExist):
+        return JsonResponse({'error': 'Session not found or customer does not exist'}, status=400)
 
 
 @otp_required
