@@ -23,12 +23,15 @@ import PaymentCompleted from '../components/Payment/PaymentCompleted.vue'
 import PaymentCancelled from '../components/Payment/PaymentCancelled.vue'
 import OrderCompleted from '@/components/Order/OrderCompleted.vue'
 import AdminEditProduct from '@/components/Product/AdminEditProduct.vue'
+import AdminCreateProduct from '@/components/Product/AdminCreateProduct.vue'
+import AdminEditCategory from '@/components/Product/AdminEditCategory.vue'
+import AdminCreateCategory from '@/components/Product/AdminCreateCategory.vue'
 
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import MyOrdersView from '@/views/MyOrdersView.vue'
 import AdminProductsView from '@/views/AdminProductsView.vue'
-import AdminCreateProduct from '@/components/Product/AdminCreateProduct.vue'
+import AdminCategoriesView from '@/views/AdminCategoriesView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
