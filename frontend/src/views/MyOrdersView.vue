@@ -4,6 +4,11 @@ import Footer from '@/components/Footer.vue';
 import MyOrders from '@/components/Order/MyOrders.vue';
 
 export default {
+  data() {
+    return {
+      orders: [],
+    };
+  },
   components: {
     Navbar,
     Footer,
@@ -14,7 +19,11 @@ export default {
 
 <template>
   <Navbar />
-  <MyOrders style="margin-bottom: 120px;"/>
-  <Footer id="footer-bottom"/>
-
+  <MyOrders :orders="orders"/>
+  <template v-if="orders.length === 0">
+    <Footer id="footer-bottom"/>
+  </template>
+  <template v-else>
+    <Footer/>
+  </template>
 </template>

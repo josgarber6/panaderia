@@ -1,6 +1,6 @@
 <script>
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
 import axios from 'axios';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
