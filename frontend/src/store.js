@@ -10,7 +10,7 @@ export default createStore({
     isAdmin: false,
     authenticated: false,
     orderId: null,
-    productAlertMessage: null,
+    alertMessage: null,
   },
   getters: {
     totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
@@ -74,8 +74,8 @@ export default createStore({
     SET_ORDER_ID(state, value) {
       state.orderId = value;
     },
-    SET_PRODUCT_ALERT_MESSAGE(state, value) {
-      state.productAlertMessage = value;
+    SET_ALERT_MESSAGE(state, value) {
+      state.alertMessage = value;
     },
   },
   actions: {

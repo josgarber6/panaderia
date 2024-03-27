@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
 
 export default {
   name: 'AdminCreateProduct',
@@ -14,8 +15,8 @@ export default {
       product: {
         name: '',
         description: '',
-        price: 0,
-        stock: 0,
+        price: null,
+        stock: null,
         category: 1,
         image: null,
         windowWidth: 0,
@@ -80,7 +81,7 @@ export default {
           .then((response) => {
           if (response.status === 201) {
             // Mostramos un mensaje de éxito, cuya configuración se encuentra en el store.js
-            this.$store.commit('SET_PRODUCT_ALERT_MESSAGE', 'Producto creado correctamente');
+            this.$store.commit('SET_ALERT_MESSAGE', 'Producto creado correctamente');
           }
           // Redirigimos a la vista de productos
           this.$router.push('/admin/products');
@@ -136,7 +137,7 @@ export default {
         </div>
         <div class="form-group d-flex align-items-center">
           <label for="stock" class="mr-2">Stock</label>
-          <input type="number" class="form-control" id="stock" v-model="product.stock" style="width: fit-content;"><label style="margin-left: 5px;">unidades</label>
+          <input type="number" class="form-control" id="stock" min="0" placeholder="50" v-model="product.stock" style="width: fit-content;"><label style="margin-left: 5px;">unidades</label>
         </div>
         <div class="form-group">
           <label for="category">Categor&#237;a</label>

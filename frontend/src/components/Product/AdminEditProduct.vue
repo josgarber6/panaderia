@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
 
 export default {
   name: 'AdminEditProduct',
@@ -80,7 +81,7 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            this.$store.commit('SET_PRODUCT_ALERT_MESSAGE', 'Producto actualizado correctamente');
+            this.$store.commit('SET_ALERT_MESSAGE', 'Producto actualizado correctamente');
           }
           this.$router.push('/admin/products');
           })

@@ -6,6 +6,7 @@ import MyOrders from '@/components/Order/MyOrders.vue';
 export default {
   data() {
     return {
+      // Declaramos orders para poder pasarla como prop a MyOrders
       orders: [],
     };
   },
@@ -20,6 +21,7 @@ export default {
 <template>
   <Navbar />
   <MyOrders :orders="orders"/>
+  <!-- Gracias a orders en el return podemos ajustar el footer -->
   <template v-if="orders.length === 0">
     <Footer id="footer-bottom"/>
   </template>

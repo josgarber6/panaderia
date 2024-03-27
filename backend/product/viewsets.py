@@ -99,3 +99,23 @@ class ProductViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+    def check_permissions(self, request):
+        '''
+        Comprueba que el usuario sea administrador y tenga el doble factor de autenticación activado para crear o actualizar una categoría.
+        '''
+        super().check_permissions(request)
+        if request.method == 'GET':
+            return
+        admin_customer = Customer.objects.get(user=request.user)
+        if request.method == 'POST':
+            if not request.user.is_authenticated or not request.user.is_staff:
+                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para crear una categoría"})
+            if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
+                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para crear una categoría"})
+        
+        if request.method == 'PUT' or request.method == 'PATCH':
+            if not request.user.is_authenticated or not request.user.is_staff:
+                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para actualizar una categoría"})
+            if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
+                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para actualizar una categoría"})
