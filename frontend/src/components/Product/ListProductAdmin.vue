@@ -34,7 +34,7 @@ export default {
             })
               .then((response) => {
                 if (response.status === 204) {
-                  this.$store.commit('SET_PRODUCT_ALERT_MESSAGE', 'Producto eliminado correctamente');
+                  this.$store.commit('SET_ALERT_MESSAGE', 'Producto eliminado correctamente');
                 }
                 this.getProducts();
               })
@@ -42,16 +42,18 @@ export default {
                 console.log(error);
               });
           }
-        } else {
+        } else if (action === 'edit') {
           this.$router.push(`${path}${productId}/edit`);
+        } else {
+          this.$router.push(path);
         }
       } else {
         alert('Necesitas tener habilitado el doble factor de autenticación para realizar esta acción');
       }
     },
-    clearProductAlertMessage() {
+    clearAlertMessage() {
       setTimeout(() => {
-        this.$store.commit('SET_PRODUCT_ALERT_MESSAGE', null);
+        this.$store.commit('SET_ALERT_MESSAGE', null);
       }, 5000);
     },
   },
@@ -59,15 +61,15 @@ export default {
     this.getProducts();
     this.$store.dispatch('loadCart')
     this.$store.dispatch('loadCategories');
-    this.clearProductAlertMessage();
+    this.clearAlertMessage();
   },
 }
 </script>
 
 <template>
   <div class="container mt-4">
-    <div v-if="$store.state.productAlertMessage" class="alert alert-success">
-      {{ $store.state.productAlertMessage }}
+    <div v-if="$store.state.alertMessage" class="alert alert-success">
+      {{ $store.state.alertMessage }}
     </div>
     <div class="row">
       <h3>Cat&#225;logo de productos</h3>
