@@ -7,8 +7,10 @@ export default createStore({
     categories: [],
     showPaymentOptions: false,
     user: null,
+    isAdmin: false,
     authenticated: false,
     orderId: null,
+    productAlertMessage: null,
   },
   getters: {
     totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
@@ -60,12 +62,20 @@ export default createStore({
     },
     SET_USER(state, user) {
       state.user = user;
+      if (user.isAdmin) {
+        state.isAdmin = true;
+      } else {
+        state.isAdmin = false;
+      }
     },
     SET_AUTHENTICATED(state, value) {
       state.authenticated = value;
     },
     SET_ORDER_ID(state, value) {
       state.orderId = value;
+    },
+    SET_PRODUCT_ALERT_MESSAGE(state, value) {
+      state.productAlertMessage = value;
     },
   },
   actions: {
@@ -144,7 +154,7 @@ export default createStore({
     },
     getUserInfo({ commit }) {
       axios.defaults.withCredentials = true;
-      axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/get-username-from-session/`)
+      return axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/get-username-from-session/`)
         .then(response => {
           commit('SET_USER', response.data);
           commit('SET_AUTHENTICATED', true);
