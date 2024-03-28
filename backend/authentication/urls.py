@@ -10,6 +10,7 @@ urlpatterns = [
   path('change-password/', views.change_password_view, name='change_password'),
   path('change-password/done/', views.change_password_done_view, name='change_password_done'),
   path('get-username-from-session/', views.get_username_from_session, name='get-username-from-session'),
+  path('get-user-info/<int:userId>', views.get_user_info, name='get-user-info'),
 ]
 
 router = routers.SimpleRouter()
