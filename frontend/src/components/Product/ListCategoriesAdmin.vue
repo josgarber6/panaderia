@@ -24,7 +24,7 @@ export default {
           if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
             axios.delete(`${import.meta.env.VITE_APP_BASE_URL}categories/${categoryId}/`, {
               headers: {
-                'X-CSRFToken': document.cookie.split('=')[1],
+                'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1],
               },
             })
               .then((response) => {

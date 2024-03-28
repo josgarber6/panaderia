@@ -23,7 +23,7 @@ export default {
       // Creamos un objeto FormData para enviar los datos de la categoría
       const formData = new FormData();
       formData.append('name', this.category.name);
-      const csrf_token = document.cookie.split('=')[1];
+      const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       try {
         return axios.post(`${import.meta.env.VITE_APP_BASE_URL}categories/`, formData, {
           headers: {
@@ -67,7 +67,7 @@ export default {
     </div>
     <div class="column">
       <div style="display: flex; flex-direction: column; justify-content: center;">
-        <div class="form-group d-flex align-items-center justify-content-center">
+        <div class="form-group-centered">
           <label for="name" class="mr-2">Nombre</label>
           <input type="text" class="form-control" id="name" placeholder="Ej. Integral" v-model="category.name" style="width: fit-content;">
         </div>
