@@ -97,6 +97,18 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
             return Response(OrderSerializer(orders, many=True).data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
+        
+    def update(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            return super().update(request, *args, **kwargs)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+    def destroy(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            return super().delete(request, *args, **kwargs)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
     
     @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
     def my_orders(self, request, *args, **kwargs):
@@ -105,7 +117,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
             return Response({"detail": "Debe activar el doble factor de autenticación para ver sus pedidos."}, status=status.HTTP_403_FORBIDDEN)
         orders = Order.objects.filter(customer=customer)
         return Response(OrderSerializer(orders, many=True).data, status=status.HTTP_200_OK)
-
+    
 class OrderItemViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
