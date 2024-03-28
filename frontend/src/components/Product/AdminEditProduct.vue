@@ -45,10 +45,11 @@ export default {
       const imageFile = event.target.files[0];
       const formData = new FormData();
       formData.append('image', imageFile);
+      const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       return axios.post(`${import.meta.env.VITE_APP_BASE_URL}products/check-image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': document.cookie.split('=')[1],
+          'X-CSRFToken': csrf_token,
         },
       })
         .then(response => {
@@ -71,7 +72,7 @@ export default {
       } else {
         formData.append('image', this.product.image);
       }
-      const csrf_token = document.cookie.split('=')[1];
+      const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       try {
         axios.put(`${import.meta.env.VITE_APP_BASE_URL}products/${this.productId}/`, formData, {
           headers: {
@@ -166,7 +167,8 @@ export default {
   <!-- Si nos encontramos ante una pantalla más o menos pequeña en cuanto a altura y/o anchura, el footer se va a mostrar abajo
   sin entorpecer a los botones de Acutalizar y cancelar
   Se ha probado con una pantalla de 1536 x 703 px y en una pantalla de 1920 x 919 px -->
-  <Footer id="footer-bottom" v-if="windowWidth >= 1920 || windowHeight >= 900"/>
+  <Footer v-if="message"/>
+  <Footer id="footer-bottom" v-else-if="windowWidth >= 1920 || windowHeight >= 900"/>
   <Footer v-else/>
 </template>
 
