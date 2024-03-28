@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import lupa from '@/assets/lupa.png';
 
 export default {
   data() {
@@ -13,7 +14,9 @@ export default {
       loading: false,
       errorMessage: '',
       currentPage: 1,
-      ordersPerPage: 2,
+      ordersPerPage: 5,
+      searchTerm: '',
+      lupa
     };
   },
   components: {
@@ -82,7 +85,7 @@ export default {
     },
     getPaginatedOrders() {
       const start = (this.currentPage - 1) * this.ordersPerPage;
-      return this.orders.slice(start, start + this.ordersPerPage);
+      return this.filteredOrders.slice(start, start + this.ordersPerPage);
     },
     formatDate(date) {
       return moment(date).format('DD/MM/YYYY HH:mm');
@@ -130,12 +133,31 @@ export default {
     }
     this.clearAlertMessage();
   },
+  computed: {
+    // Filtramos los pedidos por nombre, apellido o ID de pedido
+    // no es necesario que se declare en data porque no se va a modificar
+    filteredOrders() {
+      return this.orders.filter(order => {
+        const customer = this.customers[order.customer];
+        if (customer && customer.user) {
+          return customer.user.first_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            customer.user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+            order.id.toString().includes(this.searchTerm.toLowerCase());
+        }
+        return false;
+      });
+    },
+  },
 };
 </script>
 
 <template>
   <Navbar/>
   <div class="container mt-4">
+    <div style="display: flex; margin-bottom: 20px;">
+      <input v-model="searchTerm" type="text" class="form-control" placeholder="Buscar por nombre, apellido o ID de pedido" style="width: 360px;"/>
+      <img :src="lupa" alt="lupa" style="width: 20px; height: 20px; margin-left: -30px; margin-top: 10px;"/>
+    </div>
     <div v-if="$store.state.alertMessage" class="alert alert-success">
       {{ $store.state.alertMessage }}
     </div>
@@ -150,8 +172,13 @@ export default {
     <div v-else-if="orders.length === 0" class="container text-center" style="padding-top: 20px;">
       <h4>No hay pedidos</h4>
     </div>
+    <div v-else-if="filteredOrders.length === 0" class="container text-center" style="padding-top: 20px;">
+      <h4>No se encontraron pedidos</h4>
+    </div>
     <div v-for="order in getPaginatedOrders()" :key="order.id" class="container" style="padding-top: 20px;">
-      <h2>{{ customers[order.customer].user.first_name }} {{ customers[order.customer].user.last_name }}</h2>
+      <h2 v-if="customers[order.customer] && customers[order.customer].user">
+        {{ customers[order.customer].user.first_name }} {{ customers[order.customer].user.last_name }}
+      </h2>
       <div style="display: flex; justify-content: flex-start;">
         <h3>Pedido {{ order.id }}</h3>
         <button class="btn btn-primary" @click="showPermissionMessage(order.id, '/admin/orders/', 'edit')" 
@@ -225,9 +252,10 @@ export default {
       <button class="btn btn-secondary" @click="nextPage" :disabled="currentPage * ordersPerPage >= orders.length">Siguiente</button>
     </div>
   </div>
-  <Footer v-if="orders.length > 0"/>
+  <Footer v-if="searchTerm && filteredOrders.length === 0" id="footer-bottom"/>
+  <Footer v-else-if="orders.length > 0"/>
   <Footer v-else id="footer-bottom"/>
-</template>
+  </template>
 
 <style>
 
