@@ -21,15 +21,15 @@ class ProductViewSet(viewsets.ModelViewSet):
         admin_customer = Customer.objects.get(user=request.user)
         if request.method == 'POST':
             if not request.user.is_authenticated or not request.user.is_staff:
-                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para crear un producto"})
+                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para crear un producto."})
             if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
-                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para crear un producto"})
+                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para crear un producto."})
         
         if request.method == 'PUT' or request.method == 'PATCH':
             if not request.user.is_authenticated or not request.user.is_staff:
-                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para actualizar un producto"})
+                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para actualizar un producto."})
             if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
-                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para actualizar un producto"})
+                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para actualizar un producto."})
     
     @action(detail=False, methods=['post'], url_path='check-image', url_name='check-image')
     def check_image(self, request):
@@ -83,6 +83,9 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         if float(data['price']) <= 0:
             return JsonResponse({"detail": "El precio del producto no puede ser negativo ni cero"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if data['category'] == 'null':
+            return JsonResponse({"detail": "La categoría del producto es requerida"}, status=status.HTTP_400_BAD_REQUEST)
         
         serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
