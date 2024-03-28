@@ -29,7 +29,7 @@ export default {
           if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
             axios.delete(`${import.meta.env.VITE_APP_BASE_URL}products/${productId}/`, {
               headers: {
-                'X-CSRFToken': document.cookie.split('=')[1],
+                'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1],
               },
             })
               .then((response) => {

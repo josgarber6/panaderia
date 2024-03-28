@@ -42,10 +42,11 @@ export default {
       const imageFile = event.target.files[0];
       const formData = new FormData();
       formData.append('image', imageFile);
+      const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       return axios.post(`${import.meta.env.VITE_APP_BASE_URL}products/check-image/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': document.cookie.split('=')[1],
+          'X-CSRFToken': csrf_token,
         },
       })
         .then(response => {
@@ -70,7 +71,7 @@ export default {
       for (let key in this.product) {
         formData.append(key, this.product[key]);
       }
-      const csrf_token = document.cookie.split('=')[1];
+      const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       try {
         return axios.post(`${import.meta.env.VITE_APP_BASE_URL}products/`, formData, {
           headers: {

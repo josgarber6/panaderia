@@ -134,7 +134,7 @@ export default createStore({
     },
     placeOrder: async ({ dispatch }, orderData) => {
 
-      const csrf_token = document.cookie.split('=')[1];
+      const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       try {
         const response = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}orders/`, orderData, {
           headers: {
