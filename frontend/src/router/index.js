@@ -16,7 +16,7 @@ import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import AdminProductsView from '@/views/AdminProductsView.vue'
 import AdminCategoriesView from '@/views/AdminCategoriesView.vue'
-import AdminStats from '@/components/Product/AdminStats.vue'
+import AdminStatsView from '@/views/AdminStatsView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -107,8 +107,8 @@ const router = createRouter({
     },
     {
       path: '/admin/stats',
-      name: 'AdminStats',
-      component: AdminStats
+      name: 'AdminStatsView',
+      component: AdminStatsView
     }
   ]
 })
