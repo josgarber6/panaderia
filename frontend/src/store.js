@@ -139,6 +139,7 @@ export default createStore({
       commit('SET_PAYMENT_OPTIONS', value);
     },
     orderCompleted({ commit }, orderId) {
+      // Guardar el id del pedido en el estado y en el sessionStorage
       return new Promise((resolve) => {
         commit('SET_ORDER_ID', orderId);
         sessionStorage.setItem('orderId', orderId);
