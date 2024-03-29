@@ -141,10 +141,14 @@ export default {
           <input type="number" class="form-control" id="stock" v-model="product.stock" style="width: fit-content;"><label style="margin-left: 5px;">unidades</label>
         </div>
         <div class="form-group">
-          <label for="category">Categor&#237;a</label>
+          <label for="category">Categor&iacute;a</label>
           <select class="form-control" id="category" v-model="product.category">
             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label for="highlighted" class="mr-2">Destacar</label>
+          <input type="checkbox" id="highlighted" v-model="product.highlighted">
         </div>
         <div class="form-group">
           <label for="image">Imagen actual</label>
@@ -164,12 +168,7 @@ export default {
       </div>
     </div>
   </div>
-  <!-- Si nos encontramos ante una pantalla más o menos pequeña en cuanto a altura y/o anchura, el footer se va a mostrar abajo
-  sin entorpecer a los botones de Acutalizar y cancelar
-  Se ha probado con una pantalla de 1536 x 703 px y en una pantalla de 1920 x 919 px -->
-  <Footer v-if="message"/>
-  <Footer id="footer-bottom" v-else-if="windowWidth >= 1920 || windowHeight >= 900"/>
-  <Footer v-else/>
+  <Footer/>
 </template>
 
 <style scoped>
