@@ -41,11 +41,17 @@ export default {
         const orders = response.data;
         const productCounts = {};
   
+        // Contar el número de veces que se ha comprado cada producto en todos los pedidos
         for (const order of orders) {
+          // Para cada pedido, recorre todos sus artículos
           for (const item of order.items) {
+            // Si el producto ya existe en productCounts
             if (item.product in productCounts) {
+              // Incrementa el conteo del producto por la cantidad del artículo
               productCounts[item.product].count += item.quantity;
             } else {
+              // Si el producto no existe en productCounts, crea una nueva entrada
+              // para el producto con el conteo inicializado a la cantidad del artículo
               productCounts[item.product] = {
                 product: null,
                 count: item.quantity,
@@ -53,13 +59,15 @@ export default {
             }
           }
         }
-  
+        
+        // Obtener la información de cada producto
         const productIds = Object.keys(productCounts);
         await Promise.all(productIds.map(async (productId) => {
           const productResponse = await this.getProductInfo(productId);
           productCounts[productId].product = productResponse.data;
         }));
         
+        // Ordenar los productos por el número de veces que se han comprado
         this.topProducts = Object.values(productCounts)
         .sort((a, b) => b.count - a.count)
         .slice(0, this.numTopProducts);  // Top 10 products
@@ -85,6 +93,7 @@ export default {
         const customers = customersAPI.data;
         const userCounts = {};
   
+        // Inicializar el conteo de pedidos para cada usuario
         for (const customer of customers) {
           userCounts[customer.user] = {
             user: null,
@@ -94,10 +103,12 @@ export default {
         
         const ordersAPI = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders`);
         const orders = ordersAPI.data;
+        // Contar el número de pedidos para cada usuario
         for (const order of orders) {
           userCounts[order.customer].count += 1;
         }
   
+        // Obtener la información de cada usuario
         const userIds = Object.keys(userCounts);
         await Promise.all(userIds.map(async (userId) => {
           const userResponse = await this.getUserInfo(userId);
