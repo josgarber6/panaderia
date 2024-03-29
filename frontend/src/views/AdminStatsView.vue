@@ -20,15 +20,26 @@ export default {
       numTopUsers: 2,
       errorMessage: '',
       loading: false,
+      isBodyTextHidden: false,
     };
   },
   mounted() {
-    axios.get(`${import.meta.env.VITE_APP_BASE_URL}products`).then((response) => {
-      this.totalProducts = response.data.length;
-    });
-    axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders`).then((response) => {
-      this.totalOrders = response.data.length;
-    });
+    Promise.all([
+      axios.get(`${import.meta.env.VITE_APP_BASE_URL}products`).then((response) => {
+        this.totalProducts = response.data.length;
+      }),
+      axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders`).then((response) => {
+        this.totalOrders = response.data.length;
+      })
+    ]).then(() => {
+      window.addEventListener('resize', this.handleResize);
+      this.$nextTick(() => {
+        this.handleResize();
+      });
+    })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     getProductInfo(productId) {
@@ -130,6 +141,9 @@ export default {
         this.loading = false;
       }
     },
+    handleResize() {
+      this.isBodyTextHidden = document.body.scrollHeight > window.innerHeight;
+    }
   },
   async created() {
     setTimeout(() => {
@@ -218,8 +232,7 @@ export default {
       </div>
     </div>
   </div>
-  <Footer v-if="topProducts.length <= 10" id="footer-bottom"/>
-  <Footer v-else/>
+  <Footer :id="isBodyTextHidden ? 'footer-bottom' : ''"/>
 </template>
 
 <style>
