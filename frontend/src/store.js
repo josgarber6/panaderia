@@ -121,20 +121,6 @@ export default createStore({
     setPaymentOptions({ commit }, value) {
       commit('SET_PAYMENT_OPTIONS', value);
     },
-    orderCompleted({ commit }, orderId) {
-      // Guardar el id del pedido en el estado y en el sessionStorage
-      return new Promise((resolve) => {
-        commit('SET_ORDER_ID', orderId);
-        sessionStorage.setItem('orderId', orderId);
-        resolve();
-      });
-    },
-    loadOrderId: ({ commit }) => {
-      const orderId = sessionStorage.getItem('orderId');
-      if (orderId) {
-        commit('SET_ORDER_ID', orderId);
-      }
-    },
     placeOrder: async ({ dispatch }, orderData) => {
       const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       try {
@@ -155,6 +141,20 @@ export default createStore({
       }
       catch (error) {
         console.log(error);
+      }
+    },
+    orderCompleted({ commit }, orderId) {
+      // Guardar el id del pedido en el estado y en el sessionStorage
+      return new Promise((resolve) => {
+        commit('SET_ORDER_ID', orderId);
+        sessionStorage.setItem('orderId', orderId);
+        resolve();
+      });
+    },
+    loadOrderId: ({ commit }) => {
+      const orderId = sessionStorage.getItem('orderId');
+      if (orderId) {
+        commit('SET_ORDER_ID', orderId);
       }
     },
     getUserInfo({ commit }) {

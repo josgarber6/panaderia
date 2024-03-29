@@ -38,6 +38,17 @@ export default {
     removeFromCart(itemId) {
       this.$store.dispatch('removeFromCart', itemId);
     },
+    handleOrder() {
+      if (!this.$store.state.authenticated) {
+        this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para realizar un pedido.'
+        return;
+      }
+      if (!this.$store.state.user.isTwoFactorEnabled) {
+        this.errorMessage = 'Debe activar el doble factor de autenticación para realizar un pedido.'
+        return;
+      }
+      this.showPaymentOptions = true;
+    },
     handleConfirm(data) {
       data.items = this.$store.state.cart;
       this.$store.dispatch('placeOrder', data).then(response => {
@@ -50,24 +61,13 @@ export default {
       this.$store.dispatch('setPaymentOptions', false);
       this.showPaymentOptions = false;
     },
-    getUserInfo() {
-      const store = this.$store;
-      store.dispatch('getUserInfo');
-    },
-    handleOrder() {
-      if (!this.$store.state.authenticated) {
-        this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para realizar un pedido.'
-        return;
-      }
-      if (!this.$store.state.user.isTwoFactorEnabled) {
-        this.errorMessage = 'Debe activar el doble factor de autenticación para realizar un pedido.'
-        return;
-      }
-      this.showPaymentOptions = true;
-    },
     cancel() {
       this.$store.dispatch('setPaymentOptions', false);
       this.showPaymentOptions = false;
+    },
+    getUserInfo() {
+      const store = this.$store;
+      store.dispatch('getUserInfo');
     },
   },
   computed: {
