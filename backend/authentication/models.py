@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
-# Create your models here.
-
 class Customer(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   address = models.CharField(max_length=255)

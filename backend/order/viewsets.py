@@ -1,17 +1,18 @@
-from django.shortcuts import redirect
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .models import Order, OrderItem
-from product.models import Product
-from authentication.models import Customer
-from .serializer import OrderSerializer, OrderItemSerializer
 from decimal import Decimal
-from two_factor.views.mixins import OTPRequiredMixin
+
 import stripe
+from authentication.models import Customer
 from decouple import config
 from django.conf import settings
+from product.models import Product
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from two_factor.views.mixins import OTPRequiredMixin
+
+from .models import Order, OrderItem
+from .serializer import OrderItemSerializer, OrderSerializer
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
@@ -120,7 +121,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
     def my_orders(self, request, *args, **kwargs):
         customer = Customer.objects.get(user=request.user)
         if not customer.is_two_factor_enabled():
-            return Response({"detail": "Debe activar el doble factor de autenticación para ver sus pedidos."}, status=status.HTTP_403_FORBIDDEN)
+            return Response(status=status.HTTP_403_FORBIDDEN)
         orders = Order.objects.filter(customer=customer)
         return Response(OrderSerializer(orders, many=True).data, status=status.HTTP_200_OK)
     
