@@ -1,6 +1,8 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
   data() {
@@ -9,7 +11,12 @@ export default {
       products: {},
       loading: false,
       errorMessage: '',
+      orders: [],
     };
+  },
+  components: {
+    Navbar,
+    Footer,
   },
   methods: {
     async getOrders() {
@@ -66,6 +73,7 @@ export default {
 </script>
 
 <template>
+  <Navbar />
   <div class="container">
     <h1 class="text-center">Mis pedidos</h1>
     <div v-if="errorMessage" class="container text-center" style="padding-top: 20px;">
@@ -142,6 +150,12 @@ export default {
       <div style="padding: 10px;"></div>
     </div>
   </div>
+  <template v-if="orders.length === 0">
+    <Footer id="footer-bottom"/>
+  </template>
+  <template v-else>
+    <Footer/>
+  </template>
 </template>
 
 <style>

@@ -29,7 +29,7 @@ export default {
           if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
             axios.delete(`${import.meta.env.VITE_APP_BASE_URL}products/${productId}/`, {
               headers: {
-                'X-CSRFToken': document.cookie.split('=')[1],
+                'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1],
               },
             })
               .then((response) => {
@@ -72,7 +72,7 @@ export default {
       {{ $store.state.alertMessage }}
     </div>
     <div class="row">
-      <h3>Cat&#225;logo de productos</h3>
+      <h3>Cat&aacute;logo de productos</h3>
     </div>
     <button class="btn btn-primary" @click="showPermissionMessage(null,'/admin/products/new',null)">Crear Producto</button>
     <div class="row">

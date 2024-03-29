@@ -44,7 +44,6 @@ def get_username_from_session(request):
         user_id = session.get_decoded().get('_auth_user_id')
         user = User.objects.get(pk=user_id)
         if user.is_superuser or user.is_staff:
-            checkadmin = Customer.objects.filter(user=user).count() == 0
             if(Customer.objects.filter(user=user).count() == 0):
                 # Create customer if it doesn't exist
                 admin_customer = Customer.objects.create(user=user)
@@ -65,6 +64,17 @@ def get_username_from_session(request):
                              'isTwoFactorEnabled': customer.is_two_factor_enabled()})
     except (Session.DoesNotExist, KeyError, Customer.DoesNotExist):
         return JsonResponse({'error': 'Session not found or customer does not exist'}, status=400)
+    
+def get_user_info(request, userId):
+    try:
+        user = User.objects.get(pk=userId)
+        return JsonResponse({'username': user.username,
+                                'email': user.email,
+                                'first_name': user.first_name, 
+                                'last_name': user.last_name,
+                            })
+    except (KeyError, User.DoesNotExist):
+        return JsonResponse({'error': 'User does not exist'}, status=400)
 
 
 @otp_required

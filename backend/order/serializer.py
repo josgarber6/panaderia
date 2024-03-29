@@ -7,8 +7,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ["product", "price", "quantity"]
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)
+    items = OrderItemSerializer(many=True, read_only=True)
     total_cost = serializers.SerializerMethodField()
+    shipping_status_choices = serializers.SerializerMethodField(read_only=True)
+    payment_method_choices = serializers.SerializerMethodField(read_only=True)
+    shipping_method_choices = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Order
         fields = [
@@ -21,8 +25,20 @@ class OrderSerializer(serializers.ModelSerializer):
             "customer",
             "shipping_status",
             "paid",
-            "total_cost"
+            "total_cost",
+            "shipping_status_choices",
+            "payment_method_choices",
+            "shipping_method_choices",
         ]
     
     def get_total_cost(self, obj):
         return obj.get_total_cost()
+    
+    def get_shipping_status_choices(self, obj):
+        return dict(Order.SHIPPING_STATUS_CHOICES)
+    
+    def get_payment_method_choices(self, obj):
+        return dict(Order.PAYMENT_METHOD_CHOICES)
+    
+    def get_shipping_method_choices(self, obj):
+        return dict(Order.SHIPPING_METHOD_CHOICES)
