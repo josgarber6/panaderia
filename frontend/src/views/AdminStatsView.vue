@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 
 export default {
-  name: 'AdminStats',
+  name: 'AdminStatsView',
   components: {
     Navbar,
     Footer,
@@ -19,6 +19,7 @@ export default {
       topUsers: [],
       numTopUsers: 2,
       errorMessage: '',
+      loading: false,
     };
   },
   mounted() {
@@ -34,6 +35,7 @@ export default {
       return axios.get(`${import.meta.env.VITE_APP_BASE_URL}products/${productId}`);
     },
     async getTopProducts() {
+      this.loading = true;
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders`);
         const orders = response.data;
@@ -69,12 +71,15 @@ export default {
         } else {
           this.errorMessage = 'Ocurrió un error al cargar los productos.'
         }
+      } finally {
+        this.loading = false;
       }
     },
     getUserInfo(userId) {
       return axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/get-user-info/${userId}`);
     },
     async getTopUsers() {
+      this.loading = true;
       try {
         const customersAPI = await axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/customers`)
         const customers = customersAPI.data;
@@ -86,7 +91,6 @@ export default {
             count: 0,
           };
         }
-  
         
         const ordersAPI = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders`);
         const orders = ordersAPI.data;
@@ -111,13 +115,16 @@ export default {
         } else {
           this.errorMessage = 'Ocurrió un error al cargar los usuarios.'
         }
+      } finally {
+        this.loading = false;
       }
     },
   },
-  created() {
-    this.getTopProducts();
+  async created() {
+    setTimeout(() => {
+      this.loading = false;
+    }, await this.getTopProducts(), await this.getTopUsers());
     this.$store.dispatch('loadCategories');
-    this.getTopUsers();
   },
 };
 
@@ -138,7 +145,14 @@ export default {
         <div style="display: flex; justify-content: center; flex-direction: row; margin-bottom: 20px;">
           <h2>Top Productos</h2>
         </div>
-        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none; width: fit-content;">
+        <div v-if="loading" class="container text-center" style="padding-top: 20px;">
+          <h4>Cargando datos...</h4>
+          <div class="spinner-border" role="status"></div>
+        </div>
+        <div v-else-if="topProducts.length === 0" class="container text-center" style="padding-top: 20px;">
+          <h4>No hay datos</h4>
+        </div>
+        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none; width: fit-content;" v-if="!loading">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -163,7 +177,14 @@ export default {
         <div style="display: flex; justify-content: center; flex-direction: row; margin-top: 20px; margin-bottom: 20px;">
           <h2>Top Usuarios</h2>
         </div>
-        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none; width: fit-content;">
+        <div v-if="loading" class="container text-center" style="padding-top: 20px;">
+          <h4>Cargando datos...</h4>
+          <div class="spinner-border" role="status"></div>
+        </div>
+        <div v-else-if="topUsers.length === 0" class="container text-center" style="padding-top: 20px;">
+          <h4>No hay datos</h4>
+        </div>
+        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none; width: fit-content;" v-if="!loading">
           <table class="table table-striped">
             <thead>
               <tr>
