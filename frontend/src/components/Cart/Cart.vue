@@ -3,6 +3,7 @@ import Navbar from '../Navbar.vue'
 import Footer from '../Footer.vue'
 import PaymentOptions from '../Order/PaymentOptions.vue'
 import { mapState } from 'vuex'
+import { RouterLink } from 'vue-router'
 
 export default {
 
@@ -10,6 +11,7 @@ export default {
     Navbar,
     Footer,
     PaymentOptions,
+    RouterLink,
   },
 
   data() {

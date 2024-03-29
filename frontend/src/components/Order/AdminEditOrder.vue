@@ -18,6 +18,7 @@ export default {
   components: {
     Navbar,
     Footer,
+    RouterLink,
   },
   methods: {
     async getOrder() {

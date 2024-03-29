@@ -29,7 +29,7 @@ export default {
   },
 
   methods: {
-    fetchProducts() {
+    getProducts() {
       axios.get(`${import.meta.env.VITE_APP_BASE_URL}products/`)
         .then(response => {
           this.products = response.data
@@ -59,7 +59,7 @@ export default {
     },
   },
   created() {
-    this.fetchProducts()
+    this.getProducts()
     this.$store.dispatch('loadCart')
     this.$store.dispatch('loadCategories');
     this.handleResize();

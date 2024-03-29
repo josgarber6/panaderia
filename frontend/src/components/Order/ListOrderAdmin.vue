@@ -41,6 +41,7 @@ export default {
             ...order.items.map((item) => this.getProductInfo(item.product)),
           ]);
 
+          // Obtenemos la información del usuario asociado al cliente
           const user = await this.getUserInfo(customer.user);
           customer.user = user;
           this.customers[order.customer] = customer;

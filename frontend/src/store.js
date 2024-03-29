@@ -15,6 +15,7 @@ export default createStore({
   getters: {
     totalPrice: state => state.cart.reduce((total, item) => total + item.product.price * item.quantity, 0),
     totalItems: state => state.cart.reduce((total, item) => total + item.quantity, 0),
+    // Devuelve el nombre de la categoría a partir de su id
     getCategoryName: (state) => (id) => {
       const category = state.categories.find(item => item.id === id);
       return category ? category.name : '';
@@ -89,6 +90,7 @@ export default createStore({
       dispatch('saveCart');
     },
     saveCart: ({ state }) => {
+      // Guardar el carrito en el localStorage para que no se pierda al recargar la página
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
     addToCart: ({ commit, dispatch }, item) => {
@@ -120,6 +122,7 @@ export default createStore({
       commit('SET_PAYMENT_OPTIONS', value);
     },
     orderCompleted({ commit }, orderId) {
+      // Guardar el id del pedido en el estado y en el sessionStorage
       return new Promise((resolve) => {
         commit('SET_ORDER_ID', orderId);
         sessionStorage.setItem('orderId', orderId);
@@ -133,7 +136,6 @@ export default createStore({
       }
     },
     placeOrder: async ({ dispatch }, orderData) => {
-
       const csrf_token = document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
       try {
         const response = await axios.post(`${import.meta.env.VITE_APP_BASE_URL}orders/`, orderData, {
@@ -143,7 +145,10 @@ export default createStore({
         });
 
         if (response.status === 201) {
+          // Vaciar el carrito tras realizar el pedido
           dispatch('clearCart');
+
+          // Guardar el id del pedido en el estado para mostrarlo en la vista de confirmación
           dispatch('orderCompleted', response.data.orderId);
           return response;
         }
@@ -153,6 +158,7 @@ export default createStore({
       }
     },
     getUserInfo({ commit }) {
+      // Hacer una petición al backend para obtener la información del usuario
       axios.defaults.withCredentials = true;
       return axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/get-username-from-session/`)
         .then(response => {

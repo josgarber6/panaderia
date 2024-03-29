@@ -19,7 +19,7 @@ export default {
 <template>
   <Navbar />
   <div class="about">
-    <h1 class="title">Acerca de Panadería Sánchez</h1>
+    <h1 class="title">Acerca de Panader&iacute;a S&aacute;nchez</h1>
     <img :src="sanchez" alt="Imagen de la panadería" class="about-image" style="border-radius: 10px; width: 300px; height: 300px;">
     <p class="about-text">
       La empresa familiar Panadería Sánchez, fundada en la tradición panadera, que tiene una historia que se remonta a generaciones, 
