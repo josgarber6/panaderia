@@ -16,6 +16,7 @@ import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import AdminProductsView from '@/views/AdminProductsView.vue'
 import AdminCategoriesView from '@/views/AdminCategoriesView.vue'
+import AdminStats from '@/components/Product/AdminStats.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -103,6 +104,11 @@ const router = createRouter({
       path: '/admin/orders/:orderId/edit',
       name: 'AdminEditOrder',
       component: AdminEditOrder
+    },
+    {
+      path: '/admin/stats',
+      name: 'AdminStats',
+      component: AdminStats
     }
   ]
 })

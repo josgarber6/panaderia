@@ -57,6 +57,7 @@
                     <RouterLink to="/admin/products">Productos</RouterLink>
                     <RouterLink to="/admin/categories">Categorías</RouterLink>
                     <RouterLink to="/admin/orders">Pedidos</RouterLink>
+                    <RouterLink to="/admin/stats">Estad&iacute;sticas</RouterLink>
                   </div>
                 </div>
               </div>
@@ -147,6 +148,7 @@
                       <RouterLink to="/admin/products">Productos</RouterLink>
                       <RouterLink to="/admin/categories">Categorías</RouterLink>
                       <RouterLink to="/admin/orders">Pedidos</RouterLink>
+                      <RouterLink to="/admin/stats">Estad&iacute;sticas</RouterLink>
                     </div>
                   </div>
                 </div>
