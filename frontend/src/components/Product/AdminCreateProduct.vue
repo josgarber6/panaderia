@@ -20,9 +20,9 @@ export default {
         stock: null,
         category: 1,
         image: null,
-        windowWidth: 0,
-        windowHeight: 0,
       },
+      windowWidth: 0,
+      windowHeight: 0,
       categories: [],
       selectedFile: null,
       // mensaje de error si los hay

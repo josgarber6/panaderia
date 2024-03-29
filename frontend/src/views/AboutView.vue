@@ -7,20 +7,31 @@ export default {
   name: 'AboutView',
   data() {
     return {
-      sanchez
+      sanchez,
+      windowHeight: 0,
+      isBodyTextHidden: false,
     }
   },
   components: {
     Navbar,
     Footer
-  }
+  },
+  methods: {
+    handleResize() {
+      this.isBodyTextHidden = document.body.scrollHeight > window.innerHeight;
+    }
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
 }
 </script>
 <template>
   <Navbar />
   <div class="about">
     <h1 class="title">Acerca de Panader&iacute;a S&aacute;nchez</h1>
-    <img :src="sanchez" alt="Imagen de la panadería" class="about-image" style="border-radius: 10px; width: 300px; height: 300px;">
+    <img :src="sanchez" alt="Imagen de la panadería" class="about-image">
     <p class="about-text">
       La empresa familiar Panadería Sánchez, fundada en la tradición panadera, que tiene una historia que se remonta a generaciones, 
       ha sido un pilar en la comunidad desde hace mucho tiempo, ofreciendo productos 
@@ -32,7 +43,7 @@ export default {
       Cada pieza de pan que sale del obrador se evalúa minuciosamente en términos de calidad y sabor, para que la experiencia gastronómica sea inolvidable.
     </p>
   </div>
-  <Footer/>
+  <Footer :id="isBodyTextHidden ? '' : 'footer-bottom'"/>
 </template>
 
 <style scoped>
@@ -50,21 +61,21 @@ export default {
 .about-text {
   font-size: 1.2em;
   line-height: 1.6;
+  font-family: sans-serif;
 }
 
 .about-image {
-  width: 100%;
+  width: 300px;
   height: auto;
   margin-bottom: 1em;
+  border-radius: 10px;
+  justify-self: center;
 }
 
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>

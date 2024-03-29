@@ -17,6 +17,9 @@
             base_url: import.meta.env.VITE_APP_BASE_URL_SHORT,
         };
     },
+    components: {
+      RouterLink,
+    },
     created() {
       window.addEventListener('resize', this.handleResize);
       this.handleResize();
@@ -62,12 +65,18 @@
                 </div>
               </div>
             </div>
+            <h5 style="display: flex; flex-direction: column; justify-content: center; margin-left: 20px;">
+              <RouterLink to="/about" style="color: white;">Sobre Nosotros</RouterLink>
+            </h5>
           </div>
         </template>
         <template v-else>
           <div style="display: flex; flex-direction: row; justify-content: left;">
             <h5 style="display: flex; flex-direction: column; justify-content: center;">
               <RouterLink to="/products" style="color: white;">Productos</RouterLink>
+            </h5>
+            <h5 style="display: flex; flex-direction: column; justify-content: center; margin-left: 20px;">
+              <RouterLink to="/about" style="color: white;">Sobre Nosotros</RouterLink>
             </h5>
           </div>
         </template>
@@ -153,12 +162,18 @@
                   </div>
                 </div>
               </div>
+              <h5 style="display: flex; flex-direction: column; justify-content: center; margin-left: 20px;">
+                <RouterLink to="/about" style="color: white;">Sobre Nosotros</RouterLink>
+              </h5>
             </div>
           </template>
           <template v-else>
+          <div style="display: flex; flex-direction: row; justify-content: left; margin-bottom: 5px;">
             <h5>
               <RouterLink to="/products" style="color: white;">Productos</RouterLink>
+              <RouterLink to="/about" style="color: white; margin-left: 20px">Sobre Nosotros</RouterLink>
             </h5>
+          </div>
           </template>
           <template v-if="this.$store.state.authenticated">
             <div id="account-setup">
