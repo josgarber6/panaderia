@@ -51,7 +51,7 @@ export default {
 <template>
   <div class="container mt-4">
     <div class="row">
-      <h3>Cat&#225;logo de productos</h3>
+      <h3>Cat&aacute;logo de productos</h3>
     </div>
 
     <div class="row">

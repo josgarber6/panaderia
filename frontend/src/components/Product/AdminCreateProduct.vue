@@ -129,7 +129,7 @@ export default {
           <input type="text" class="form-control" id="name" placeholder="Mollete" v-model="product.name">
         </div>
         <div class="form-group">
-          <label for="description">Descripci&#243;n</label>
+          <label for="description">Descripci&oacute;n</label>
           <textarea class="form-control" id="description" placeholder="Hecho con harina española" v-model="product.description"></textarea>
         </div>
         <div class="form-group d-flex align-items-center">

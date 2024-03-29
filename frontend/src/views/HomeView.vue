@@ -75,12 +75,12 @@ export default {
     <div id="home">
       <div class="container-fluid m-0 p-0">
         <div style="display: flex; flex-direction: column; text-align: center;" class="d-none d-lg-block">
-          <h1 class="display-1" style="color: aliceblue; font-weight: 500;">¡Bienvenido a la Panader&#237;a S&#225;nchez!</h1>
-          <h3 style="color: aliceblue; font-weight: 500; font-size: 4vh;">Siente el sabor de la tradici&#243;n</h3>
+          <h1 class="display-1" style="color: aliceblue; font-weight: 500;">¡Bienvenido a la Panader&iacute;a S&aacute;nchez!</h1>
+          <h3 style="color: aliceblue; font-weight: 500; font-size: 4vh;">Siente el sabor de la tradici&oacute;n</h3>
         </div>
         <div style="display: flex; flex-direction: column; text-align: center;" class="d-block d-lg-none">
-          <h1 class="display-3" style="color: aliceblue; font-weight: 400;">¡Bienvenido a la Panader&#237;a S&#225;nchez!</h1>
-          <h3 style="color: aliceblue; font-weight: 400; font-size: 4vh;">Siente el sabor de la tradici&#243;n</h3>
+          <h1 class="display-3" style="color: aliceblue; font-weight: 400;">¡Bienvenido a la Panader&iacute;a S&aacute;nchez!</h1>
+          <h3 style="color: aliceblue; font-weight: 400; font-size: 4vh;">Siente el sabor de la tradici&oacute;n</h3>
         </div>
         <div class="mx-auto" style="max-width: 50%;">
             <!-- Línea divisoria -->
@@ -196,9 +196,9 @@ export default {
 
       <div style="display: flex; flex-direction: row; justify-content: center; background-color: chocolate; min-height: 10vh;">
         <div style="display: flex; flex-direction: column; align-items: center; text-align: center; color: aliceblue; font-size: 2vh; font-weight: 500;">
-          <h3>¡Descubre m&#225;s productos en nuestra tienda!</h3>
+          <h3>¡Descubre m&aacute;s productos en nuestra tienda!</h3>
           <h3>¡No te quedes sin probarlos!</h3>
-          <a href="/products" class="btn btn-secondary" id="button">Ver m&#225;s</a>
+          <a href="/products" class="btn btn-secondary" id="button">Ver m&aacute;s</a>
         </div>
       </div>
     </div>
