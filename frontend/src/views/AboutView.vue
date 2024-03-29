@@ -8,13 +8,21 @@ export default {
   data() {
     return {
       sanchez,
-      windowHeight: 0,
       isBodyTextHidden: false,
     }
   },
   components: {
     Navbar,
     Footer
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+    this.$nextTick(() => {
+      this.handleResize();
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     handleResize() {
@@ -43,7 +51,7 @@ export default {
       Cada pieza de pan que sale del obrador se evalúa minuciosamente en términos de calidad y sabor, para que la experiencia gastronómica sea inolvidable.
     </p>
   </div>
-  <Footer :id="isBodyTextHidden ? '' : 'footer-bottom'"/>
+  <Footer :id="isBodyTextHidden ? 'footer-bottom' : ''"/>
 </template>
 
 <style scoped>
