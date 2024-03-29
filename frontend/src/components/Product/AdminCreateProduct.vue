@@ -9,6 +9,7 @@ export default {
   components: {
     Navbar,
     Footer,
+    RouterLink,
   },
   data() {
     return {
@@ -39,6 +40,7 @@ export default {
         });
     },
     handleFileUpload(event) {
+      // Gestionar la subida de la imagen
       const imageFile = event.target.files[0];
       const formData = new FormData();
       formData.append('image', imageFile);

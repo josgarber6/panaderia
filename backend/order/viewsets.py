@@ -17,6 +17,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
 
 class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
+    # Solo los usuarios autenticados pueden acceder a esta vista
     permission_classes = [IsAuthenticated]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -37,6 +38,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
             order.shipping_status = "Pendiente"
             order.save()
 
+            # Crear los items del pedido y su cantidad correspondiente
             for item in data["items"]:
                 product = Product.objects.get(pk=item["product"]["id"])
                 OrderItem.objects.create(
@@ -45,7 +47,8 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
                     quantity=item["quantity"],
                     order=order
                 )
-        
+
+            # Crear la sesión de pago en Stripe
             success_url = config("FRONTEND_BASE_URL") + "payment/completed"
             cancel_url = config("FRONTEND_BASE_URL") + "payment/cancelled"
 
@@ -75,6 +78,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
 
             return Response({"session_url": session.url, "orderId": order.id}, status=status.HTTP_201_CREATED)
         
+        # Si el método de pago es "Contra reembolso"
         else:
             order.shipping_status = "Enviado"
             order.save()
@@ -90,6 +94,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
 
             order.send_confirmation_email()
             
+            # Devolvemos el pedido y su ID para que el frontend pueda mostrarlo
             return Response({"order": OrderSerializer(order).data, "orderId": order.id}, status=status.HTTP_201_CREATED)
     def list(self, request, *args, **kwargs):
         if request.user.is_staff:
@@ -110,6 +115,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
     
+    # Endpoint para obtener los pedidos de un usuario
     @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
     def my_orders(self, request, *args, **kwargs):
         customer = Customer.objects.get(user=request.user)

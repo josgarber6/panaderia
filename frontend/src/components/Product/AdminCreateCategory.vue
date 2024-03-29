@@ -2,12 +2,14 @@
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import axios from 'axios';
+import { RouterLink } from 'vue-router';
 
 export default {
   name: 'AdminCreateCategory',
   components: {
     Navbar,
     Footer,
+    RouterLink,
   },
   data() {
     return {

@@ -29,6 +29,7 @@ export default {
         const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders/my_orders`)
         this.orders = response.data;
 
+        // Obtener la información de los productos de cada pedido
         for (const order of this.orders) {
           for (const item of order.items) {
             const product = await this.getProductInfo(item.product);
@@ -61,9 +62,12 @@ export default {
     },
   },
   async created() {
+    // Mostrar el spinner de carga hasta que se carguen los pedidos
     setTimeout(() => {
       this.loading = false;
     }, await this.getOrders());
+
+    // Obtenemos la información del usuario asociado a los pedidos, que en este caso es la misma para todos los pedidos
     if (this.orders.length > 0) {
       this.getCustomerInfo(this.orders[0].customer);
       this.$store.dispatch('loadCategories');
