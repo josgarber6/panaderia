@@ -18,6 +18,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         super().check_permissions(request)
         if request.method == 'GET':
             return
+        if not request.user.is_authenticated:
+            raise PermissionDenied({"detail": "Debe iniciar sesión para crear o actualizar un producto."})
         admin_customer = Customer.objects.get(user=request.user)
         if request.method == 'POST':
             if not request.user.is_authenticated or not request.user.is_staff:
@@ -113,12 +115,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
         admin_customer = Customer.objects.get(user=request.user)
         if request.method == 'POST':
             if not request.user.is_authenticated or not request.user.is_staff:
-                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para crear una categoría"})
+                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para crear una categoría"}, code=status.HTTP_403_FORBIDDEN)
             if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
-                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para crear una categoría"})
+                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para crear una categoría"}, code=status.HTTP_403_FORBIDDEN)
         
         if request.method == 'PUT' or request.method == 'PATCH':
             if not request.user.is_authenticated or not request.user.is_staff:
-                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para actualizar una categoría"})
+                raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para actualizar una categoría"}, code=status.HTTP_403_FORBIDDEN)
             if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
-                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para actualizar una categoría"})
+                raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para actualizar una categoría"}, code=status.HTTP_403_FORBIDDEN)
