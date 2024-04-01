@@ -24,7 +24,6 @@ from two_factor.gateways.twilio.urls import urlpatterns as tf_twilio_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("__debug__/", include("debug_toolbar.urls")),
     path('account/', include('authentication.urls')),
     path('', include(tf_urls)),
     path('', include(tf_twilio_urls)),

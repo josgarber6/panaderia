@@ -1,0 +1,163 @@
+[
+    {
+      "model": "product.Category",
+      "pk": 1,
+      "fields": {
+        "name": "Normal"
+      }
+    },
+  
+    {
+      "model": "product.Category",
+      "pk": 2,
+      "fields": {
+        "name": "Integral"
+      }
+    },
+  
+    {
+      "model": "product.Category",
+      "pk": 3,
+      "fields": {
+        "name": "Pico"
+      }
+    },
+  
+    {
+      "model": "product.Category",
+      "pk": 4,
+      "fields": {
+        "name": "Otros"
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 1,
+      "fields": {
+        "name": "Bollo",
+        "description": "Harina de trigo, agua y levadura.",
+        "stock": 50,
+        "price": 0.6,
+        "image": "products/bollo-normal.jpg",
+        "category": 1
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 2,
+      "fields": {
+        "name": "Bollo",
+        "description": "Harina de trigo integral y semillas.",
+        "stock": 50,
+        "price": 0.65,
+        "image": "products/bollo-integral.jpg",
+        "category": 2
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 3,
+      "fields": {
+        "name": "Mollete",
+        "description": "Harina de trigo y sal.",
+        "stock": 50,
+        "price": 0.5,
+        "image": "products/mollete-normal.jpg",
+        "category": 1
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 4,
+      "fields": {
+        "name": "Mollete",
+        "description": "Harina de trigo integral y agua.",
+        "stock": 50,
+        "price": 0.5,
+        "image": "products/mollete-integral.jpg",
+        "category": 2
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 5,
+      "fields": {
+        "name": "Mollete Pequeño",
+        "description": "Harina de trigo integral y agua.",
+        "stock": 50,
+        "price": 0.5,
+        "image": "products/mollete-integral-pequeno.jpg",
+        "category": 2
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 6,
+      "fields": {
+        "name": "Pepito",
+        "description": "Harina de trigo y agua.",
+        "stock": 100,
+        "price": 0.2,
+        "image": "products/pepito-normal.jpg",
+        "category": 1
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 7,
+      "fields": {
+        "name": "Pepito",
+        "description": "Harina de trigo integral y agua.",
+        "stock": 100,
+        "price": 0.65,
+        "image": "products/pepito-integral.jpg",
+        "category": 2
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 8,
+      "fields": {
+        "name": "Viena",
+        "description": "Harina de trigo integral y agua.",
+        "stock": 100,
+        "price": 0.50,
+        "image": "products/viena-integral.jpg",
+        "category": 2
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 9,
+      "fields": {
+        "name": "Regañá",
+        "description": "Harina de trigo y sal.",
+        "stock": 100,
+        "price": 0.68,
+        "image": "products/reganas.jpg",
+        "category": 3
+      }
+    },
+  
+    {
+      "model": "product.Product",
+      "pk": 10,
+      "fields": {
+        "name": "Roscón de Reyes",
+        "description": "Roscón de nata con sorpresa en su interior.",
+        "stock": 5,
+        "price": 16,
+        "image": "products/roscon-de-reyes.jpg",
+        "category": 4
+      }
+    }
+  ]
