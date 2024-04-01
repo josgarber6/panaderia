@@ -44,7 +44,7 @@ services:
       - ./frontend:/app
       - ./frontend/.env:/app/.env
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - backend
 
