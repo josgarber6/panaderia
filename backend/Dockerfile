@@ -16,6 +16,9 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install -r requirements.txt
+RUN pip install -r ./requirements.txt
 
-CMD ["gunicorn", "backend.wsgi:application", "--config", "gunicorn.py"]
+COPY ./launch.sh /app/launch.sh
+RUN chmod +x /app/launch.sh
+
+CMD ["/app/launch.sh"]
