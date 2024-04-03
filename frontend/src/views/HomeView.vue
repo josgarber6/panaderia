@@ -144,6 +144,9 @@ export default {
         </div>
       </template>
       <template v-else>
+        <div style="display: flex; flex-direction: column; text-align: center; background-color: chocolate;">
+          <h2 style="color: aliceblue; font-weight: 500; margin-top: 20px">PRODUCTOS DESTACADOS</h2>
+        </div>
         <div style="display: flex; flex-direction: row; justify-content: flex-start; background-color: chocolate; min-height: 30vh; overflow-x: scroll; scrollbar-width: none;">
           <template v-for="product in products" :key="product.id">
             <template v-if="product.highlighted">
