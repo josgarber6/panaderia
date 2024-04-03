@@ -40,10 +40,11 @@
         "stock": 50,
         "price": 0.6,
         "image": "products/bollo-normal.jpg",
-        "category": 1
+        "category": 1,
+        "highlighted": "false"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 2,
@@ -53,10 +54,11 @@
         "stock": 50,
         "price": 0.65,
         "image": "products/bollo-integral.jpg",
-        "category": 2
+        "category": 2,
+        "highlighted": "true"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 3,
@@ -66,10 +68,11 @@
         "stock": 50,
         "price": 0.5,
         "image": "products/mollete-normal.jpg",
-        "category": 1
+        "category": 1,
+        "highlighted": "false"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 4,
@@ -79,10 +82,11 @@
         "stock": 50,
         "price": 0.5,
         "image": "products/mollete-integral.jpg",
-        "category": 2
+        "category": 2,
+        "highlighted": "false"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 5,
@@ -92,10 +96,11 @@
         "stock": 50,
         "price": 0.5,
         "image": "products/mollete-integral-pequeno.jpg",
-        "category": 2
+        "category": 2,
+        "highlighted": "false"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 6,
@@ -105,10 +110,11 @@
         "stock": 100,
         "price": 0.2,
         "image": "products/pepito-normal.jpg",
-        "category": 1
+        "category": 1,
+        "highlighted": "true"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 7,
@@ -118,10 +124,11 @@
         "stock": 100,
         "price": 0.65,
         "image": "products/pepito-integral.jpg",
-        "category": 2
+        "category": 2,
+        "highlighted": "true"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 8,
@@ -131,10 +138,11 @@
         "stock": 100,
         "price": 0.50,
         "image": "products/viena-integral.jpg",
-        "category": 2
+        "category": 2,
+        "highlighted": "false"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 9,
@@ -144,10 +152,11 @@
         "stock": 100,
         "price": 0.68,
         "image": "products/reganas.jpg",
-        "category": 3
+        "category": 3,
+        "highlighted": "true"
       }
     },
-  
+    
     {
       "model": "product.Product",
       "pk": 10,
@@ -157,7 +166,8 @@
         "stock": 5,
         "price": 16,
         "image": "products/roscon-de-reyes.jpg",
-        "category": 4
+        "category": 4,
+        "highlighted": "true"
       }
     }
   ]
