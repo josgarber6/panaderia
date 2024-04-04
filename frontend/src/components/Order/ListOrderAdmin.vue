@@ -236,11 +236,13 @@ export default {
           </thead>
           <tbody>
             <tr v-for="item in order.items" :key="item.id">
-              <td>{{ products[item.product].name }}</td>
-              <td>{{ $store.getters.getCategoryName(products[item.product].category) }} </td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ (item.quantity * item.price).toFixed(2) }} €</td>
+              <template v-if="products[item.product]">
+                <td>{{ products[item.product].name }}</td>
+                <td>{{ $store.getters.getCategoryName(products[item.product].category) }} </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ (item.quantity * item.price).toFixed(2) }} €</td>
+              </template>
             </tr>
           </tbody>
         </table>
