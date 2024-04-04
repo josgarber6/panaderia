@@ -15,19 +15,8 @@ from locust import (
     between
 )
 
-# from django_otp.plugins.otp_totp.models import TOTPDevice
-# import pyotp
-
 
 HOST = "http://localhost:8000"
-
-# class TestTOTPDevice(TOTPDevice):
-#     def save(self, *args, **kwargs):
-#         super().save(*args, **kwargs)
-#         print(f"Secret key for user {self.user} is {self.bin_key}")
-    
-#     class Meta:
-#         app_label = "authentication"
 
 class CustomerTaskSet(SequentialTaskSet):
     def on_start(self):
@@ -102,17 +91,6 @@ class OrderTaskSet(SequentialTaskSet):
         customer_login(self)
         self.client.get(HOST + "/api/v1.0/orders/my_orders/")
         self.client.post(HOST + "/account/logout/")
-
-    # No se pueden crear pedidos desde la API
-    # @task
-    # def post_order(self):
-    #     customer_login(self)
-    #     json_data = {
-    #         "customer": "1",
-    #         "product": "1",
-    #         "quantity": "1",
-    #     }
-    #     self.client.post(HOST + "/api/v1.0/orders/", json={"key": "value"})
 
     @task
     def put_order(self):

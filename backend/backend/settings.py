@@ -138,8 +138,8 @@ AUTHENTICATION_BACKENDS = [
 # Two Factor Authentication Configuration
 
 TWO_FACTOR_PATCH_ADMIN = False
-TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
-TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake' # CAMBIAR A 'two_factor.gateways.twilio.gateway.Twilio' EN PRODUCCION
+TWO_FACTOR_CALL_GATEWAY = 'two_factor.gateways.fake.Fake'
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake'
 TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 
 LOGIN_REDIRECT_URL = FRONTEND_BASE_URL
