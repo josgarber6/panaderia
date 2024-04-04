@@ -16,6 +16,7 @@ class CategoryTestCase(TestCase):
       category = Category.objects.create(name="Test Category")
       self.assertEqual(category.__str__(), "Test Category")
 
+    # Debido al two factor, devuelve un error 403, pero sin el two factor, funciona correctamente.
     def test_create_category_from_api(self):
       response = self.client.post("/api/v1.0/categories/", {"name": "Test Category"})
       self.assertEqual(response.status_code, 201)
@@ -58,6 +59,7 @@ class ProductTestCase(TestCase):
       product = self.create_product()
       self.assertEqual(product.category.name, category.name)
 
+    # Debido al two factor, devuelve un error 403, pero sin el two factor, funciona correctamente.
     def test_create_product_from_api(self):
       category = self.create_category()
       product = {"name": "Test Product", "description": "Test Description", "price": 100, "stock": 10, "category": category.id}
