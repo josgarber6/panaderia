@@ -2,12 +2,17 @@
 import axios from 'axios';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import BarChart from '@/components/BarChart.vue';
+import { Chart, BarController, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
+Chart.register(BarController, CategoryScale, LinearScale, Title, Tooltip, Legend);
+
 
 export default {
   name: 'AdminStatsView',
   components: {
     Navbar,
     Footer,
+    BarChart,
   },
   data() {
     return {
@@ -21,6 +26,9 @@ export default {
       errorMessage: '',
       loading: false,
       isBodyTextHidden: false,
+      chartData: null,
+      chartOptions: null,
+      categoriesLoaded: false,
     };
   },
   mounted() {
@@ -82,7 +90,49 @@ export default {
         this.topProducts = Object.values(productCounts)
         .sort((a, b) => b.count - a.count)
         .slice(0, this.numTopProducts);  // Top 10 products
+
+        this.chartData = {
+          labels: [],
+          datasets: [
+            {
+              label: 'Cantidad',
+              backgroundColor: '#c18c37',
+              data: [],
+            },
+          ],
+        };
+
+        this.chartOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                display: true,
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              display: true,
+            },
+          },
+        },
+        this.topProducts.forEach(async (productInfo) => {
+          const category = await this.$store.getters.getCategoryName(productInfo.product.category);
+          const label = `${productInfo.product.name} (${category})`;
+          this.chartData.labels.push(label);
+          this.chartData.datasets[0].data.push(productInfo.count);
+        });
+
       } catch (error) {
+        console.log(error);
         if (error.response.status === 401) {
           this.errorMessage = 'Debe iniciar sesión y activar el doble factor de autenticación para ver las estadísticas.'
         } else if (error.response.status === 403) {
@@ -146,10 +196,11 @@ export default {
     }
   },
   async created() {
+    await this.$store.dispatch('loadCategories');
+    this.categoriesLoaded = true;
     setTimeout(() => {
       this.loading = false;
     }, await this.getTopProducts(), await this.getTopUsers());
-    this.$store.dispatch('loadCategories');
   },
 };
 
@@ -177,28 +228,7 @@ export default {
         <div v-else-if="topProducts.length === 0" class="container text-center" style="padding-top: 20px;">
           <h4>No hay datos</h4>
         </div>
-        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none; width: fit-content;" v-if="!loading">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Categor&iacute;a</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="productInfo in topProducts" :key="productInfo.product.id">
-                <td>{{ productInfo.product.name }}</td>
-                <td>{{ $store.getters.getCategoryName(productInfo.product.category) }}</td>
-                <td>{{ productInfo.product.price }}</td>
-                <td>{{ productInfo.product.stock }}</td>
-                <td>{{ productInfo.count }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <BarChart v-if="categoriesLoaded" :chart-data="chartData" :options="chartOptions"/>
         <div style="display: flex; justify-content: center; flex-direction: row; margin-top: 20px; margin-bottom: 20px;">
           <h2>Top Usuarios</h2>
         </div>
@@ -209,7 +239,7 @@ export default {
         <div v-else-if="topUsers.length === 0" class="container text-center" style="padding-top: 20px;">
           <h4>No hay datos</h4>
         </div>
-        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none; width: fit-content;" v-if="!loading">
+        <div class="table-responsive centered-table" style="overflow-x: scroll; scrollbar-width: none;" v-if="!loading">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -232,7 +262,7 @@ export default {
       </div>
     </div>
   </div>
-  <Footer :id="isBodyTextHidden ? 'footer-bottom' : ''"/>
+  <Footer :id="isBodyTextHidden ? '' : 'footer-bottom'"/>
 </template>
 
 <style>
