@@ -33,7 +33,12 @@ class SignupCompleteView(TemplateView):
     
 def logout_view(request):
   logout(request)
-  return redirect(settings.LOGOUT_REDIRECT_URL)
+  # Eliminar el sessionid de las cookies
+  request.COOKIES.clear()
+  response = redirect(settings.LOGOUT_REDIRECT_URL)
+  # Eliminar el csrftoken de las cookies
+  response.set_cookie('csrftoken', '', max_age=0)
+  return response
 
 
 def get_username_from_session(request):
@@ -61,8 +66,10 @@ def get_username_from_session(request):
                              'first_name': user.first_name, 
                              'last_name': user.last_name,
                              'isTwoFactorEnabled': customer.is_two_factor_enabled()})
-    except (Session.DoesNotExist, KeyError, Customer.DoesNotExist):
-        return JsonResponse({'error': 'Session not found or customer does not exist'}, status=400)
+    except (Session.DoesNotExist, KeyError):
+        return JsonResponse({'detail': 'User is not authenticated'})
+    except (Customer.DoesNotExist):
+        return JsonResponse({'error': 'Customer does not exist'}, status=400)
     
 def get_user_info(request, userId):
     try:

@@ -162,8 +162,10 @@ export default createStore({
       axios.defaults.withCredentials = true;
       return axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/get-username-from-session/`)
         .then(response => {
-          commit('SET_USER', response.data);
-          commit('SET_AUTHENTICATED', true);
+          if (response.data.username) {
+            commit('SET_USER', response.data);
+            commit('SET_AUTHENTICATED', true);
+          }
         })
         .catch(error => {
           console.log(error);

@@ -350,6 +350,7 @@ class LoginView(RedirectURLMixin, IdempotentSessionWizardView):
         Adds user's default and backup OTP devices to the context.
         """
         context = super().get_context_data(form, **kwargs)
+        context['home_url'] = resolve_url(settings.FRONTEND_BASE_URL)
         if self.steps.current == self.TOKEN_STEP:
             device = self.get_device()
             context['device'] = device

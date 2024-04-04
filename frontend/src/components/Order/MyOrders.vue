@@ -48,8 +48,8 @@ export default {
         this.loading = false;
       }
     },
-    getCustomerInfo(customerId) {
-      axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/customers/${customerId}`).then((response) => {
+    async getCustomerInfo(customerId) {
+      await axios.get(`${import.meta.env.VITE_APP_BASE_URL_SHORT}account/customers/${customerId}`).then((response) => {
         this.customer = response.data;
       });
     },
@@ -69,7 +69,7 @@ export default {
 
     // Obtenemos la información del usuario asociado a los pedidos, que en este caso es la misma para todos los pedidos
     if (this.orders.length > 0) {
-      this.getCustomerInfo(this.orders[0].customer);
+      await this.getCustomerInfo(this.orders[0].customer);
       this.$store.dispatch('loadCategories');
     }
   },
@@ -94,37 +94,39 @@ export default {
       <h3>Pedido {{ order.id }}</h3>
       <div class="table-responsive" style="overflow-x: scroll; scrollbar-width: none;">
         <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Dirección</th>
-              <th>Código Postal</th>
-              <th>Fecha de creación</th>
-              <th>Estado</th>
-              <th>Pagado</th>
-              <th>Método de envío</th>
-              <th>Método de pago</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ customer.address }}</td>
-              <td>{{ customer.postal_code }}</td>
-              <td>
-                <time :datetime="order.created">{{ formatDate(order.created) }}</time>
-              </td>
-              <td>{{ order.shipping_status }}</td>
-              <template v-if="order.paid">
-                <td>Sí</td>
-              </template>
-              <template v-else>
-                <td>No</td>
-              </template>
-              <td>{{ order.shipping_method }}</td>
-              <td>{{ order.payment_method }}</td>
-              <td>{{ order.total_cost.toFixed(2) }} €</td>
-            </tr>
-          </tbody>
+          <template v-if="customer">
+            <thead>
+              <tr>
+                <th>Dirección</th>
+                <th>Código Postal</th>
+                <th>Fecha de creación</th>
+                <th>Estado</th>
+                <th>Pagado</th>
+                <th>Método de envío</th>
+                <th>Método de pago</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ customer.address }}</td>
+                <td>{{ customer.postal_code }}</td>
+                <td>
+                  <time :datetime="order.created">{{ formatDate(order.created) }}</time>
+                </td>
+                <td>{{ order.shipping_status }}</td>
+                <template v-if="order.paid">
+                  <td>Sí</td>
+                </template>
+                <template v-else>
+                  <td>No</td>
+                </template>
+                <td>{{ order.shipping_method }}</td>
+                <td>{{ order.payment_method }}</td>
+                <td>{{ order.total_cost.toFixed(2) }} €</td>
+              </tr>
+            </tbody>
+          </template>
         </table>
       </div>
       <div style="padding: 5px;"></div>
@@ -141,11 +143,13 @@ export default {
           </thead>
           <tbody>
             <tr v-for="item in order.items" :key="item.id">
-              <td>{{ products[item.product].name }}</td>
-              <td>{{ $store.getters.getCategoryName(products[item.product].category) }} </td>
-              <td>{{ item.quantity }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ (item.quantity * item.price).toFixed(2) }} €</td>
+              <template v-if="products[item.product]">
+                <td>{{ products[item.product].name }}</td>
+                <td>{{ $store.getters.getCategoryName(products[item.product].category) }} </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ (item.quantity * item.price).toFixed(2) }} €</td>
+              </template>
             </tr>
           </tbody>
         </table>
