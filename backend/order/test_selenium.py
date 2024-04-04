@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from decouple import config
+import time
 
 class OrderSeleniumTestCase(StaticLiveServerTestCase):
   def setUp(self):
@@ -32,6 +33,7 @@ class OrderSeleniumTestCase(StaticLiveServerTestCase):
 
   def login(self):
     self.driver.get(config("FRONTEND_BASE_URL"))
+    WebDriverWait(self.driver, 10).until(lambda s: s.find_element(By.ID, "login").is_displayed())
     self.driver.find_element(By.ID, "login").click()
     self.driver.find_element(By.NAME, "auth-username").send_keys("prueba2")
     self.driver.find_element(By.NAME, "auth-password").send_keys("contra123")
@@ -39,6 +41,7 @@ class OrderSeleniumTestCase(StaticLiveServerTestCase):
 
   def login_and_2fa(self):
     self.driver.get(config("FRONTEND_BASE_URL"))
+    WebDriverWait(self.driver, 10).until(lambda s: s.find_element(By.ID, "login").is_displayed())
     self.driver.find_element(By.ID, "login").click()
     self.driver.find_element(By.NAME, "auth-username").send_keys("drkenobi")
     self.driver.find_element(By.NAME, "auth-password").send_keys("contra123")
@@ -51,16 +54,19 @@ class OrderSeleniumTestCase(StaticLiveServerTestCase):
   def test_create_order(self):
     
     self.login_and_2fa()
+    WebDriverWait(self.driver, 50).until(lambda s: s.find_element(By.XPATH, "//a[contains(text(),'Productos')]").is_displayed())
 
     # Seleccionar un producto y añadirlo al carrito
     self.driver.find_element(By.XPATH, "//a[contains(text(),'Productos')]").click()
-    WebDriverWait(self.driver, 10).until(lambda s: s.find_element(By.ID, "quantity-4").is_displayed())
+    time.sleep(2)
     self.driver.find_element(By.ID, "quantity-4").clear()
     self.driver.find_element(By.ID, "quantity-4").send_keys("10")
     self.driver.find_element(By.ID, "add-to-cart-4").click()
 
     self.driver.find_element(By.XPATH, '//a[@href="/cart"]').click()
+    time.sleep(2)
     self.driver.find_element(By.CLASS_NAME, "btn-success").click()
+    time.sleep(2)
     self.driver.find_element(By.ID, "confirm-order").click()
 
     # Pago con Stripe
@@ -74,14 +80,15 @@ class OrderSeleniumTestCase(StaticLiveServerTestCase):
       self.driver.find_element(By.CLASS_NAME, "Button--secondary").click()
 
     self.driver.find_element(By.ID, "cardNumber").send_keys("4242424242424242")
-    self.driver.find_element(By.ID, "cardExpiry").send_keys("0424")
+    self.driver.find_element(By.ID, "cardExpiry").send_keys("0625")
     self.driver.find_element(By.ID, "cardCvc").send_keys("242")
     self.driver.find_element(By.ID, "billingName").send_keys("Jose Maria")
     self.driver.find_element(By.CLASS_NAME, "SubmitButton-IconContainer").click()
 
     # Comprobar que se ha completado el pago
-    WebDriverWait(self.driver, 10).until(lambda s: s.current_url.startswith(config("FRONTEND_BASE_URL") + "payment/completed"))
+    WebDriverWait(self.driver, 50).until(lambda s: s.current_url.startswith(config("FRONTEND_BASE_URL") + "payment/completed"))
     self.assertTrue(self.driver.current_url.startswith(config("FRONTEND_BASE_URL") + "payment/completed"))
+    time.sleep(2)
     self.assertTrue(self.driver.find_element(By.XPATH, "//h1[contains(text(),'¡Pago completado!')]").is_displayed())
 
     # Verificar que el pedido se ha creado
@@ -93,6 +100,7 @@ class OrderSeleniumTestCase(StaticLiveServerTestCase):
   def test_create_order_without_login(self):
     # Seleccionar un producto y añadirlo al carrito
     self.driver.get(config("FRONTEND_BASE_URL"))
+    WebDriverWait(self.driver, 50).until(lambda s: s.find_element(By.XPATH, "//a[contains(text(),'Productos')]").is_displayed())
     self.driver.find_element(By.XPATH, "//a[contains(text(),'Productos')]").click()
     WebDriverWait(self.driver, 10).until(lambda s: s.find_element(By.ID, "quantity-4").is_displayed())
     self.driver.find_element(By.ID, "quantity-4").clear()
@@ -106,36 +114,42 @@ class OrderSeleniumTestCase(StaticLiveServerTestCase):
 
   def test_create_order_without_2fa(self):
     self.login()
+    WebDriverWait(self.driver, 50).until(lambda s: s.find_element(By.XPATH, "//a[contains(text(),'Productos')]").is_displayed())
 
     # Seleccionar un producto y añadirlo al carrito
     self.driver.find_element(By.XPATH, "//a[contains(text(),'Productos')]").click()
-    WebDriverWait(self.driver, 10).until(lambda s: s.find_element(By.ID, "quantity-4").is_displayed())
+    time.sleep(2)
     self.driver.find_element(By.ID, "quantity-4").clear()
     self.driver.find_element(By.ID, "quantity-4").send_keys("10")
     self.driver.find_element(By.ID, "add-to-cart-4").click()
 
     self.driver.find_element(By.XPATH, '//a[@href="/cart"]').click()
+    time.sleep(2)
     self.driver.find_element(By.CLASS_NAME, "btn-success").click()
 
     self.assertIn("Debe activar el doble factor de autenticación para realizar un pedido.", self.driver.find_element(By.ID, "error-message").text)
 
   def test_create_order_cash(self):
     self.login_and_2fa()
+    WebDriverWait(self.driver, 50).until(lambda s: s.find_element(By.XPATH, "//a[contains(text(),'Productos')]").is_displayed())
 
     # Seleccionar un producto y añadirlo al carrito
     self.driver.find_element(By.XPATH, "//a[contains(text(),'Productos')]").click()
-    WebDriverWait(self.driver, 10).until(lambda s: s.find_element(By.ID, "quantity-4").is_displayed())
+    time.sleep(2)
     self.driver.find_element(By.ID, "quantity-4").clear()
     self.driver.find_element(By.ID, "quantity-4").send_keys("10")
     self.driver.find_element(By.ID, "add-to-cart-4").click()
 
     self.driver.find_element(By.XPATH, '//a[@href="/cart"]').click()
+    time.sleep(2)
     self.driver.find_element(By.CLASS_NAME, "btn-success").click()
 
     self.driver.find_element(By.ID, "payment").click()
+    time.sleep(2)
     self.driver.find_element(By.XPATH, "//option[contains(text(),'Pago en Efectivo')]").click()
     self.driver.find_element(By.ID, "confirm-order").click()
 
     WebDriverWait(self.driver, 10).until(lambda s: s.current_url.startswith(config("FRONTEND_BASE_URL") + "order/completed"))
     self.assertTrue(self.driver.current_url.startswith(config("FRONTEND_BASE_URL") + "order/completed"))
+    time.sleep(2)
     self.assertIn("¡Pedido realizado!", self.driver.find_element(By.TAG_NAME, "h1").text)

@@ -136,7 +136,7 @@ export default {
         </div>
         <div class="form-group d-flex align-items-center">
           <label for="price" class="mr-2">Precio</label>
-          <input type="number" class="form-control" id="price" placeholder="0,8" v-model="product.price" style="width: fit-content;"><label style="margin-left: 5px;">€</label>
+          <input type="number" class="form-control" id="price" placeholder="0,8" min="0" v-model="product.price" style="width: fit-content;"><label style="margin-left: 5px;">€</label>
         </div>
         <div class="form-group d-flex align-items-center">
           <label for="stock" class="mr-2">Stock</label>
