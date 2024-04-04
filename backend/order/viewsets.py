@@ -112,7 +112,7 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
         
     def destroy(self, request, *args, **kwargs):
         if request.user.is_staff:
-            return super().delete(request, *args, **kwargs)
+            return super().destroy(request, *args, **kwargs)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
     
