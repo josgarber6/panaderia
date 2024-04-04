@@ -87,7 +87,9 @@
                 <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                 <div class="dropdown-content">
                   <a :href="base_url + 'account/change-password'">Cambiar contraseña</a>
-                  <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
+                  <template v-if="!this.$store.state.user.isTwoFactorEnabled">
+                    <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
+                  </template>
                   <RouterLink to="/order/my_orders">Mis pedidos</RouterLink>
                 </div>
               </div>
@@ -182,7 +184,9 @@
                   <button class="dropbtn">{{ this.$store.state.user.email ? this.$store.state.user.email : this.$store.state.user.username }}</button>
                   <div class="dropdown-content">
                     <a :href="base_url + 'account/change-password'">Cambiar contraseña</a>
-                    <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
+                    <template v-if="!this.$store.state.user.isTwoFactorEnabled">
+                      <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
+                    </template>
                     <RouterLink to="/order/my_orders">Mis pedidos</RouterLink>
                   </div>
                 </div>
