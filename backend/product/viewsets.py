@@ -20,6 +20,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             return
         if not request.user.is_authenticated:
             raise PermissionDenied({"detail": "Debe iniciar sesión para crear o actualizar un producto."})
+    
         admin_customer = Customer.objects.get(user=request.user)
         if request.method == 'POST':
             if not request.user.is_authenticated or not request.user.is_staff:
@@ -63,6 +64,9 @@ class ProductViewSet(viewsets.ModelViewSet):
         if float(data['price']) <= 0:
             return JsonResponse({"detail": "El precio del producto no puede ser negativo ni cero"}, status=status.HTTP_400_BAD_REQUEST)
         
+        if int(data['stock']) <= 0 and data['category'] == 3:
+            return JsonResponse({"detail": "El stock de los picos no puede ser negativo ni cero"}, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -75,8 +79,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
 
         # Comprueba si el stock es menor que 0 y si la categoría no es "Pico" para asignar el valor máximo de un entero de 32 bits.
-        if ((instance.stock < 0 or int(data['stock']) < 0) and instance.category.name != "Pico"):
+        if ((instance.stock < 0 or int(data['stock']) < 0) and instance.category.id != 3):
             data['stock'] = 2**31 - 1
+
+        if int(data['stock']) <= 0 and int(data['category']) == 3:
+            return JsonResponse({"detail": "El stock de los picos no puede ser negativo ni cero"}, status=status.HTTP_400_BAD_REQUEST)
 
         if 'image' in request.FILES:
             instance.image = request.FILES['image']
@@ -112,6 +119,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
         super().check_permissions(request)
         if request.method == 'GET':
             return
+        if not request.user.is_authenticated:
+            raise PermissionDenied({"detail": "Debe iniciar sesión para crear o actualizar un producto."})
+        
         admin_customer = Customer.objects.get(user=request.user)
         if request.method == 'POST':
             if not request.user.is_authenticated or not request.user.is_staff:
