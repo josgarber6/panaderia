@@ -78,23 +78,6 @@ export default createStore({
     SET_ALERT_MESSAGE(state, value) {
       state.alertMessage = value;
     },
-    INCREASE_QUANTITY: (state, itemId) => {
-      console.log(itemId);
-      const productInCart = state.cart.find(item => item.id === itemId);
-      productInCart.quantity++;
-    },
-    DECREASE_QUANTITY: (state, itemId) => {
-      const productInCart = state.cart.find(item => item.product.id === itemId);
-      if (productInCart.quantity > 1) {
-        productInCart.quantity--;
-      }
-    },
-    SET_CATEGORIES(state, categories) {
-      state.categories = categories;
-    },
-    SET_PAYMENT_OPTIONS(state, value) {
-      state.showPaymentOptions = value;
-    },
   },
   actions: {
     loadCart: ({ commit }) => {
