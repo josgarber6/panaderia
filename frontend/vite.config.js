@@ -23,10 +23,3 @@ export default defineConfig({
     ? '/media/'  // Ruta donde se encuentran los archivos estáticos
     : '/'
 })
-
-module.exports = {
-  // Otras configuraciones...
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/media/'  // Ruta donde se encuentran los archivos estáticos
-    : '/'
-})
