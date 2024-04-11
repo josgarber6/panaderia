@@ -11,10 +11,14 @@ class CategoryTestCase(TestCase):
     def create(self):
       category = Category.objects.create(name="Test Category")
       return category
+    
+    def test_create_without_persistence(self):
+      category = Category(name="Test Category")
+      self.assertEqual(str(category), "Test Category")
 
     def test_create_category(self):
       category = Category.objects.create(name="Test Category")
-      self.assertEqual(category.__str__(), "Test Category")
+      self.assertEqual(str(category), "Test Category")
 
     # Debido al two factor, devuelve un error 403, pero sin el two factor, funciona correctamente.
     def test_create_category_from_api(self):
@@ -50,9 +54,13 @@ class ProductTestCase(TestCase):
       product = Product.objects.create(name="Test Product", description="Test Description", price=100, stock=10, category=self.create_category())
       return product
     
+    def test_create_without_persistence(self):
+      product = Product(name="Test Product", description="Test Description", price=100, stock=10)
+      self.assertEqual(str(product), "Test Product")
+    
     def test_create_product(self):
       product = self.create_product()
-      self.assertEqual(product.__str__(), "Test Product")
+      self.assertEqual(str(product), "Test Product")
 
     def test_product_category(self):
       category = self.create_category()
