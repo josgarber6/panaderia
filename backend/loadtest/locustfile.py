@@ -120,14 +120,14 @@ class CategoryTaskSet(SequentialTaskSet):
         admin_login(self)
         categories = self.client.get("/api/v1.0/categories/")
         category = categories.json()[-1]
-        self.client.put("/api/v1.0/categories/" + str(category["id"] + "/"), json={"name": "Prueba2"})
+        self.client.put("/api/v1.0/categories/" + str(category["id"]) + "/", json={"name": "Prueba2"})
 
     @task
     def delete_category(self):
         admin_login(self)
         categories = self.client.get("/api/v1.0/categories/")
         category = categories.json()[-1]
-        self.client.delete("/api/v1.0/categories/" + str(category["id"] + "/"))
+        self.client.delete("/api/v1.0/categories/" + str(category["id"]) + "/")
 
 class CustomerUser(HttpUser):
     host = HOST

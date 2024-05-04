@@ -256,6 +256,7 @@ export default {
     </div>
   </div>
   <Footer v-if="searchTerm && filteredOrders.length === 0" id="footer-bottom"/>
+  <Footer v-else-if="filteredOrders.length === 1" id="footer-bottom"/>
   <Footer v-else-if="orders.length > 0"/>
   <Footer v-else id="footer-bottom"/>
   </template>

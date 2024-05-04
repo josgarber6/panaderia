@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
+import lupa from '@/assets/lupa.png';
 
 export default {
   data() {
@@ -11,7 +12,11 @@ export default {
       products: {},
       loading: false,
       errorMessage: '',
+      currentPage: 1,
+      ordersPerPage: 5,
       orders: [],
+      searchTerm: '',
+      lupa,
     };
   },
   components: {
@@ -57,6 +62,20 @@ export default {
       const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}products/${productId}`)
       return response.data;
     },
+    nextPage() {
+      if (this.currentPage * this.ordersPerPage < this.orders.length) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    getPaginatedOrders() {
+      const start = (this.currentPage - 1) * this.ordersPerPage;
+      return this.filteredOrders.slice(start, start + this.ordersPerPage);
+    },
     formatDate(date) {
       return moment(date).format('DD/MM/YYYY HH:mm');
     },
@@ -73,12 +92,28 @@ export default {
       this.$store.dispatch('loadCategories');
     }
   },
+  computed: {
+    // Filtrar los pedidos por ID de pedido
+    filteredOrders() {
+      if (!this.searchTerm) {
+        return this.orders;
+      } else {
+        return this.orders.filter((order) => {
+          return order.id.toString().includes(this.searchTerm.toLowerCase());
+        });
+      }
+    },
+  },
 };
 </script>
 
 <template>
   <Navbar />
-  <div class="container">
+  <div class="container mt-4">
+    <div style="display: flex; margin-bottom: 20px;">
+      <input v-model="searchTerm" type="text" class="form-control" placeholder="Buscar por ID de pedido" style="width: 220px;"/>
+      <img :src="lupa" alt="lupa" style="width: 20px; height: 20px; margin-left: -30px; margin-top: 10px;"/>
+    </div>
     <h1 class="text-center">Mis pedidos</h1>
     <div v-if="errorMessage" class="container text-center" style="padding-top: 20px;">
       <h4 style="color: red;" id="error-message">{{ errorMessage }}</h4>
@@ -90,7 +125,10 @@ export default {
     <div v-else-if="orders.length === 0" class="container text-center" style="padding-top: 20px;">
       <h4>No hay pedidos</h4>
     </div>
-    <div v-for="order in orders" :key="order.id" class="container" style="padding-top: 20px;">
+    <div v-else-if="filteredOrders.length === 0" class="container text-center" style="padding-top: 20px;">
+      <h4>No se encontraron pedidos</h4>
+    </div>
+    <div v-for="order in getPaginatedOrders()" :key="order.id" class="container" style="padding-top: 20px;">
       <h3>Pedido {{ order.id }}</h3>
       <div class="table-responsive" style="overflow-x: scroll; scrollbar-width: none;">
         <table class="table table-striped">
@@ -157,13 +195,15 @@ export default {
       <hr style="border: 1px solid #ccc;">
       <div style="padding: 10px;"></div>
     </div>
+    <div class="container d-flex justify-content-center align-items-center" style="margin-bottom: 20px;">
+      <button class="btn btn-secondary" @click="prevPage" :disabled="currentPage === 1" style="margin-right: 10px;">Anterior</button>
+      <button class="btn btn-secondary" @click="nextPage" :disabled="currentPage * ordersPerPage >= orders.length">Siguiente</button>
+    </div>
   </div>
-  <template v-if="orders.length === 0">
-    <Footer id="footer-bottom"/>
-  </template>
-  <template v-else>
-    <Footer/>
-  </template>
+  <Footer v-if="searchTerm && filteredOrders.length === 0" id="footer-bottom"/>
+  <Footer v-else-if="filteredOrders.length === 1" id="footer-bottom"/>
+  <Footer v-else-if="orders.length > 0"/>
+  <Footer v-else id="footer-bottom"/>
 </template>
 
 <style>
