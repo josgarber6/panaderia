@@ -1,11 +1,3 @@
-# import os
-# import sys
-# sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
-
-# import django
-# django.setup()
-
 from auth import admin_login, customer_login, logout
 
 from locust import (

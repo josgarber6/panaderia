@@ -86,6 +86,9 @@ class OrderViewSet(OTPRequiredMixin, viewsets.ModelViewSet):
 
             for item in data["items"]:
                 product = Product.objects.get(pk=item["product"]["id"])
+                product.stock -= item["quantity"]
+                product.save()
+
                 OrderItem.objects.create(
                     product=product,
                     price=item["product"]["price"],
