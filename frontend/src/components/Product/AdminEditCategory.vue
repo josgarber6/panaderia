@@ -5,7 +5,7 @@ import axios from 'axios';
 import { RouterLink } from 'vue-router';
 
 export default {
-  name: 'AdminEditProduct',
+  name: 'AdminEditCategory',
   components: {
     Navbar,
     Footer,
