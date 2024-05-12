@@ -10,7 +10,7 @@ export default {
     return {
       customer: {},
       order: {},
-      products: [],
+      products: {},
       orderId: this.$route.params.orderId,
       message: '',
     };
@@ -24,9 +24,6 @@ export default {
     async getOrder() {
       const response = await axios.get(`${import.meta.env.VITE_APP_BASE_URL}orders/${this.orderId}`);
       this.order = response.data;
-      this.order.items.forEach((item, index) => {
-            this.products[item.product] = products[index];
-          });
       this.customer = await this.getCustomerInfo(this.order.customer);
       const user = await this.getUserInfo(this.customer.user);
       this.customer.user = user;
