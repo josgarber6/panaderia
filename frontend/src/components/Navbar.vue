@@ -90,7 +90,9 @@
                   <template v-if="!this.$store.state.user.isTwoFactorEnabled">
                     <a :href="base_url + 'account/two_factor/setup'">Activar doble factor</a>
                   </template>
-                  <RouterLink to="/order/my_orders">Mis pedidos</RouterLink>
+                  <template v-if="!this.$store.state.isAdmin">
+                    <RouterLink to="/order/my_orders">Mis pedidos</RouterLink>
+                  </template>
                 </div>
               </div>
             </div>
