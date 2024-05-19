@@ -69,7 +69,9 @@ export default {
       <div class="row">
         <div class="col-md-8">
           <h2 class="text-center" style="margin-top: 20px;">Categor&iacute;as</h2>
-          <button class="btn btn-primary" @click="showPermissionMessage(null,'/admin/categories/new',null)">Crear Categoría</button>
+          <div style="display: flex; flex-direction: row; justify-content: center;">
+            <button class="btn btn-primary" @click="showPermissionMessage(null,'/admin/categories/new',null)">Crear Categoría</button>
+          </div>
           <div style="display: flex; flex-direction: row; justify-content: center;">
             <table class="table table-bordered table-auto" style="margin-top: 20px;">
               <thead>
