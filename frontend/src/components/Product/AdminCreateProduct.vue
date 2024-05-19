@@ -61,7 +61,14 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          if (error.response) {
+            if (error.response.status === 400) {
+              this.$refs.fileInput.value = '';
+              this.message = error.response.data.detail;
+            } else if (error.response.status === 500) {
+              this.message = 'Ha ocurrido un error al subir la imagen';
+            }
+          }
         });
     },
     createProduct() {
@@ -121,29 +128,32 @@ export default {
     <div v-if="message" class="alert alert-danger">
       {{ message }}
     </div>
-    <div class="column">
-      <h3>Crear Producto</h3>
+    <div class="row">
+      <div class="column">
+        <h3>Crear Producto</h3>
+        <p>Los campos con un (<span class="is-required-note"/>) son obligatorios</p>
+      </div>
     </div>
     <div class="column">
       <div style="display: flex; flex-direction: column; justify-content: center;">
         <div class="form-group">
-          <label for="name">Nombre</label>
+          <label for="name" class="is-required">Nombre</label>
           <input type="text" class="form-control" id="name" placeholder="Mollete" v-model="product.name">
         </div>
         <div class="form-group">
-          <label for="description">Descripci&oacute;n</label>
+          <label for="description" class="is-required">Descripci&oacute;n</label>
           <textarea class="form-control" id="description" placeholder="Hecho con harina española" v-model="product.description"></textarea>
         </div>
         <div class="form-group d-flex align-items-center">
-          <label for="price" class="mr-2">Precio</label>
+          <label for="price" class="mr-2 is-required">Precio</label>
           <input type="number" class="form-control" id="price" placeholder="0,8" min="0" v-model="product.price" style="width: fit-content;"><label style="margin-left: 5px;">€</label>
         </div>
         <div class="form-group d-flex align-items-center">
-          <label for="stock" class="mr-2">Stock</label>
+          <label for="stock" class="mr-2 is-required">Stock</label>
           <input type="number" class="form-control" id="stock" min="0" placeholder="50" v-model="product.stock" style="width: fit-content;"><label style="margin-left: 5px;">unidades</label>
         </div>
         <div class="form-group">
-          <label for="category">Categor&iacute;a</label>
+          <label for="category" class="is-required">Categor&iacute;a</label>
           <select class="form-control" id="category" v-model="product.category">
             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select>
@@ -173,5 +183,17 @@ export default {
   <Footer v-else/>
 </template>
 
-<style scoped>
+<style>
+.is-required::after {
+  content: '*';
+  margin-left: 3px;
+  color: red;
+  font-weight: bold;
+}
+
+.is-required-note::after {
+  content: '*';
+  color: red;
+  font-weight: bold;
+}
 </style>

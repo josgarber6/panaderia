@@ -134,3 +134,20 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 raise PermissionDenied({"detail": "Debe iniciar sesión como administrador para actualizar una categoría"}, code=status.HTTP_403_FORBIDDEN)
             if request.user.is_authenticated and not admin_customer.is_two_factor_enabled():
                 raise PermissionDenied({"detail": "Debe activar el doble factor de autenticación para actualizar una categoría"}, code=status.HTTP_403_FORBIDDEN)
+    
+    def create(self, request, *args, **kwargs):
+        if request.data['name'] == '':
+            return JsonResponse({"detail": "El nombre de la categoría es obligatorio"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def update(self, request, *args, **kwargs):
+        if request.data['name'] == '':
+            return JsonResponse({"detail": "El nombre de la categoría es obligatorio"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return super().update(request, *args, **kwargs)

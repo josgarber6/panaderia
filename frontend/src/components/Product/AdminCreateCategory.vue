@@ -64,13 +64,16 @@ export default {
     <div v-if="message" class="alert alert-danger">
       {{ message }}
     </div>
-    <div class="column" style="display: flex; justify-content: center; margin-bottom: 20px">
-      <h3>Crear Categor&iacute;a</h3>
+    <div class="column" style="display: flex; justify-content: center">
+      <div class="column">
+        <h3>Crear Categor&iacute;a</h3>
+        <p>Los campos con un (<span class="is-required-note"/>) son obligatorios</p>
+      </div>
     </div>
     <div class="column">
       <div style="display: flex; flex-direction: column; justify-content: center;">
         <div class="form-group-centered">
-          <label for="name" class="mr-2">Nombre</label>
+          <label for="name" class="mr-2 is-required">Nombre</label>
           <input type="text" class="form-control" id="name" placeholder="Ej. Integral" v-model="category.name" style="width: fit-content;">
         </div>
       </div>
