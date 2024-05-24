@@ -1,5 +1,5 @@
 # Fase 1: Construir la aplicación Vue.js con Vite
-FROM node:14 as build-stage
+FROM node:20 as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
