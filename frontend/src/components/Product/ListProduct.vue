@@ -60,7 +60,7 @@ export default {
           <div class="card">
             <img :src="product.image" alt="Imagen no disponible" class="card-img-top" style="width: 18rem; height: 16rem;"/>
             <div class="card-body">
-              <template v-if="product.category == 4">
+              <template v-if="$store.getters.getCategoryName(product.category) == 'Otros'">
                 <h5 class="card-title">{{ product.name }}</h5>
               </template>
               <template v-else>
