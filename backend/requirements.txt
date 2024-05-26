@@ -12,3 +12,4 @@ coverage==7.4.3
 python-decouple==3.8
 stripe==8.7.0
 python-dotenv==1.0.1
+setuptools==70.0.0
